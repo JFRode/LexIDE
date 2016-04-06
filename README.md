@@ -20,3 +20,8 @@ Tem como objetivo a criação de uma linguagem de programação simples, apenas 
 | if | if (...) {...} |
 | if else | if... else {...} |
 
+| Loops | Example |
+| ----- | ------- |
+| while | while (...) {...} |
+| do while | do {...} while (...); |
+| for | fore (...) {...} |
