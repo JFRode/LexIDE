@@ -6,10 +6,17 @@ Tem como objetivo a criação de uma linguagem de programação simples, apenas 
 --
 
 ###Data types
-| Data | example |
-| ------------- | ------------- |
+| Data | Example |
+| ---- | ------- |
 | int | 16 |
 | string | "Hello world!" |
 | char | 'c' |
 | float | 10.23 |
+| vectors | int vet[] |
+
+###Control structures
+| Conditional clauses | Example |
+| ------------------- | ------- |
+| if | if (...) {...} |
+| if else | if... else {...} |
 
