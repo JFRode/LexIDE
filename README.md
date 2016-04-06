@@ -25,3 +25,31 @@ Tem como objetivo a criação de uma linguagem de programação simples, apenas 
 | while | while (...) {...} |
 | do while | do {...} while (...); |
 | for | fore (...) {...} |
+
+###Operators
+
+| Arithmetic | Example |
+| ---------- | ------- |
+| + | |
+| - | |
+| * | |
+| / | |
+| % | |
+
+| Logical | Example |
+| ------- | ------- |
+| > | |
+| < | |
+| >= | |
+| <= | |
+| = | |
+| == | |
+| != | |
+| || | |
+| && | |
+| \| | |
+| ^ | |
+| & | |
+| ~ | |
+| >> | |
+| << | |
