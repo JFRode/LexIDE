@@ -3,8 +3,9 @@ Projeto da disciplina de compiladores.
 
 Tem como objetivo a criação de uma linguagem de programação simples, apenas para aprendizagem. Inclui uma IDE.
 
---Data types
+--
 
+###Data types
 | Data | example |
 | ------------- | ------------- |
 | int | 16 |
