@@ -1,9 +1,11 @@
+package br.univali.lexide.principal;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.univali.lexide.principal;
+
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -97,14 +99,25 @@ public class LexIDE extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        Lexico lex = new Lexico();
+
+        Sintatico sin = new Sintatico();
+        Semantico sem = new Semantico();
+
+        lex.setInput(textPane_codigo.getText());
+
+        try {
+            sin.parse(lex, sem);
+        } catch (LexicalError | SyntaticError | SemanticError e) {
+            System.out.println(e.getMessage());
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-         try {
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(LexIDE.class.getName()).log(Level.SEVERE, null, ex);

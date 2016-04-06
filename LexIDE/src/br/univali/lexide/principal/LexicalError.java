@@ -1,4 +1,7 @@
 package br.univali.lexide.principal;
+
+
+
 public class LexicalError extends AnalysisError
 {
     public LexicalError(String msg, int position)
