@@ -1,7 +1,5 @@
 package br.univali.lexide.principal;
 
-
-
 public class Lexico implements Constants
 {
     private int position;

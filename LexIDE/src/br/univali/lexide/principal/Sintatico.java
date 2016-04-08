@@ -1,7 +1,5 @@
 package br.univali.lexide.principal;
 
-
-
 import java.util.Stack;
 
 public class Sintatico implements Constants

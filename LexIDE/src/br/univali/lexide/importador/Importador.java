@@ -19,7 +19,7 @@ import java.util.Scanner;
  */
 public class Importador {
 
-    public int[][] novo() {
+    public int[][] getTabela() {
         int[][] tabela = null;
         try {
             File arq = new File("arquivo.txt");
@@ -39,11 +39,11 @@ public class Importador {
                 tabela[i][1] = dados.get(i).valor2;
             }
             
-            for (int i = 0; i < dados.size(); i++) {
-                System.out.print(tabela[i][0]+" ");
-                System.out.println(tabela[i][1]);
-                
-            }
+//            for (int i = 0; i < dados.size(); i++) {
+//                System.out.print(tabela[i][0]+" ");
+//                System.out.println(tabela[i][1]);
+//                
+//            }
 
         } catch (IOException e) {
             System.err.printf("Erro na abertura do arquivo: %s.\n",

@@ -1,7 +1,5 @@
 package br.univali.lexide.principal;
 
-
-
 public class AnalysisError extends Exception
 {
     private int position;

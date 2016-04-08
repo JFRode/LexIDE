@@ -7,6 +7,7 @@ package br.univali.lexide.principal;
  */
 
 
+import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
@@ -99,17 +100,27 @@ public class LexIDE extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Lexico lex = new Lexico();
+        textPane_saida.setText("");
+        Lexico lexico = new Lexico();
+        Sintatico sintatico = new Sintatico();
+        Semantico semantico = new Semantico();
 
-        Sintatico sin = new Sintatico();
-        Semantico sem = new Semantico();
-
-        lex.setInput(textPane_codigo.getText());
+        lexico.setInput(textPane_codigo.getText());
 
         try {
-            sin.parse(lex, sem);
-        } catch (LexicalError | SyntaticError | SemanticError e) {
-            System.out.println(e.getMessage());
+            sintatico.parse(lexico, semantico);
+            
+            textPane_saida.setText("CONSTRUÍDO COM SUCESSO.");
+            textPane_saida.setForeground(new Color(34, 139, 34));
+        } catch (LexicalError e) {
+            textPane_saida.setText("Erro léxico na posição: " + e.getPosition());
+            textPane_saida.setForeground(Color.RED);
+        } catch (SyntaticError e) {
+            textPane_saida.setText("Erro Sintático na posição: " + e.getPosition());
+            textPane_saida.setForeground(Color.RED);
+        } catch (SemanticError e) {
+            textPane_saida.setText("Erro Semantico na posição: " + e.getPosition());
+            textPane_saida.setForeground(Color.RED);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
