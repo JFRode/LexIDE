@@ -5,26 +5,36 @@ package br.univali.lexide.principal;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
  * @author 5108250
  */
 public class LexIDE extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form Principal
      */
     public LexIDE() {
         initComponents();
+        principal.setLayout(new BorderLayout());
+        principal.add(toolBar,BorderLayout.NORTH);
+        principal.add(scrollPane_codigo, BorderLayout.CENTER);
+        principal.add(scrollPane_saida, BorderLayout.SOUTH);
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -35,30 +45,52 @@ public class LexIDE extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panel_principal = new javax.swing.JPanel();
         scrollPane_codigo = new javax.swing.JScrollPane();
         textPane_codigo = new javax.swing.JTextPane();
         scrollPane_saida = new javax.swing.JScrollPane();
         textPane_saida = new javax.swing.JTextPane();
-        jToolBar1 = new javax.swing.JToolBar();
+        toolBar = new javax.swing.JToolBar();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setSize(new java.awt.Dimension(998, 673));
-        getContentPane().setLayout(new java.awt.GridBagLayout());
-
-        panel_principal.setPreferredSize(new java.awt.Dimension(773, 604));
+        principal = new javax.swing.JPanel();
 
         scrollPane_codigo.setViewportView(textPane_codigo);
 
         textPane_saida.setEditable(false);
         textPane_saida.setBackground(new java.awt.Color(220, 219, 219));
+        textPane_saida.setMinimumSize(new java.awt.Dimension(50, 120));
+        textPane_saida.setPreferredSize(new java.awt.Dimension(50, 130));
         scrollPane_saida.setViewportView(textPane_saida);
 
-        jToolBar1.setFloatable(false);
-        jToolBar1.setRollover(true);
+        toolBar.setFloatable(false);
+        toolBar.setRollover(true);
 
-        jButton1.setText(" ok ");
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/lexide/imagens/novo.png"))); // NOI18N
+        jButton3.setFocusable(false);
+        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolBar.add(jButton3);
+
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/lexide/imagens/abrir.png"))); // NOI18N
+        jButton4.setFocusable(false);
+        jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolBar.add(jButton4);
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/lexide/imagens/salvar.png"))); // NOI18N
+        jButton2.setFocusable(false);
+        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        toolBar.add(jButton2);
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/lexide/imagens/compilar.png"))); // NOI18N
         jButton1.setFocusable(false);
         jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -67,33 +99,38 @@ public class LexIDE extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton1);
+        toolBar.add(jButton1);
 
-        javax.swing.GroupLayout panel_principalLayout = new javax.swing.GroupLayout(panel_principal);
-        panel_principal.setLayout(panel_principalLayout);
-        panel_principalLayout.setHorizontalGroup(
-            panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel_principalLayout.createSequentialGroup()
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setSize(new java.awt.Dimension(998, 673));
+
+        javax.swing.GroupLayout principalLayout = new javax.swing.GroupLayout(principal);
+        principal.setLayout(principalLayout);
+        principalLayout.setHorizontalGroup(
+            principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 749, Short.MAX_VALUE)
+        );
+        principalLayout.setVerticalGroup(
+            principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 616, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrollPane_codigo)
-                    .addComponent(scrollPane_saida)
-                    .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 753, Short.MAX_VALUE))
+                .addComponent(principal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
-        panel_principalLayout.setVerticalGroup(
-            panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel_principalLayout.createSequentialGroup()
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
                 .addGap(5, 5, 5)
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrollPane_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(scrollPane_saida, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(principal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
-
-        getContentPane().add(panel_principal, new java.awt.GridBagConstraints());
 
         pack();
         setLocationRelativeTo(null);
@@ -109,7 +146,7 @@ public class LexIDE extends javax.swing.JFrame {
 
         try {
             sintatico.parse(lexico, semantico);
-            
+
             textPane_saida.setText("CONSTRUÍDO COM SUCESSO.");
             textPane_saida.setForeground(new Color(34, 139, 34));
         } catch (LexicalError e) {
@@ -123,6 +160,32 @@ public class LexIDE extends javax.swing.JFrame {
             textPane_saida.setForeground(Color.RED);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        String codigoGravacao = textPane_codigo.getText();
+        if (!codigoGravacao.equals("")) {
+            try {
+                JFileChooser fileChooser = new JFileChooser();
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("Código fonte LexIDE", "lexIDE");
+                fileChooser.setFileFilter(filter);
+
+                int option = fileChooser.showSaveDialog(null);
+                if (option == JFileChooser.APPROVE_OPTION) {
+                    FileWriter fw = new FileWriter(fileChooser.getSelectedFile() + ".lexIDE");
+                    BufferedWriter bw = new BufferedWriter(fw);
+                    bw.write(codigoGravacao);
+
+                    bw.close();
+                    fw.close();
+                }
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao salvar arquivo");
+                e.printStackTrace();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "É necessário escrever um codigo para salvar.");
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -148,11 +211,14 @@ public class LexIDE extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JToolBar jToolBar1;
-    private javax.swing.JPanel panel_principal;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JPanel principal;
     private javax.swing.JScrollPane scrollPane_codigo;
     private javax.swing.JScrollPane scrollPane_saida;
     private javax.swing.JTextPane textPane_codigo;
     private javax.swing.JTextPane textPane_saida;
+    private javax.swing.JToolBar toolBar;
     // End of variables declaration//GEN-END:variables
 }
