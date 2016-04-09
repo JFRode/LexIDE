@@ -7,7 +7,11 @@ package br.univali.lexide.principal;
  */
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -23,18 +27,17 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author 5108250
  */
 public class LexIDE extends javax.swing.JFrame {
-    
+
     /**
      * Creates new form Principal
      */
     public LexIDE() {
         initComponents();
         principal.setLayout(new BorderLayout());
-        principal.add(toolBar,BorderLayout.NORTH);
+        principal.add(toolBar, BorderLayout.NORTH);
         principal.add(scrollPane_codigo, BorderLayout.CENTER);
         principal.add(scrollPane_saida, BorderLayout.SOUTH);
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -50,10 +53,10 @@ public class LexIDE extends javax.swing.JFrame {
         scrollPane_saida = new javax.swing.JScrollPane();
         textPane_saida = new javax.swing.JTextPane();
         toolBar = new javax.swing.JToolBar();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        button_novo = new javax.swing.JButton();
+        button_abrir = new javax.swing.JButton();
+        button_salvar = new javax.swing.JButton();
+        button_compilar = new javax.swing.JButton();
         principal = new javax.swing.JPanel();
 
         scrollPane_codigo.setViewportView(textPane_codigo);
@@ -64,44 +67,54 @@ public class LexIDE extends javax.swing.JFrame {
         textPane_saida.setPreferredSize(new java.awt.Dimension(50, 130));
         scrollPane_saida.setViewportView(textPane_saida);
 
-        toolBar.setFloatable(false);
         toolBar.setRollover(true);
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/lexide/imagens/novo.png"))); // NOI18N
-        jButton3.setFocusable(false);
-        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        toolBar.add(jButton3);
-
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/lexide/imagens/abrir.png"))); // NOI18N
-        jButton4.setFocusable(false);
-        jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        toolBar.add(jButton4);
-
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/lexide/imagens/salvar.png"))); // NOI18N
-        jButton2.setFocusable(false);
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        button_novo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/lexide/imagens/novo.png"))); // NOI18N
+        button_novo.setFocusable(false);
+        button_novo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        button_novo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        button_novo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                button_novoActionPerformed(evt);
             }
         });
-        toolBar.add(jButton2);
+        toolBar.add(button_novo);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/lexide/imagens/compilar.png"))); // NOI18N
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        button_abrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/lexide/imagens/abrir.png"))); // NOI18N
+        button_abrir.setFocusable(false);
+        button_abrir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        button_abrir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        button_abrir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                button_abrirActionPerformed(evt);
             }
         });
-        toolBar.add(jButton1);
+        toolBar.add(button_abrir);
+
+        button_salvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/lexide/imagens/salvar.png"))); // NOI18N
+        button_salvar.setFocusable(false);
+        button_salvar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        button_salvar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        button_salvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_salvarActionPerformed(evt);
+            }
+        });
+        toolBar.add(button_salvar);
+
+        button_compilar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/lexide/imagens/compilar.png"))); // NOI18N
+        button_compilar.setFocusable(false);
+        button_compilar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        button_compilar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        button_compilar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_compilarActionPerformed(evt);
+            }
+        });
+        toolBar.add(button_compilar);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("LexIDE");
         setSize(new java.awt.Dimension(998, 673));
 
         javax.swing.GroupLayout principalLayout = new javax.swing.GroupLayout(principal);
@@ -136,32 +149,36 @@ public class LexIDE extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        textPane_saida.setText("");
-        Lexico lexico = new Lexico();
-        Sintatico sintatico = new Sintatico();
-        Semantico semantico = new Semantico();
+    private void button_compilarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_compilarActionPerformed
+        if (!textPane_codigo.getText().equals("")) {
+            textPane_saida.setText("");
+            Lexico lexico = new Lexico();
+            Sintatico sintatico = new Sintatico();
+            Semantico semantico = new Semantico();
 
-        lexico.setInput(textPane_codigo.getText());
-
-        try {
-            sintatico.parse(lexico, semantico);
-
-            textPane_saida.setText("CONSTRUÍDO COM SUCESSO.");
-            textPane_saida.setForeground(new Color(34, 139, 34));
-        } catch (LexicalError e) {
-            textPane_saida.setText("Erro léxico na posição: " + e.getPosition());
-            textPane_saida.setForeground(Color.RED);
-        } catch (SyntaticError e) {
-            textPane_saida.setText("Erro Sintático na posição: " + e.getPosition());
-            textPane_saida.setForeground(Color.RED);
-        } catch (SemanticError e) {
-            textPane_saida.setText("Erro Semantico na posição: " + e.getPosition());
-            textPane_saida.setForeground(Color.RED);
+            lexico.setInput(textPane_codigo.getText());
+            try {
+                sintatico.parse(lexico, semantico);
+                textPane_saida.setText("CONSTRUÍDO COM SUCESSO.");
+                textPane_saida.setForeground(new Color(34, 139, 34));
+            } catch (LexicalError e) {
+                textPane_saida.setText("Erro léxico na posição: " + e.getPosition());
+                textPane_saida.setForeground(Color.RED);
+            } catch (SyntaticError e) {
+                textPane_saida.setText("Erro Sintático na posição: " + e.getPosition());
+                textPane_saida.setForeground(Color.RED);
+            } catch (SemanticError e) {
+                textPane_saida.setText("Erro Semantico na posição: " + e.getPosition());
+                textPane_saida.setForeground(Color.RED);
+            }
+        } else {
+            textPane_saida.setText("É necessário escrever um codigo para compilar.");
+            textPane_saida.setForeground(new Color(205, 92, 92));
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_button_compilarActionPerformed
+
+    private void button_salvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_salvarActionPerformed
         String codigoGravacao = textPane_codigo.getText();
         if (!codigoGravacao.equals("")) {
             try {
@@ -179,13 +196,56 @@ public class LexIDE extends javax.swing.JFrame {
                     fw.close();
                 }
             } catch (IOException e) {
-                JOptionPane.showMessageDialog(null, "Erro ao salvar arquivo");
-                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Erro ao salvar arquivo");
             }
         } else {
-            JOptionPane.showMessageDialog(null, "É necessário escrever um codigo para salvar.");
+            JOptionPane.showMessageDialog(this, "É necessário escrever um codigo para salvar.");
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_button_salvarActionPerformed
+
+    private void button_novoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_novoActionPerformed
+        if (!textPane_codigo.getText().equals("")) {
+            int resp = JOptionPane.showConfirmDialog(this, "Se não foi salvo o codigo será perdido. Deseja realmente criar um novo?");
+            if (resp == 0) {
+                textPane_codigo.setText("");
+            }
+        }
+    }//GEN-LAST:event_button_novoActionPerformed
+
+    private void button_abrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_abrirActionPerformed
+        if (!textPane_codigo.getText().equals("")) {
+            int resp = JOptionPane.showConfirmDialog(this, "Se não foi salvo o codigo será perdido. Deseja realmente abrir um arquivo?");
+            if (resp == 0) {
+                JFileChooser fileChooser = new JFileChooser();
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("Código fonte LexIDE", "lexIDE");
+                fileChooser.setFileFilter(filter);
+
+                int option = fileChooser.showOpenDialog(null);
+                if (option == JFileChooser.APPROVE_OPTION) {
+                    System.out.println(fileChooser.getSelectedFile());
+                    File file = new File(String.valueOf(fileChooser.getSelectedFile()));
+                    FileReader fileReader = null;
+                    try {
+                        fileReader = new FileReader(file);
+                        BufferedReader reader = new BufferedReader(fileReader);
+                        String data = null;
+                        StringBuilder stringBuilder = new StringBuilder();
+                        while ((data = reader.readLine()) != null) {
+                            stringBuilder.append(data);
+                            stringBuilder.append("\n");
+                        }
+                        textPane_codigo.setText(stringBuilder.toString());
+                        fileReader.close();
+                        reader.close();
+                    } catch (FileNotFoundException ex) {
+                        JOptionPane.showMessageDialog(this, "Arquivo não encontrado.");
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(this, "Erro ao abrir o arquivo.");
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_button_abrirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -193,14 +253,19 @@ public class LexIDE extends javax.swing.JFrame {
     public static void main(String args[]) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(LexIDE.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LexIDE.class
+                    .getName()).log(Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            Logger.getLogger(LexIDE.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LexIDE.class
+                    .getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            Logger.getLogger(LexIDE.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LexIDE.class
+                    .getName()).log(Level.SEVERE, null, ex);
         } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(LexIDE.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LexIDE.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -210,10 +275,10 @@ public class LexIDE extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton button_abrir;
+    private javax.swing.JButton button_compilar;
+    private javax.swing.JButton button_novo;
+    private javax.swing.JButton button_salvar;
     private javax.swing.JPanel principal;
     private javax.swing.JScrollPane scrollPane_codigo;
     private javax.swing.JScrollPane scrollPane_saida;
