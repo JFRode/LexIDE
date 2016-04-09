@@ -39,6 +39,37 @@ public class LexIDE extends javax.swing.JFrame {
         principal.add(scrollPane_saida, BorderLayout.SOUTH);
     }
 
+    public void selecionarArquivo() {
+
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Código fonte LexIDE", "lexIDE");
+        fileChooser.setFileFilter(filter);
+
+        int option = fileChooser.showOpenDialog(null);
+        if (option == JFileChooser.APPROVE_OPTION) {
+            File file = new File(String.valueOf(fileChooser.getSelectedFile()));
+            FileReader fileReader = null;
+            try {
+                fileReader = new FileReader(file);
+                BufferedReader reader = new BufferedReader(fileReader);
+                String data = null;
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((data = reader.readLine()) != null) {
+                    stringBuilder.append(data);
+                    stringBuilder.append("\n");
+                }
+                textPane_codigo.setText(stringBuilder.toString());
+                fileReader.close();
+                reader.close();
+                textPane_saida.setText("");
+            } catch (FileNotFoundException ex) {
+                JOptionPane.showMessageDialog(this, "Arquivo não encontrado.");
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, "Erro ao abrir o arquivo.");
+            }
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -175,7 +206,6 @@ public class LexIDE extends javax.swing.JFrame {
             textPane_saida.setText("É necessário escrever um codigo para compilar.");
             textPane_saida.setForeground(new Color(205, 92, 92));
         }
-
     }//GEN-LAST:event_button_compilarActionPerformed
 
     private void button_salvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_salvarActionPerformed
@@ -216,34 +246,10 @@ public class LexIDE extends javax.swing.JFrame {
         if (!textPane_codigo.getText().equals("")) {
             int resp = JOptionPane.showConfirmDialog(this, "Se não foi salvo o codigo será perdido. Deseja realmente abrir um arquivo?");
             if (resp == 0) {
-                JFileChooser fileChooser = new JFileChooser();
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("Código fonte LexIDE", "lexIDE");
-                fileChooser.setFileFilter(filter);
-
-                int option = fileChooser.showOpenDialog(null);
-                if (option == JFileChooser.APPROVE_OPTION) {
-                    System.out.println(fileChooser.getSelectedFile());
-                    File file = new File(String.valueOf(fileChooser.getSelectedFile()));
-                    FileReader fileReader = null;
-                    try {
-                        fileReader = new FileReader(file);
-                        BufferedReader reader = new BufferedReader(fileReader);
-                        String data = null;
-                        StringBuilder stringBuilder = new StringBuilder();
-                        while ((data = reader.readLine()) != null) {
-                            stringBuilder.append(data);
-                            stringBuilder.append("\n");
-                        }
-                        textPane_codigo.setText(stringBuilder.toString());
-                        fileReader.close();
-                        reader.close();
-                    } catch (FileNotFoundException ex) {
-                        JOptionPane.showMessageDialog(this, "Arquivo não encontrado.");
-                    } catch (IOException ex) {
-                        JOptionPane.showMessageDialog(this, "Erro ao abrir o arquivo.");
-                    }
-                }
+                selecionarArquivo();
             }
+        } else {
+            selecionarArquivo();
         }
     }//GEN-LAST:event_button_abrirActionPerformed
 
