@@ -53,3 +53,18 @@ Tem como objetivo a criação de uma linguagem de programação simples, apenas 
 | ~ | |
 | >> | |
 | << | |
+
+###Semantic actions
+| what | id |
+| ---- | ------- |
+| name | #1 |
+| type | #2 |
+| inicialized | #3 |
+| used | #4 |
+| scope | #5 |
+| param | #6 |
+| position | #7 |
+| vector | #8 |
+| matrix | #9 |
+| ref | #10 |
+| func | #11 |
