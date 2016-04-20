@@ -136,7 +136,7 @@ public interface ScannerConstants
 
     String[] SCANNER_ERROR =
     {
-        "Caractere nao esperado",
+        "Caractere não esperado",
         "",
         "",
         "Erro identificando valor_string",
