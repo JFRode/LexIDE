@@ -1,10 +1,5 @@
 package br.univali.lexide.principal;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.io.BufferedReader;
@@ -22,15 +17,9 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-/**
- *
- * @author 5108250
- */
+
 public class LexIDE extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Principal
-     */
     public LexIDE() {
         initComponents();
         principal.setLayout(new BorderLayout());
@@ -188,6 +177,7 @@ public class LexIDE extends javax.swing.JFrame {
             Semantico semantico = new Semantico();
 
             lexico.setInput(textPane_codigo.getText());
+            
             try {
                 sintatico.parse(lexico, semantico);
                 textPane_saida.setText("CONSTRUÍDO COM SUCESSO.");
