@@ -68,13 +68,18 @@ public class Semantico implements Constants {
     public void insereTabela() {
         temp.setEscopo(pilha.firstElement());
         
-        for (Tupla t : tabela) {
-            if (temp.getNome().equals(t.getNome()) && temp.getEscopo().equals(t.getEscopo())) {
-                tabela.add(temp);
-                System.out.println("INSERIU");
-            } else {
-                System.out.println(t.getNome() + " Ja existe neste escopo!");
+        if (tabela.size() != 0) {
+            for (Tupla t : tabela) {
+                if (temp.getNome().equals(t.getNome()) && temp.getEscopo().equals(t.getEscopo())) {
+                    System.out.println(t.getNome() + " Ja existe neste escopo!");
+                } else {
+                    tabela.add(temp);
+                    System.out.println("INSERIU");
+                }
             }
+        } else {
+            tabela.add(temp);
+            System.out.println("INSERIU");
         }
         imprimeTabela();
     }
