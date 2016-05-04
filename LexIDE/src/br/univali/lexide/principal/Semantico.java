@@ -23,60 +23,61 @@ public class Semantico implements Constants {
             case 1: // name
 
                 temp.setNome(token.getLexeme());
-                System.out.println("Ação #" + action + ", Token: " + token);
+                System.out.println("Ação nome #" + action + ", Token: " + token.getLexeme());
                 break;
             case 2: // type
                 temp.setTipo(token.getLexeme());
-                System.out.println("Ação #" + action + ", Token: " + token);
+                System.out.println("Ação tipo #" + action + ", Token: " + token.getLexeme());
                 break;
             case 3: // inicialized
                 temp.setInicializado(true);
-                System.out.println("Ação #" + action + ", Token: " + token);
+                System.out.println("Ação inicializado #" + action + ", Token: " + token.getLexeme());
                 break;
             case 4: // used
                 temp.setUsado(true);
-                System.out.println("Ação #" + action + ", Token: " + token);
+                System.out.println("Ação usado #" + action + ", Token: " + token.getLexeme());
                 break;
             case 5: // scope
                 pilha.push(token.getLexeme());
-                System.out.println("Ação #" + action + ", Token: " + token);
+                System.out.println("Ação escopo #" + action + ", Token: " + token.getLexeme());
                 break;
             case 6: // param
                 temp.setParametro(true);
-                System.out.println("Ação #" + action + ", Token: " + token);
+                System.out.println("Ação parametro #" + action + ", Token: " + token.getLexeme());
                 break;
             case 7: // position
                 temp.setPos(token.getPosition());
-                System.out.println("Ação #" + action + ", Token: " + token);
+                System.out.println("Ação posição #" + action + ", Token: " + token.getLexeme());
                 break;
             case 8: // vector
                 temp.setVetor(true);
-                System.out.println("Ação #" + action + ", Token: " + token);
+                System.out.println("Ação vetor #" + action + ", Token: " + token.getLexeme());
                 break;
             case 9: // matrix
                 temp.setMatriz(true);
-                System.out.println("Ação #" + action + ", Token: " + token);
+                System.out.println("Ação matrix #" + action + ", Token: " + token.getLexeme());
                 break;
             case 10: // ref
                 temp.setRef(true);
-                System.out.println("Ação #" + action + ", Token: " + token);
+                System.out.println("Ação referencia #" + action + ", Token: " + token.getLexeme());
                 break;
             case 11: // func
                 temp.setFuncao(true);
-                System.out.println("Ação #" + action + ", Token: " + token);
+                temp = new Tupla();
+                System.out.println("Ação função #" + action + ", Token: " + token.getLexeme());
                 break;
             case 12: // ;
                 insereTabela();
                 temp = new Tupla();
-                System.out.println("Ação #" + action + ", Token: " + token);
-                imprimeTabela();
+                System.out.println("Ação ; #" + action + ", Token: " + token.getLexeme());
+                //imprimeTabela();
                 break;
         }
     }
 
     public void insereTabela() {
         boolean podeInserir = true;
-        temp.setEscopo(pilha.firstElement());
+        temp.setEscopo(pilha.peek());
         if (tabela.size() != 0) {
             for (Tupla t : tabela) {
                 // 2. declaracao no mesmo escopo
@@ -92,6 +93,8 @@ public class Semantico implements Constants {
                         t.setRef(temp.isRef());
                         podeInserir = false;
                     }
+                }else{
+                    System.err.println("teste");
                 }
             }
 
