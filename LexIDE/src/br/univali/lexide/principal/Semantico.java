@@ -93,7 +93,6 @@ public class Semantico implements Constants {
                         podeInserir = false;
                     }
                 }
-
             }
 
             if (podeInserir) {
