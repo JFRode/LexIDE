@@ -18,6 +18,7 @@ public class Semantico implements Constants {
         pilha = new Stack();
         temp = new Tupla();
         cont = 0;
+        pilha.push("Global");
     }
 
     public void executeAction(int action, Token token) throws SemanticError, BusinessException {
@@ -40,17 +41,12 @@ public class Semantico implements Constants {
                 System.out.println("Ação usado #" + action + ", Token: " + token.getLexeme());
                 break;
             case 5: // scope
-                if (token.getLexeme().equals("main()")) {
-                    pilha.push(token.getLexeme());
+                if (pilha.peek().equals(token.getLexeme())) {
+                    cont++;
+                    pilha.push(token.getLexeme() + cont);
                 } else {
-                    if (pilha.peek().equals(token.getLexeme())) {
-                        cont++;
-                        pilha.push(token.getLexeme() + cont);
-                    } else {
-                        pilha.push(token.getLexeme());
-                    }
+                    pilha.push(token.getLexeme());
                 }
-
                 System.out.println("Ação escopo #" + action + ", Token: " + token.getLexeme());
                 break;
             case 6: // param
@@ -76,7 +72,7 @@ public class Semantico implements Constants {
             case 11: // func
                 temp.setFuncao(true);
                 insereTabela();
-                //temp = new Tupla();
+                temp = new Tupla();
                 System.out.println("Ação função #" + action + ", Token: " + token.getLexeme());
                 break;
             case 12: // ;
@@ -96,6 +92,9 @@ public class Semantico implements Constants {
     public void insereTabela() throws BusinessException {
         boolean podeInserir = true;
         temp.setEscopo(pilha.peek());
+        if(temp.isFuncao()){
+            pilha.push(temp.getNome());
+        }
         if (tabela.size() != 0 && temp != null) {
             for (Tupla t : tabela) {
                 // 2. declaracao no mesmo escopo
