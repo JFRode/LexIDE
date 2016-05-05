@@ -76,11 +76,11 @@ public class Semantico implements Constants {
                     insereTabela();
                 }else if(retorno != null){
                     temp.setTipo(retorno.getTipo());
+                    temp.setUsado(true);
                     insereTabela();
                 }else{
                     throw new BusinessException("Função não declarada: " + temp.getNome());
                 }
-                //insereTabela();
                 temp = new Tupla();
                 System.out.println("Ação função #" + action + ", Token: " + token.getLexeme());
                 break;
