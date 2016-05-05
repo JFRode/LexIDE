@@ -11,18 +11,19 @@ public class Semantico implements Constants {
     List<Tupla> tabela;
     Stack<String> pilha;
     Tupla temp;
+    int cont;
 
     public Semantico() {
         tabela = new ArrayList();
         pilha = new Stack();
         temp = new Tupla();
+        cont = 0;
     }
 
     public void executeAction(int action, Token token) throws SemanticError, BusinessException {
 
         switch (action) {
             case 1: // name
-
                 temp.setNome(token.getLexeme());
                 System.out.println("Ação nome #" + action + ", Token: " + token.getLexeme());
                 break;
@@ -39,7 +40,17 @@ public class Semantico implements Constants {
                 System.out.println("Ação usado #" + action + ", Token: " + token.getLexeme());
                 break;
             case 5: // scope
-                pilha.push(token.getLexeme());
+                if (token.getLexeme().equals("main()")) {
+                    pilha.push(token.getLexeme());
+                } else {
+                    if (pilha.peek().equals(token.getLexeme())) {
+                        cont++;
+                        pilha.push(token.getLexeme() + cont);
+                    } else {
+                        pilha.push(token.getLexeme());
+                    }
+                }
+
                 System.out.println("Ação escopo #" + action + ", Token: " + token.getLexeme());
                 break;
             case 6: // param
@@ -72,12 +83,17 @@ public class Semantico implements Constants {
                 insereTabela();
                 temp = new Tupla();
                 System.out.println("Ação ; #" + action + ", Token: " + token.getLexeme());
-                //imprimeTabela();
+                imprimeTabela();
+                break;
+
+            case 13: // }
+                System.out.println("Ação ; #" + action + ", Token: " + token.getLexeme());
+                System.out.println("Removido: " + pilha.pop());
                 break;
         }
     }
 
-    public void insereTabela() throws BusinessException{
+    public void insereTabela() throws BusinessException {
         boolean podeInserir = true;
         temp.setEscopo(pilha.peek());
         if (tabela.size() != 0 && temp != null) {
