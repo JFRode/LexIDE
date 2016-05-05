@@ -75,14 +75,14 @@ public class Semantico implements Constants {
                 temp = new Tupla();
                 System.out.println("Ação função #" + action + ", Token: " + token.getLexeme());
                 break;
-            case 12: // ;
+            case 12: // final
                 insereTabela();
                 temp = new Tupla();
                 System.out.println("Ação ; #" + action + ", Token: " + token.getLexeme());
                 imprimeTabela();
                 break;
 
-            case 13: // }
+            case 13: // final escope
                 System.out.println("Ação ; #" + action + ", Token: " + token.getLexeme());
                 System.out.println("Removido: " + pilha.pop());
                 break;
