@@ -1,4 +1,3 @@
-
 package br.univali.lexide.importador;
 
 public class Tupla {

@@ -1,5 +1,6 @@
 package br.univali.lexide.principal;
 
+import br.univali.lexide.exception.BusinessException;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.io.BufferedReader;
@@ -190,6 +191,9 @@ public class LexIDE extends javax.swing.JFrame {
                 textPane_saida.setForeground(Color.RED);
             } catch (SemanticError e) {
                 textPane_saida.setText("Erro Semantico na posição: " + e.getPosition());
+                textPane_saida.setForeground(Color.RED);
+            } catch (BusinessException ex) {
+                textPane_saida.setText(ex.getMessage());
                 textPane_saida.setForeground(Color.RED);
             }
         } else {

@@ -1,5 +1,6 @@
 package br.univali.lexide.principal;
 
+import br.univali.lexide.exception.BusinessException;
 import java.util.Stack;
 
 public class Sintatico implements Constants
@@ -10,7 +11,7 @@ public class Sintatico implements Constants
     private Lexico scanner;
     private Semantico semanticAnalyser;
 
-    public void parse(Lexico scanner, Semantico semanticAnalyser) throws LexicalError, SyntaticError, SemanticError
+    public void parse(Lexico scanner, Semantico semanticAnalyser) throws LexicalError, SyntaticError, SemanticError, BusinessException
     {
         this.scanner = scanner;
         this.semanticAnalyser = semanticAnalyser;
@@ -24,7 +25,7 @@ public class Sintatico implements Constants
             ;
     }
 
-    private boolean step() throws LexicalError, SyntaticError, SemanticError
+    private boolean step() throws LexicalError, SyntaticError, SemanticError, BusinessException
     {
         if (currentToken == null)
         {

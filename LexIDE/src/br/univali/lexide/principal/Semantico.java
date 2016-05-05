@@ -1,5 +1,6 @@
 package br.univali.lexide.principal;
 
+import br.univali.lexide.exception.BusinessException;
 import br.univali.lexide.importador.Tupla;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ public class Semantico implements Constants {
         temp = new Tupla();
     }
 
-    public void executeAction(int action, Token token) throws SemanticError {
+    public void executeAction(int action, Token token) throws SemanticError, BusinessException {
 
         switch (action) {
             case 1: // name
@@ -63,7 +64,8 @@ public class Semantico implements Constants {
                 break;
             case 11: // func
                 temp.setFuncao(true);
-                temp = new Tupla();
+                insereTabela();
+                //temp = new Tupla();
                 System.out.println("Ação função #" + action + ", Token: " + token.getLexeme());
                 break;
             case 12: // ;
@@ -75,17 +77,17 @@ public class Semantico implements Constants {
         }
     }
 
-    public void insereTabela() {
+    public void insereTabela() throws BusinessException{
         boolean podeInserir = true;
         temp.setEscopo(pilha.peek());
-        if (tabela.size() != 0) {
+        if (tabela.size() != 0 && temp != null) {
             for (Tupla t : tabela) {
                 // 2. declaracao no mesmo escopo
                 if (t.getNome().equals(temp.getNome()) && t.getEscopo().equals(temp.getEscopo())) {
                     if (temp.getTipo() != null) {
                         podeInserir = false;
+                        throw new BusinessException("Nome de variavel já usado: " + t.getNome());
                     } else {
-                        System.out.println("oi");
                         t.setInicializado(temp.isInicializado());
                         t.setUsado(temp.isUsado());
                         t.setParametro(temp.isParametro());
@@ -93,8 +95,6 @@ public class Semantico implements Constants {
                         t.setRef(temp.isRef());
                         podeInserir = false;
                     }
-                }else{
-                    System.err.println("teste");
                 }
             }
 
