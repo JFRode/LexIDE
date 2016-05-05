@@ -71,7 +71,16 @@ public class Semantico implements Constants {
                 break;
             case 11: // func
                 temp.setFuncao(true);
-                insereTabela();
+                Tupla retorno = buscaTabela(temp.getNome());
+                if(temp.getTipo() != null && temp.isFuncao()){
+                    insereTabela();
+                }else if(retorno != null){
+                    temp.setTipo(retorno.getTipo());
+                    insereTabela();
+                }else{
+                    throw new BusinessException("Função não declarada: " + temp.getNome());
+                }
+                //insereTabela();
                 temp = new Tupla();
                 System.out.println("Ação função #" + action + ", Token: " + token.getLexeme());
                 break;
@@ -141,5 +150,14 @@ public class Semantico implements Constants {
             System.out.print(t.isRef() + "\t");
             System.out.print(t.isFuncao() + "\n");
         }
+    }
+
+    private Tupla buscaTabela(String nome) {
+        for (Tupla t : tabela) {
+            if(t.getNome().equals(nome) && t.isFuncao()){
+                return t;
+            }
+        }
+        return null;   
     }
 }
