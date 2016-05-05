@@ -41,7 +41,7 @@ public class Semantico implements Constants {
                 System.out.println("Ação usado #" + action + ", Token: " + token.getLexeme());
                 break;
             case 5: // scope
-                if (pilha.peek().equals(token.getLexeme())) {
+                if (pilha.peek().equals(token.getLexeme()) || pilha.peek().equals(token.getLexeme()+cont)) {
                     cont++;
                     pilha.push(token.getLexeme() + cont);
                 } else {
