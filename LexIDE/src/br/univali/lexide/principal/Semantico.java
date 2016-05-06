@@ -20,10 +20,10 @@ public class Semantico implements Constants {
         tabela = new ArrayList();
         pilha = new Stack();
         temp = new Tupla();
-        contIF = 1;
-        contELSE = 1;
-        contWHILE = 1;
-        contDO = 1;
+        contIF = 0;
+        contELSE = 0;
+        contWHILE = 0;
+        contDO = 0;
         pilha.push("Global");
     }
 
@@ -85,17 +85,16 @@ public class Semantico implements Constants {
                 temp = new Tupla();
                 System.out.println("Ação função #" + action + ", Token: " + token.getLexeme());
                 break;
-            case 12: // final
+            case 12: // final de linha
                 insereTabela();
                 temp = new Tupla();
                 System.out.println("Ação ; #" + action + ", Token: " + token.getLexeme());
-                imprimeTabela();
                 break;
 
-//            case 13: // final escope
-//                System.out.println("Ação ; #" + action + ", Token: " + token.getLexeme());
-//                System.out.println("Removido: " + pilha.pop());
-//                break;
+            case 13: // final scope
+                System.out.println("Ação ; #" + action + ", Token: " + token.getLexeme());
+                System.out.println("Removido: " + pilha.pop());
+                break;
         }
     }
 
@@ -167,38 +166,26 @@ public class Semantico implements Constants {
     }
 
     private void inserePilha(Token token) {
-        boolean adicionaUmIF = false;
-        boolean adicionaUmELSE = false;
-        boolean adicionaUmWHILE = false;
-        boolean adicionaUmDO = false;
-        
-        for (String p : pilha) {
-            if(token.getLexeme().equals("if") && (token.getLexeme().equals(p) || (token.getLexeme()+contIF).equals(p))){
-                adicionaUmIF = true;
-            }else if(token.getLexeme().equals("else") && (token.getLexeme().equals(p) || (token.getLexeme()+contELSE).equals(p))){
-                adicionaUmELSE = true;
-            }else if(token.getLexeme().equals("while") && (token.getLexeme().equals(p) || (token.getLexeme()+contWHILE).equals(p))){
-                adicionaUmWHILE = true;
-            }else if(token.getLexeme().equals("do") && (token.getLexeme().equals(p) || (token.getLexeme()+contDO).equals(p))){
-                adicionaUmDO = true;
-            }
-        }
-
-        if (adicionaUmIF) {
-            contIF++;
-            pilha.push(token.getLexeme() + contIF);
-        }else if(adicionaUmELSE){
-            contELSE++;
-            pilha.push(token.getLexeme() + contELSE);
-        }else if(adicionaUmWHILE){
-            contWHILE++;
-            pilha.push(token.getLexeme() + contWHILE);
-        }else if(adicionaUmDO){
-            contDO++;
-            pilha.push(token.getLexeme() + contDO);
-        }
-        else{
-            pilha.push(token.getLexeme());
+        switch(token.getLexeme()){
+            case "if":
+                pilha.push("if-" + contIF);
+                contIF++;
+                break;
+            case "else":
+                pilha.push("else-" + contELSE);
+                contELSE++;
+                break;
+            case "while":
+                pilha.push("while-" + contWHILE);
+                contWHILE++;
+                break;
+            case "do":
+                pilha.push("do-" + contDO);
+                contDO++;
+                break;
+            default:
+                pilha.push(token.getLexeme());
+                break;
         }
     }
 }
