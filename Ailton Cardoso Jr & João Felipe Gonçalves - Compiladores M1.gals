@@ -1,0 +1,247 @@
+#Options
+GenerateScanner = true
+GenerateParser = true
+Language = Java
+ScannerName = Lexico
+ParserName = Sintatico
+SemanticName = Semantico
+Package = br.univali.lexide.principal
+ScannerCaseSensitive = true
+ScannerTable = Compact
+Input = String
+Parser = SLR
+#RegularDefinitions
+inteiro: [0-9]+
+decimal:[0-9]*\.[0-9]+
+string: \".*\"
+char: '.'
+hexa:0x[0-9a-f]+
+bin:0b[0-1]+
+
+variavel:[a-zA-Z_]+[a-zA-Z_0-9]*
+ignoraveis: [\s\t\n\r]*
+comentario: [/]+[/].*
+comentario_multipla: [/][\*][" "-~\n\t]*[\*][/]
+
+d:[0-9]
+l:[a-zA-Z]
+w:[\ \t\n\s\r]
+#Tokens
+// Valores de variaveis
+
+valor_int:{inteiro}
+valor_float:{decimal}
+valor_string: {string}
+valor_char: {char}
+valor_hexa: {hexa}
+valor_bin: {bin}
+
+// Tipos de variaveis
+
+int
+float
+double
+string
+char
+boolean
+
+
+// Palavras Reservadas
+
+void
+if
+else
+while
+do
+for
+
+
+// Operadores Aritmeticos
+
+"+"
+"-"
+"*"
+"/"
+"%"
+
+// Operadores Relacionais
+
+"="
+"=="
+">"
+"<"
+">="
+"<="
+"!="
+
+// Operadores Logicos
+
+"and"
+"or"
+"!"
+"&&"
+"||"
+
+// Operadores Bit a Bit
+
+"&"
+"|"
+"~"
+"^"
+"<<"
+">>"
+
+// Delimitadores e pontuacoes
+
+"."
+","
+":"
+";"
+"["
+"]"
+"{"
+"}"
+"("
+")"
+
+// IO
+
+read
+write
+
+//Outros
+
+:{ignoraveis}
+main:"main()"
+variavel:{variavel}
+comentario: {comentario}
+comentario_multipla: {comentario_multipla}
+
+
+id : {l}({l}|{d}|"_")*
+#NonTerminals
+<inicio>
+<tipo>
+<valor>
+<op_composta>
+<op_simples>
+<declaracao>
+<variavel>
+<comentario>
+
+<metodo>
+<primitivo>
+<parametro>
+<call_metodo>
+<call_metodo_r>
+
+<int>
+<float>
+<string>
+<char>
+<bitwise>
+<vetor>
+<vet_int>
+<vet_float>
+<vet_string>
+<vet_char>
+
+<lala>
+<if>
+<else>
+<elseif>
+<comparaveis>
+<operadores>
+<operadores_mat>
+
+<condicao>
+<funcao>
+
+<while>
+<for>
+<condicao_for>
+
+<io>
+
+<exp>
+<exp1>
+<exp2>
+<exp3>
+<exp4>
+<exp5>
+<exp6>
+<exp7>
+<exp8>
+<exp9>
+<exp10>
+<op_rel>
+<op_neg>
+<op_bitwise>
+<op_arit_baixa>
+<op_arit_alta>
+<op_arit_mais_alta>
+#Grammar
+<inicio>	::= <metodo> main#5 "{" <declaracao> "}"#13 <metodo> ;
+<funcao>	::= "{" <declaracao> "}"#13 <declaracao> ;
+<declaracao>	::= <int> | <float> | <string> | <char> | <call_metodo> | <if> | <while> | <variavel> | <for> | <comentario> | <io> | î ;
+
+<metodo>	::= <primitivo>#2 variavel#1#11 "(" <parametro> ")" "{" <declaracao> "}"#13 <metodo>  | <primitivo>#2 variavel#1#11 "(" ")" "{" <declaracao> "}"#13 <metodo> | î ;
+<primitivo>	::= int | float | string | char | void ;
+<parametro>	::= <primitivo>#2 variavel#1#6#12 | <primitivo>#2 variavel#1#6#12 "," <parametro> ;
+<call_metodo>	::= variavel#1 "(" ")"#11 ";" <declaracao> | variavel#1 "("#11 <call_metodo_r>#6 ")" ";" <declaracao> ;
+<call_metodo_r> ::= <comparaveis> | <comparaveis> "," <call_metodo_r> ;
+
+<int>		::= int#2 variavel#1  "["#8 "]" "="#3 "{" <vet_int> "}" ";"#12 <declaracao> | int#2 variavel#1 <vetor>#8 ";"#12 <declaracao> | int#2 variavel#1 "="#3 <op_simples> ";"#12 <declaracao> | int#2 variavel#1 ";"#12 <declaracao> ;
+<vet_int> 	::= valor_int | valor_int "," <vet_int>; 
+<bitwise>	::= valor_int | valor_hexa | valor_bin ;
+
+<float>		::= float #2 variavel #1 "[" #8 "]" "=" #3 "{" <vet_float> "}" ";"#12 <declaracao> | float #2 variavel #1 <vetor> #8 ";"#12 <declaracao> | float #2 variavel #1 "="#3 <op_simples> ";"#12 <declaracao> | float #2 variavel #1 ";"#12 <declaracao> ;
+<vet_float> 	::= valor_float | valor_float "," <vet_float>; 
+
+<string>	::= string#2 variavel#1 "["#8 "]" "="#3 "{" <vet_string> "}" ";"#12 <declaracao> | string#2 variavel#1 <vetor>#8 ";"#12 <declaracao> | string#2 variavel#1 "="#3 <op_simples> ";"#12 <declaracao> | string#2 variavel#1 ";"#12 <declaracao> ;
+<vet_string> 	::= valor_string | valor_string "," <vet_string>; 
+
+<char>		::= char#2 variavel#1 "["#8 "]" "="#3 "{" <vet_char> "}" ";"#12 <declaracao> | char#2 variavel#1 <vetor>#8 ";"#12 <declaracao> | char#2 variavel#1 "="#3 <op_simples> ";"#12 <declaracao> | char#2 variavel#1 ";"#12 <declaracao> ;
+<vet_char> 	::= valor_char | valor_char "," <vet_char>; 
+
+<vetor>		::= "[" valor_int "]" ;
+
+<variavel>	::= variavel#1 ";"#12 <declaracao> | variavel#1 "="#3 <op_simples> ";"#12 <declaracao> ; // Falta vetor aqui
+<op_simples>	::= <exp> ;
+<op_composta>	::= <operadores_mat> <valor> <op_composta> | <operadores_mat> variavel#1 <op_composta> | variavel#1 <operadores_mat> | î ;
+<valor>		::= <bitwise> | valor_float | valor_string | valor_char ;
+
+<if>		::= if#5 "(" <condicao> ")" "{" <declaracao> "}"#13 else#5 <else> | if#5 "(" <condicao> ")" "{" <declaracao> "}"#13 <declaracao>;
+<else>		::= "{" <declaracao> "}"#13 <declaracao> | <if> | î ;
+
+<condicao>	::= <comparaveis> <operadores> <comparaveis> "and" <condicao> | <comparaveis> <operadores> <comparaveis> "or" <condicao> | <comparaveis> <operadores> <comparaveis>;
+<comparaveis>	::= <bitwise> | valor_float | valor_string | valor_char | variavel ;
+<operadores>	::= "==" | ">" | "<" | ">=" | "<=" | "!=" ;
+<operadores_mat>::= "+" | "-" ;
+
+<while>		::= while#5 "(" <condicao> ")" <funcao> | do#5 "{" <declaracao> "}" while "(" <condicao> ")" ";" <declaracao> ;
+<for>		::= for#5 "(" <condicao_for> ")"  <funcao> ;
+<condicao_for>	::= <tipo> "=" <op_simples> ";"#12 <condicao> ";"#12 variavel#1 "+" "+" | <tipo> ";"#12 <condicao> ";"#12 variavel#1 "-" "-" ;
+<tipo>		::= int#2 | float#2 | string#2 | char#2  ;
+
+<io>		::= read "(" variavel ")" ";" <declaracao> | write "(" <op_simples> ")" ";" <declaracao> ;
+
+<comentario>	::= comentario <declaracao> | comentario_multipla <declaracao> ;
+
+<exp>  ::= <exp> "||" <exp1> | <exp1>;
+<exp1> ::= <exp1> "&&" <exp2> | <exp2>;
+<exp2> ::= <exp2> "|" <exp3> | <exp3>;
+<exp3> ::= <exp3> "^" <exp4> | <exp4>;
+<exp4> ::= <exp4> "&" <exp5> | <exp5>;
+<exp5> ::= <exp5> <op_rel> <exp6> | <exp6>;
+<exp6> ::= <exp6> <op_bitwise> <exp7> | <exp7>;
+<exp7> ::= <exp7> <op_arit_baixa> <exp8> | <exp8>;
+<exp8> ::= <exp8> <op_arit_alta> <exp9> | <exp9> ;
+<exp9> ::= <op_neg> <exp10> | <exp10>;
+<exp10> ::= <comparaveis> | id | "(" <exp> ")";
+
+<op_rel> ::= ">" | "<" | ">=" | "<=" | "=" | "!="; 
+<op_neg> ::= "-" | "~" | "!";
+<op_bitwise> ::= "<<" | ">>";
+<op_arit_baixa> ::= "+" | "-";
+<op_arit_alta> ::= "*" | "/" | "%";
