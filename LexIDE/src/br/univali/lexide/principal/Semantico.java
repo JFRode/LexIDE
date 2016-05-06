@@ -11,13 +11,15 @@ public class Semantico implements Constants {
     List<Tupla> tabela;
     Stack<String> pilha;
     Tupla temp;
-    int cont;
+    int contIF;
+    int contELSE;
 
     public Semantico() {
         tabela = new ArrayList();
         pilha = new Stack();
         temp = new Tupla();
-        cont = 0;
+        contIF = 1;
+        contELSE = 1;
         pilha.push("Global");
     }
 
@@ -41,12 +43,7 @@ public class Semantico implements Constants {
                 System.out.println("Ação usado #" + action + ", Token: " + token.getLexeme());
                 break;
             case 5: // scope
-                if (pilha.peek().equals(token.getLexeme()) || pilha.peek().equals(token.getLexeme() + cont)) {
-                    cont++;
-                    pilha.push(token.getLexeme() + cont);
-                } else {
-                    pilha.push(token.getLexeme());
-                }
+                inserePilha(token);
                 System.out.println("Ação escopo #" + action + ", Token: " + token.getLexeme());
                 break;
             case 6: // param
@@ -91,10 +88,10 @@ public class Semantico implements Constants {
                 imprimeTabela();
                 break;
 
-            case 13: // final escope
-                System.out.println("Ação ; #" + action + ", Token: " + token.getLexeme());
-                System.out.println("Removido: " + pilha.pop());
-                break;
+//            case 13: // final escope
+//                System.out.println("Ação ; #" + action + ", Token: " + token.getLexeme());
+//                System.out.println("Removido: " + pilha.pop());
+//                break;
         }
     }
 
@@ -120,7 +117,7 @@ public class Semantico implements Constants {
                             t.setRef(temp.isRef());
                             podeInserir = false;
                         }
-                    }else{
+                    } else {
                         throw new BusinessException("Nome de função já usado: " + t.getNome());
                     }
                 }
@@ -163,5 +160,28 @@ public class Semantico implements Constants {
             }
         }
         return null;
+    }
+
+    private void inserePilha(Token token) {
+        boolean adicionaUmIF = false;
+        boolean adicionaUmELSE = false;
+        
+        for (String p : pilha) {
+            if(token.getLexeme().equals("if") && (token.getLexeme().equals(p) || (token.getLexeme()+contIF).equals(p))){
+                adicionaUmIF = true;
+            }else if(token.getLexeme().equals("else") && (token.getLexeme().equals(p) || (token.getLexeme()+contELSE).equals(p))){
+                adicionaUmELSE = true;
+            }
+        }
+
+        if (adicionaUmIF) {
+            contIF++;
+            pilha.push(token.getLexeme() + contIF);
+        }else if(adicionaUmELSE){
+            contELSE++;
+            pilha.push(token.getLexeme() + contELSE);
+        }else{
+            pilha.push(token.getLexeme());
+        }
     }
 }
