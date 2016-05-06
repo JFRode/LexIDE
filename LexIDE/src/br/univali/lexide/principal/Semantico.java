@@ -13,6 +13,8 @@ public class Semantico implements Constants {
     Tupla temp;
     int contIF;
     int contELSE;
+    int contWHILE;
+    int contDO;
 
     public Semantico() {
         tabela = new ArrayList();
@@ -20,6 +22,8 @@ public class Semantico implements Constants {
         temp = new Tupla();
         contIF = 1;
         contELSE = 1;
+        contWHILE = 1;
+        contDO = 1;
         pilha.push("Global");
     }
 
@@ -165,12 +169,18 @@ public class Semantico implements Constants {
     private void inserePilha(Token token) {
         boolean adicionaUmIF = false;
         boolean adicionaUmELSE = false;
+        boolean adicionaUmWHILE = false;
+        boolean adicionaUmDO = false;
         
         for (String p : pilha) {
             if(token.getLexeme().equals("if") && (token.getLexeme().equals(p) || (token.getLexeme()+contIF).equals(p))){
                 adicionaUmIF = true;
             }else if(token.getLexeme().equals("else") && (token.getLexeme().equals(p) || (token.getLexeme()+contELSE).equals(p))){
                 adicionaUmELSE = true;
+            }else if(token.getLexeme().equals("while") && (token.getLexeme().equals(p) || (token.getLexeme()+contWHILE).equals(p))){
+                adicionaUmWHILE = true;
+            }else if(token.getLexeme().equals("do") && (token.getLexeme().equals(p) || (token.getLexeme()+contDO).equals(p))){
+                adicionaUmDO = true;
             }
         }
 
@@ -180,7 +190,14 @@ public class Semantico implements Constants {
         }else if(adicionaUmELSE){
             contELSE++;
             pilha.push(token.getLexeme() + contELSE);
-        }else{
+        }else if(adicionaUmWHILE){
+            contWHILE++;
+            pilha.push(token.getLexeme() + contWHILE);
+        }else if(adicionaUmDO){
+            contDO++;
+            pilha.push(token.getLexeme() + contDO);
+        }
+        else{
             pilha.push(token.getLexeme());
         }
     }
