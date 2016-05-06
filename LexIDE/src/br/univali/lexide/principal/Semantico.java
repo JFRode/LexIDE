@@ -41,7 +41,7 @@ public class Semantico implements Constants {
                 System.out.println("Ação usado #" + action + ", Token: " + token.getLexeme());
                 break;
             case 5: // scope
-                if (pilha.peek().equals(token.getLexeme()) || pilha.peek().equals(token.getLexeme()+cont)) {
+                if (pilha.peek().equals(token.getLexeme()) || pilha.peek().equals(token.getLexeme() + cont)) {
                     cont++;
                     pilha.push(token.getLexeme() + cont);
                 } else {
@@ -72,13 +72,13 @@ public class Semantico implements Constants {
             case 11: // func
                 temp.setFuncao(true);
                 Tupla retorno = buscaTabela(temp.getNome());
-                if(temp.getTipo() != null && temp.isFuncao()){
+                if (temp.getTipo() != null && temp.isFuncao()) {
                     insereTabela();
-                }else if(retorno != null){
+                } else if (retorno != null) {
                     temp.setTipo(retorno.getTipo());
                     temp.setUsado(true);
                     insereTabela();
-                }else{
+                } else {
                     throw new BusinessException("Função não declarada: " + temp.getNome());
                 }
                 temp = new Tupla();
@@ -101,23 +101,27 @@ public class Semantico implements Constants {
     public void insereTabela() throws BusinessException {
         boolean podeInserir = true;
         temp.setEscopo(pilha.peek());
-        if(temp.isFuncao()){
+        if (temp.isFuncao()) {
             pilha.push(temp.getNome());
         }
         if (tabela.size() != 0 && temp != null) {
             for (Tupla t : tabela) {
                 // 2. declaracao no mesmo escopo
                 if (t.getNome().equals(temp.getNome()) && t.getEscopo().equals(temp.getEscopo())) {
-                    if (temp.getTipo() != null) {
-                        podeInserir = false;
-                        throw new BusinessException("Nome de variavel já usado: " + t.getNome());
-                    } else {
-                        t.setInicializado(temp.isInicializado());
-                        t.setUsado(temp.isUsado());
-                        t.setParametro(temp.isParametro());
-                        t.setPos(temp.getPos());
-                        t.setRef(temp.isRef());
-                        podeInserir = false;
+                    if (!temp.isFuncao()) {
+                        if (temp.getTipo() != null) {
+                            podeInserir = false;
+                            throw new BusinessException("Nome de variavel já usado: " + t.getNome());
+                        } else {
+                            t.setInicializado(temp.isInicializado());
+                            t.setUsado(temp.isUsado());
+                            t.setParametro(temp.isParametro());
+                            t.setPos(temp.getPos());
+                            t.setRef(temp.isRef());
+                            podeInserir = false;
+                        }
+                    }else{
+                        throw new BusinessException("Nome de função já usado: " + t.getNome());
                     }
                 }
             }
@@ -154,10 +158,10 @@ public class Semantico implements Constants {
 
     private Tupla buscaTabela(String nome) {
         for (Tupla t : tabela) {
-            if(t.getNome().equals(nome) && t.isFuncao()){
+            if (t.getNome().equals(nome) && t.isFuncao()) {
                 return t;
             }
         }
-        return null;   
+        return null;
     }
 }
