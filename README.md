@@ -68,3 +68,8 @@ Tem como objetivo a criação de uma linguagem de programação simples, apenas 
 | matrix | #9 |
 | ref | #10 |
 | func | #11 |
+| final line | #12 |
+| final scope | #13 |
+
+**final line:** detecta quando as informações para compor uma tupla da tabela já são o suficiente, por exemplo ";".
+**final scope:** detecta o final de um escopo.
