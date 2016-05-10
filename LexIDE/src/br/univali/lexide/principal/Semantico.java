@@ -8,13 +8,13 @@ import java.util.Stack;
 
 public class Semantico implements Constants {
 
-    List<Tupla> tabela;
-    Stack<String> pilha;
-    Tupla temp;
-    int contIF;
-    int contELSE;
-    int contWHILE;
-    int contDO;
+    public static List<Tupla> tabela;
+    private Stack<String> pilha;
+    private Tupla temp;
+    private int contIF;
+    private int contELSE;
+    private int contWHILE;
+    private int contDO;
 
     public Semantico() {
         tabela = new ArrayList();
