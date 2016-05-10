@@ -79,7 +79,7 @@ public class LexIDE extends javax.swing.JFrame {
         button_abrir = new javax.swing.JButton();
         button_salvar = new javax.swing.JButton();
         button_compilar = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        button_tabela = new javax.swing.JButton();
         principal = new javax.swing.JPanel();
 
         scrollPane_codigo.setViewportView(textPane_codigo);
@@ -136,16 +136,16 @@ public class LexIDE extends javax.swing.JFrame {
         });
         toolBar.add(button_compilar);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/lexide/imagens/tabela.png"))); // NOI18N
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        button_tabela.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/lexide/imagens/tabela.png"))); // NOI18N
+        button_tabela.setFocusable(false);
+        button_tabela.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        button_tabela.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        button_tabela.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                button_tabelaActionPerformed(evt);
             }
         });
-        toolBar.add(jButton1);
+        toolBar.add(button_tabela);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("LexIDE");
@@ -263,13 +263,13 @@ public class LexIDE extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_button_abrirActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void button_tabelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_tabelaActionPerformed
         if (Semantico.tabela == null) {
             JOptionPane.showMessageDialog(null, "É necessário compilar um código para visualizar a tabela");
         } else {
             new TelaTabela();
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_button_tabelaActionPerformed
 
     public static void main(String args[]) {
         try {
@@ -299,7 +299,7 @@ public class LexIDE extends javax.swing.JFrame {
     private javax.swing.JButton button_compilar;
     private javax.swing.JButton button_novo;
     private javax.swing.JButton button_salvar;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton button_tabela;
     private javax.swing.JPanel principal;
     private javax.swing.JScrollPane scrollPane_codigo;
     private javax.swing.JScrollPane scrollPane_saida;

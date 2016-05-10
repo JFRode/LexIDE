@@ -79,7 +79,8 @@ public class Semantico implements Constants {
                 } else if (retorno != null) {
                     temp.setTipo(retorno.getTipo());
                     temp.setUsado(true);
-                    insereTabela();
+                    retorno.setUsado(true);
+                    //insereTabela();
                 } else {
                     throw new BusinessException("Função não declarada: " + temp.getNome());
                 }
