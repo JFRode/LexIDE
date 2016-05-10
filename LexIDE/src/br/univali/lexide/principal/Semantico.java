@@ -1,6 +1,7 @@
 package br.univali.lexide.principal;
 
 import br.univali.lexide.exception.BusinessException;
+import br.univali.lexide.exception.InfoException;
 import br.univali.lexide.importador.Tupla;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,7 @@ public class Semantico implements Constants {
         pilha.push("Global");
     }
 
-    public void executeAction(int action, Token token) throws SemanticError, BusinessException {
+    public void executeAction(int action, Token token) throws SemanticError, BusinessException, InfoException {
 
         switch (action) {
             case 1: // name
@@ -94,6 +95,10 @@ public class Semantico implements Constants {
             case 13: // final scope
                 System.out.println("Ação ; #" + action + ", Token: " + token.getLexeme());
                 System.out.println("Removido: " + pilha.pop());
+                break;
+            case 14: // final code
+                System.out.println("Codigo chegou ao fim.");
+                checarVariaveis();
                 break;
         }
     }
@@ -166,7 +171,7 @@ public class Semantico implements Constants {
     }
 
     private void inserePilha(Token token) {
-        switch(token.getLexeme()){
+        switch (token.getLexeme()) {
             case "if":
                 pilha.push("if-" + contIF);
                 contIF++;
@@ -186,6 +191,18 @@ public class Semantico implements Constants {
             default:
                 pilha.push(token.getLexeme());
                 break;
+        }
+    }
+
+    private void checarVariaveis() throws InfoException {
+        String variaveis = "\n";
+        for (Tupla t : tabela) {
+            if(!t.isUsado()){
+                variaveis += t.getNome() + "\n";
+            }
+        }
+        if(!variaveis.equals("\n")){
+            throw new InfoException("Variaveis nunca usadas:" + variaveis);
         }
     }
 }

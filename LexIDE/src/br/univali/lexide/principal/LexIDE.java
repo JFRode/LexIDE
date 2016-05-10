@@ -1,6 +1,7 @@
 package br.univali.lexide.principal;
 
 import br.univali.lexide.exception.BusinessException;
+import br.univali.lexide.exception.InfoException;
 import br.univali.lexide.visao.TelaTabela;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -207,6 +208,9 @@ public class LexIDE extends javax.swing.JFrame {
             } catch (BusinessException ex) {
                 textPane_saida.setText(ex.getMessage());
                 textPane_saida.setForeground(Color.RED);
+            } catch (InfoException ex) {
+                textPane_saida.setText("CONSTRUÍDO COM SUCESSO.\n" + ex.getMessage());
+                textPane_saida.setForeground(new Color(34, 139, 34));
             }
         } else {
             textPane_saida.setText("É necessário escrever um codigo para compilar.");
@@ -300,7 +304,7 @@ public class LexIDE extends javax.swing.JFrame {
     private javax.swing.JScrollPane scrollPane_codigo;
     private javax.swing.JScrollPane scrollPane_saida;
     private javax.swing.JTextPane textPane_codigo;
-    private javax.swing.JTextPane textPane_saida;
+    public javax.swing.JTextPane textPane_saida;
     private javax.swing.JToolBar toolBar;
     // End of variables declaration//GEN-END:variables
 }
