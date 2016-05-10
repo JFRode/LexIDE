@@ -210,7 +210,7 @@ public class LexIDE extends javax.swing.JFrame {
                 textPane_saida.setForeground(Color.RED);
             } catch (InfoException ex) {
                 textPane_saida.setText("CONSTRUÍDO COM SUCESSO.\n" + ex.getMessage());
-                textPane_saida.setForeground(new Color(34, 139, 34));
+                textPane_saida.setForeground(Color.DARK_GRAY);
             }
         } else {
             textPane_saida.setText("É necessário escrever um codigo para compilar.");

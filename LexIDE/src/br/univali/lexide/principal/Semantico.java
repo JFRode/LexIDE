@@ -202,7 +202,7 @@ public class Semantico implements Constants {
             }
         }
         if(!variaveis.equals("\n")){
-            throw new InfoException("Variaveis nunca usadas:" + variaveis);
+            throw new InfoException("identificadores nunca usados:" + variaveis);
         }
     }
 }
