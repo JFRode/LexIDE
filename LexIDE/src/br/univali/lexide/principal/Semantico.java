@@ -106,11 +106,27 @@ public class Semantico implements Constants {
 
     public void insereTabela() throws BusinessException {
         boolean podeInserir = true;
+        boolean podeAtualizar = false;
         temp.setEscopo(pilha.peek());
         if (temp.isFuncao()) {
             pilha.push(temp.getNome());
         }
-        if (tabela.size() != 0 && temp != null) {
+        if (temp.getTipo() == null) {
+            for (Tupla t : tabela) {
+                if (temp.getNome().equals(t.getNome())) {
+                    for (String p : pilha) {
+                        if (t.getEscopo().equals(p)) {
+                            t.setInicializado(true);
+                            podeAtualizar = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (!podeAtualizar) {
+                throw new BusinessException("Variavel '" + temp.getNome() + "' não foi declarada.");
+            }
+        } else if (tabela.size() != 0 && temp != null) {
             for (Tupla t : tabela) {
                 // 2. declaracao no mesmo escopo
                 if (t.getNome().equals(temp.getNome()) && t.getEscopo().equals(temp.getEscopo())) {
@@ -131,7 +147,6 @@ public class Semantico implements Constants {
                     }
                 }
             }
-
             if (podeInserir) {
                 tabela.add(temp);
                 System.out.println("INSERIU");
@@ -141,6 +156,7 @@ public class Semantico implements Constants {
             tabela.add(temp);
             System.out.println("INSERIU");
         }
+
         imprimeTabela();
     }
 
@@ -198,11 +214,11 @@ public class Semantico implements Constants {
     private void checarVariaveis() throws InfoException {
         String variaveis = "\n";
         for (Tupla t : tabela) {
-            if(!t.isUsado()){
+            if (!t.isUsado()) {
                 variaveis += t.getNome() + "\n";
             }
         }
-        if(!variaveis.equals("\n")){
+        if (!variaveis.equals("\n")) {
             throw new InfoException("identificadores nunca usados:" + variaveis);
         }
     }
