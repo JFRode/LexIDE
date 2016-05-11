@@ -151,12 +151,10 @@ public class Semantico implements Constants {
                 tabela.add(temp);
                 System.out.println("INSERIU");
             }
-
         } else {
             tabela.add(temp);
             System.out.println("INSERIU");
         }
-
         imprimeTabela();
     }
 
