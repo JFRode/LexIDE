@@ -5,6 +5,8 @@ import br.univali.lexide.exception.InfoException;
 import br.univali.lexide.visao.TelaTabela;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -18,17 +20,23 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.event.UndoableEditListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
+import javax.swing.text.Document;
+import javax.swing.undo.CannotUndoException;
+import javax.swing.undo.UndoManager;
 
 public class LexIDE extends javax.swing.JFrame {
 
     public LexIDE() {
         initComponents();
+        textArea_codigo.setLineWrap(true);
         principal.setLayout(new BorderLayout());
         principal.add(toolBar, BorderLayout.NORTH);
-        principal.add(scrollPane_codigo, BorderLayout.CENTER);
+        principal.add(scrollPanel_codigo, BorderLayout.CENTER);
         principal.add(scrollPane_saida, BorderLayout.SOUTH);
+        undoReundo();
     }
 
     public void selecionarArquivo() {
@@ -49,7 +57,7 @@ public class LexIDE extends javax.swing.JFrame {
                     stringBuilder.append(data);
                     stringBuilder.append("\n");
                 }
-                textPane_codigo.setText(stringBuilder.toString());
+                textArea_codigo.setText(stringBuilder.toString());
                 fileReader.close();
                 reader.close();
                 textPane_saida.setText("");
@@ -70,8 +78,6 @@ public class LexIDE extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        scrollPane_codigo = new javax.swing.JScrollPane();
-        textPane_codigo = new javax.swing.JTextPane();
         scrollPane_saida = new javax.swing.JScrollPane();
         textPane_saida = new javax.swing.JTextPane();
         toolBar = new javax.swing.JToolBar();
@@ -80,9 +86,9 @@ public class LexIDE extends javax.swing.JFrame {
         button_salvar = new javax.swing.JButton();
         button_compilar = new javax.swing.JButton();
         button_tabela = new javax.swing.JButton();
+        scrollPanel_codigo = new javax.swing.JScrollPane();
+        textArea_codigo = new javax.swing.JTextArea();
         principal = new javax.swing.JPanel();
-
-        scrollPane_codigo.setViewportView(textPane_codigo);
 
         textPane_saida.setEditable(false);
         textPane_saida.setBackground(new java.awt.Color(220, 219, 219));
@@ -147,6 +153,10 @@ public class LexIDE extends javax.swing.JFrame {
         });
         toolBar.add(button_tabela);
 
+        textArea_codigo.setColumns(20);
+        textArea_codigo.setRows(5);
+        scrollPanel_codigo.setViewportView(textArea_codigo);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("LexIDE");
         setSize(new java.awt.Dimension(998, 673));
@@ -184,14 +194,14 @@ public class LexIDE extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void button_compilarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_compilarActionPerformed
-        if (!textPane_codigo.getText().equals("")) {
+        if (!textArea_codigo.getText().equals("")) {
             textPane_saida.setText("");
             Lexico lexico = new Lexico();
             Sintatico sintatico = new Sintatico();
             Semantico semantico = new Semantico();
 
-            lexico.setInput(textPane_codigo.getText());
-            
+            lexico.setInput(textArea_codigo.getText());
+
             try {
                 sintatico.parse(lexico, semantico);
                 textPane_saida.setText("CONSTRUÍDO COM SUCESSO.");
@@ -219,7 +229,7 @@ public class LexIDE extends javax.swing.JFrame {
     }//GEN-LAST:event_button_compilarActionPerformed
 
     private void button_salvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_salvarActionPerformed
-        String codigoGravacao = textPane_codigo.getText();
+        String codigoGravacao = textArea_codigo.getText();
         if (!codigoGravacao.equals("")) {
             try {
                 JFileChooser fileChooser = new JFileChooser();
@@ -244,16 +254,16 @@ public class LexIDE extends javax.swing.JFrame {
     }//GEN-LAST:event_button_salvarActionPerformed
 
     private void button_novoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_novoActionPerformed
-        if (!textPane_codigo.getText().equals("")) {
+        if (!textArea_codigo.getText().equals("")) {
             int resp = JOptionPane.showConfirmDialog(this, "Se não foi salvo o codigo será perdido. Deseja realmente criar um novo?");
             if (resp == 0) {
-                textPane_codigo.setText("");
+                textArea_codigo.setText("");
             }
         }
     }//GEN-LAST:event_button_novoActionPerformed
 
     private void button_abrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_abrirActionPerformed
-        if (!textPane_codigo.getText().equals("")) {
+        if (!textArea_codigo.getText().equals("")) {
             int resp = JOptionPane.showConfirmDialog(this, "Se não foi salvo o codigo será perdido. Deseja realmente abrir um arquivo?");
             if (resp == 0) {
                 selecionarArquivo();
@@ -301,10 +311,56 @@ public class LexIDE extends javax.swing.JFrame {
     private javax.swing.JButton button_salvar;
     private javax.swing.JButton button_tabela;
     private javax.swing.JPanel principal;
-    private javax.swing.JScrollPane scrollPane_codigo;
     private javax.swing.JScrollPane scrollPane_saida;
-    private javax.swing.JTextPane textPane_codigo;
+    private javax.swing.JScrollPane scrollPanel_codigo;
+    private javax.swing.JTextArea textArea_codigo;
     public javax.swing.JTextPane textPane_saida;
     private javax.swing.JToolBar toolBar;
     // End of variables declaration//GEN-END:variables
+
+    private void undoReundo() {
+        final UndoManager undo = new UndoManager();
+        Document doc = textArea_codigo.getDocument();
+
+        // Ouve eventos de desfazer e refazer
+        doc.addUndoableEditListener(new UndoableEditListener() {
+            public void undoableEditHappened(UndoableEditEvent evt) {
+                undo.addEdit(evt.getEdit());
+            }
+        });
+
+        textArea_codigo.addKeyListener(new KeyListener() {
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if ((e.getKeyCode() == KeyEvent.VK_Z) && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0) && ((e.getModifiers() & KeyEvent.SHIFT_MASK) != 0)) {
+                    System.out.println("Ctrl+Shift+Z");
+                    try {
+                        if (undo.canRedo()) {
+                            undo.redo();
+                        }
+                    } catch (CannotUndoException cue) {
+                        // possiveis erros são tratados aqui 
+                    }
+                }else if ((e.getKeyCode() == KeyEvent.VK_Z) && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0)) {
+                    System.out.println("Ctrl+Z");
+                    try {
+                        if (undo.canUndo()) {
+                            undo.undo();
+                        }
+                    } catch (CannotUndoException cue) {
+                        // possiveis erros são tratados aqui 
+                    }
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
+    }
 }
