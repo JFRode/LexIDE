@@ -224,11 +224,11 @@ public class Semantico implements Constants {
     }
 
     private Tupla verificaDeclaracao() throws BusinessException {
-        for (Tupla t : tabela) {
-            if (temp.getNome().equals(t.getNome())) {
-                for (String p : pilha) {
-                    if (t.getEscopo().equals(p)) {
-                        return t;
+        for (int i = (tabela.size()-1); i >= 0; i--) {
+            if (temp.getNome().equals(tabela.get(i).getNome())) {
+                for (int j = (pilha.size()-1); j >= 0; j--) {
+                    if (tabela.get(i).getEscopo().equals(pilha.get(j))) {
+                        return tabela.get(i);
                     }
                 }
             }
