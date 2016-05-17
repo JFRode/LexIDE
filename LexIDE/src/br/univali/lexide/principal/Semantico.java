@@ -87,7 +87,7 @@ public class Semantico implements Constants {
                 temp = new Tupla();
                 System.out.println("Ação função #" + action + ", Token: " + token.getLexeme());
                 break;
-            case 12: // final de linha
+            case 12: // final line
                 insereTabela();
                 temp = new Tupla();
                 System.out.println("Ação ; #" + action + ", Token: " + token.getLexeme());
@@ -101,6 +101,11 @@ public class Semantico implements Constants {
                 System.out.println("Codigo chegou ao fim.");
                 checarVariaveis();
                 break;
+            case 15: // assignment
+                Tupla aux = verificaDeclaracao();
+                aux.setUsado(true);
+                System.out.println("Atribuição.");
+                break;
         }
     }
 
@@ -112,20 +117,14 @@ public class Semantico implements Constants {
             pilha.push(temp.getNome());
         }
         if (temp.getTipo() == null) {
-            for (Tupla t : tabela) {
-                if (temp.getNome().equals(t.getNome())) {
-                    for (String p : pilha) {
-                        if (t.getEscopo().equals(p)) {
-                            t.setInicializado(true);
-                            podeAtualizar = true;
-                            break;
-                        }
-                    }
-                }
+            Tupla aux = verificaDeclaracao();
+            if (aux != null) {
+                aux.setInicializado(true);
+                podeAtualizar = true;
             }
-            if (!podeAtualizar) {
-                throw new BusinessException("Variavel '" + temp.getNome() + "' não foi declarada.");
-            }
+//            }else{
+//                throw new BusinessException("Variavel '" + temp.getNome() + "' não foi declarada.");
+//            }
         } else if (tabela.size() != 0 && temp != null) {
             for (Tupla t : tabela) {
                 // 2. declaracao no mesmo escopo
@@ -219,5 +218,22 @@ public class Semantico implements Constants {
         if (!variaveis.equals("\n")) {
             throw new InfoException("identificadores nunca usados:" + variaveis);
         }
+    }
+
+    private Tupla verificaDeclaracao() throws BusinessException {
+        for (Tupla t : tabela) {
+            if (temp.getNome().equals(t.getNome())) {
+                for (String p : pilha) {
+                    if (t.getEscopo().equals(p)) {
+                        if (t.isInicializado()) {
+                            return t;
+                        }else{
+                            throw new BusinessException("Variavel '" + temp.getNome() + "' não foi inicializada.");
+                        }
+                    }
+                }
+            }
+        }
+        throw new BusinessException("Variavel '" + temp.getNome() + "' não foi declarada.");
     }
 }
