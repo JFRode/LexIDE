@@ -1,17 +1,18 @@
 package br.univali.lexide.visao;
 
 import br.univali.lexide.importador.Tupla;
+import br.univali.lexide.principal.LexIDE;
 import br.univali.lexide.principal.Semantico;
 import javax.swing.table.DefaultTableModel;
 
 public class TelaTabela extends javax.swing.JFrame {
 
-    public TelaTabela() {
+    public TelaTabela(LexIDE aThis) {
         initComponents();
         this.setVisible(true);
         this.setTitle("Tabela de simbolos");
         this.setResizable(false);
-        this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(aThis);
         
         DefaultTableModel modelo = new DefaultTableModel() {
             @Override

@@ -44,7 +44,7 @@ public class LexIDE extends javax.swing.JFrame {
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Código fonte LexIDE", "lexIDE");
         fileChooser.setFileFilter(filter);
 
-        int option = fileChooser.showOpenDialog(null);
+        int option = fileChooser.showOpenDialog(this);
         if (option == JFileChooser.APPROVE_OPTION) {
             File file = new File(String.valueOf(fileChooser.getSelectedFile()));
             FileReader fileReader = null;
@@ -236,7 +236,7 @@ public class LexIDE extends javax.swing.JFrame {
                 FileNameExtensionFilter filter = new FileNameExtensionFilter("Código fonte LexIDE", "lexIDE");
                 fileChooser.setFileFilter(filter);
 
-                int option = fileChooser.showSaveDialog(null);
+                int option = fileChooser.showSaveDialog(this);
                 if (option == JFileChooser.APPROVE_OPTION) {
                     FileWriter fw = new FileWriter(fileChooser.getSelectedFile() + ".lexIDE");
                     BufferedWriter bw = new BufferedWriter(fw);
@@ -275,9 +275,9 @@ public class LexIDE extends javax.swing.JFrame {
 
     private void button_tabelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_tabelaActionPerformed
         if (Semantico.tabela == null) {
-            JOptionPane.showMessageDialog(null, "É necessário compilar um código para visualizar a tabela");
+            JOptionPane.showMessageDialog(this, "É necessário compilar um código para visualizar a tabela");
         } else {
-            new TelaTabela();
+            new TelaTabela(this);
         }
     }//GEN-LAST:event_button_tabelaActionPerformed
 
@@ -338,7 +338,7 @@ public class LexIDE extends javax.swing.JFrame {
             @Override
             public void keyPressed(KeyEvent e) {
                 if ((e.getKeyCode() == KeyEvent.VK_Z) && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0) && ((e.getModifiers() & KeyEvent.SHIFT_MASK) != 0)) {
-                    System.out.println("Ctrl+Shift+Z");
+                    //System.out.println("Ctrl+Shift+Z");
                     try {
                         if (undo.canRedo()) {
                             undo.redo();
@@ -347,7 +347,7 @@ public class LexIDE extends javax.swing.JFrame {
                         // possiveis erros são tratados aqui 
                     }
                 }else if ((e.getKeyCode() == KeyEvent.VK_Z) && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0)) {
-                    System.out.println("Ctrl+Z");
+                    //System.out.println("Ctrl+Z");
                     try {
                         if (undo.canUndo()) {
                             undo.undo();
