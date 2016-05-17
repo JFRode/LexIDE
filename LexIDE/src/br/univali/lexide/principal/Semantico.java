@@ -103,6 +103,9 @@ public class Semantico implements Constants {
                 break;
             case 15: // assignment
                 Tupla aux = verificaDeclaracao();
+                if (!aux.isInicializado() && !aux.isParametro()) {
+                    throw new BusinessException("Variavel '" + temp.getNome() + "' não foi inicializada.");
+                }
                 aux.setUsado(true);
                 System.out.println("Atribuição.");
                 break;
@@ -225,11 +228,7 @@ public class Semantico implements Constants {
             if (temp.getNome().equals(t.getNome())) {
                 for (String p : pilha) {
                     if (t.getEscopo().equals(p)) {
-                        if (t.isInicializado()) {
-                            return t;
-                        }else{
-                            throw new BusinessException("Variavel '" + temp.getNome() + "' não foi inicializada.");
-                        }
+                        return t;
                     }
                 }
             }
