@@ -1,6 +1,6 @@
 package br.univali.lexide.visao;
 
-import br.univali.lexide.importador.Tupla;
+import br.univali.lexide.modelo.Tupla;
 import br.univali.lexide.principal.LexIDE;
 import br.univali.lexide.principal.Semantico;
 import javax.swing.table.DefaultTableModel;
