@@ -36,9 +36,15 @@ public class LexIDE extends javax.swing.JFrame {
         principal.add(toolBar, BorderLayout.NORTH);
         principal.add(scrollPanel_codigo, BorderLayout.CENTER);
         principal.add(scrollPane_saida, BorderLayout.SOUTH);
+        configuraTextArea();
         undoReundo();
     }
 
+    public void configuraTextArea() {
+        textArea_codigo.setText("main(){\n\t\n}");
+        textArea_codigo.setCaretPosition(9);
+    }
+    
     public void selecionarArquivo() {
         JFileChooser fileChooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Código fonte LexIDE", "lexIDE");
@@ -69,6 +75,7 @@ public class LexIDE extends javax.swing.JFrame {
         }
     }
 
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -257,7 +264,7 @@ public class LexIDE extends javax.swing.JFrame {
         if (!textArea_codigo.getText().equals("")) {
             int resp = JOptionPane.showConfirmDialog(this, "Se não foi salvo o codigo será perdido. Deseja realmente criar um novo?");
             if (resp == 0) {
-                textArea_codigo.setText("");
+                configuraTextArea();
             }
         }
     }//GEN-LAST:event_button_novoActionPerformed
