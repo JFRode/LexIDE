@@ -1,5 +1,6 @@
-package br.univali.lexide.principal;
+package br.univali.lexide.gals;
 
+import br.univali.lexide.visao.LexIDE;
 import br.univali.lexide.exception.BusinessException;
 import br.univali.lexide.exception.InfoException;
 import br.univali.lexide.modelo.Tupla;
