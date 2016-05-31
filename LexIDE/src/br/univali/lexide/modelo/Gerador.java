@@ -38,4 +38,12 @@ public class Gerador {
             data.add(t.getNome() + " : " + instancia);
         }
     }
+
+    public List<String> getData() {
+        return data;
+    }
+
+    public List<String> getText() {
+        return text;
+    }
 }

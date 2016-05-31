@@ -1,8 +1,7 @@
 package br.univali.lexide.visao;
 
 import br.univali.lexide.modelo.Tupla;
-import br.univali.lexide.principal.LexIDE;
-import br.univali.lexide.principal.Semantico;
+import br.univali.lexide.gals.Semantico;
 import javax.swing.table.DefaultTableModel;
 
 public class TelaTabela extends javax.swing.JFrame {
