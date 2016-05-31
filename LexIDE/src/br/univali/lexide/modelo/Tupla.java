@@ -1,8 +1,9 @@
-package br.univali.lexide.importador;
+package br.univali.lexide.modelo;
 
 public class Tupla {
     private String nome;
     private String tipo;
+    private String valor;
     private boolean inicializado = false;
     private boolean usado = false;
     private String escopo;
@@ -24,11 +25,19 @@ public class Tupla {
     public String getTipo() {
         return tipo;
     }
-
+    
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
 
+    public String getValor() {
+        return valor;
+    }
+
+    public void setValor(String valor) {
+        this.valor = valor;
+    }
+    
     public boolean isInicializado() {
         return inicializado;
     }

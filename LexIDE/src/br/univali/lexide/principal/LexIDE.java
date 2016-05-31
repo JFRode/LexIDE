@@ -2,6 +2,7 @@ package br.univali.lexide.principal;
 
 import br.univali.lexide.exception.BusinessException;
 import br.univali.lexide.exception.InfoException;
+import br.univali.lexide.modelo.Gerador;
 import br.univali.lexide.visao.TelaTabela;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -29,8 +30,11 @@ import javax.swing.undo.UndoManager;
 
 public class LexIDE extends javax.swing.JFrame {
 
+    public static Gerador gerador;
+    
     public LexIDE() {
         initComponents();
+        gerador = new Gerador();
         textArea_codigo.setLineWrap(true);
         principal.setLayout(new BorderLayout());
         principal.add(toolBar, BorderLayout.NORTH);
@@ -162,6 +166,7 @@ public class LexIDE extends javax.swing.JFrame {
 
         textArea_codigo.setColumns(20);
         textArea_codigo.setRows(5);
+        textArea_codigo.setTabSize(4);
         scrollPanel_codigo.setViewportView(textArea_codigo);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -233,6 +238,8 @@ public class LexIDE extends javax.swing.JFrame {
             textPane_saida.setText("É necessário escrever um codigo para compilar.");
             textPane_saida.setForeground(new Color(205, 92, 92));
         }
+        
+        System.out.println(gerador.montarCodigo());
     }//GEN-LAST:event_button_compilarActionPerformed
 
     private void button_salvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_salvarActionPerformed

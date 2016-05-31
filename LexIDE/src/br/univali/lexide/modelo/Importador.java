@@ -1,4 +1,4 @@
-package br.univali.lexide.importador;
+package br.univali.lexide.modelo;
 
 import java.io.File;
 import java.io.IOException;
