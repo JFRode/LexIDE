@@ -30,6 +30,8 @@ public class Gerador {
     public void novaLinha(Tupla t){
         if (t.isInicializado()) {   //  Declaracao variavel
             data.add(t.getNome() + " : " + t.getValor());
+        }else{
+            data.add(t.getNome() + " : " + "0");
         }
         if (t.isVetor()){   //  Declaracao vetor não inicializado
             String instancia = "0";
