@@ -1,8 +1,9 @@
-package br.univali.lexide.principal;
+package br.univali.lexide.gals;
 
+import br.univali.lexide.visao.LexIDE;
 import br.univali.lexide.exception.BusinessException;
 import br.univali.lexide.exception.InfoException;
-import br.univali.lexide.importador.Tupla;
+import br.univali.lexide.modelo.Tupla;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -89,6 +90,7 @@ public class Semantico implements Constants {
                 break;
             case 12: // final line
                 insereTabela();
+                LexIDE.gerador.novaLinha(temp);
                 temp = new Tupla();
                 System.out.println("Ação ; #" + action + ", Token: " + token.getLexeme());
                 break;
@@ -108,6 +110,10 @@ public class Semantico implements Constants {
                 }
                 aux.setUsado(true);
                 System.out.println("Atribuição.");
+                break;
+            case 16: // value
+                temp.setValor(token.getLexeme());
+                System.out.println("Ação ; #" + action + ", Token: " + token.getLexeme());
                 break;
         }
     }
@@ -162,10 +168,11 @@ public class Semantico implements Constants {
 
     public void imprimeTabela() {
         System.out.println("-------------------------------------------------------------------");
-        System.out.println("NOME\tTIPO\tINIC\tUSADO\tESCOPO\tPARAM\tPOS\tVET\tMATRIZ\tREF\tFUNC");
+        System.out.println("NOME\tTIPO\tVALOR\tINIC\tUSADO\tESCOPO\tPARAM\tPOS\tVET\tMATRIZ\tREF\tFUNC");
         for (Tupla t : tabela) {
             System.out.print(t.getNome() + "\t");
             System.out.print(t.getTipo() + "\t");
+            System.out.print(t.getValor() + "\t");
             System.out.print(t.isInicializado() + "\t");
             System.out.print(t.isUsado() + "\t");
             System.out.print(t.getEscopo() + "\t");

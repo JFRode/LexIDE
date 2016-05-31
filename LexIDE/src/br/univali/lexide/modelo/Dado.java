@@ -1,4 +1,4 @@
-package br.univali.lexide.importador;
+package br.univali.lexide.modelo;
 
 class Dado {
     int valor1;

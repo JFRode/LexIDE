@@ -72,6 +72,7 @@ Tem como objetivo a criação de uma linguagem de programação simples, apenas 
 | final scope | #13 |
 | final code | #14 |
 | assignment | #15 |
+| value | #16 |
 
 **final line:** detecta quando as informações para compor uma tupla da tabela já são o suficiente, por exemplo ";".
 
