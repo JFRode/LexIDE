@@ -124,7 +124,7 @@ public class Semantico implements Constants {
                 break;
             case 19:
                 temp.setIo("write");
-                
+                LexIDE.gerador.novaLinha(temp);
                 break;
         }
     }

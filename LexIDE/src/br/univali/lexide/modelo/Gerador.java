@@ -32,6 +32,9 @@ public class Gerador {
             if (t.getIo().equals("read")) {
                 text.add("LD $in_port");
                 text.add("STO " + t.getNome());
+            } else {
+                text.add("LD " + t.getNome());
+                text.add("STO $out_port");
             }
         } else {
 
