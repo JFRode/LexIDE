@@ -1,4 +1,4 @@
-package br.univali.lexide.principal;
+package br.univali.lexide.gals;
 
 import br.univali.lexide.modelo.Importador;
 

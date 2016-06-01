@@ -1,8 +1,14 @@
-package br.univali.lexide.principal;
+package br.univali.lexide.visao;
 
 import br.univali.lexide.exception.BusinessException;
 import br.univali.lexide.exception.InfoException;
 import br.univali.lexide.modelo.Gerador;
+import br.univali.lexide.gals.LexicalError;
+import br.univali.lexide.gals.Lexico;
+import br.univali.lexide.gals.SemanticError;
+import br.univali.lexide.gals.Semantico;
+import br.univali.lexide.gals.Sintatico;
+import br.univali.lexide.gals.SyntaticError;
 import br.univali.lexide.visao.TelaTabela;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -240,6 +246,8 @@ public class LexIDE extends javax.swing.JFrame {
         }
         
         System.out.println(gerador.montarCodigo());
+        this.gerador.getData().clear();
+        this.gerador.getText().clear();
     }//GEN-LAST:event_button_compilarActionPerformed
 
     private void button_salvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_salvarActionPerformed

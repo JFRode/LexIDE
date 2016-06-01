@@ -1,7 +1,16 @@
-package br.univali.lexide.principal;
+package br.univali.lexide.gals;
 
 import br.univali.lexide.exception.BusinessException;
 import br.univali.lexide.exception.InfoException;
+import static br.univali.lexide.gals.ParserConstants.ACCEPT;
+import static br.univali.lexide.gals.ParserConstants.ACTION;
+import static br.univali.lexide.gals.ParserConstants.ERROR;
+import static br.univali.lexide.gals.ParserConstants.FIRST_SEMANTIC_ACTION;
+import static br.univali.lexide.gals.ParserConstants.PARSER_ERROR;
+import static br.univali.lexide.gals.ParserConstants.PARSER_TABLE;
+import static br.univali.lexide.gals.ParserConstants.PRODUCTIONS;
+import static br.univali.lexide.gals.ParserConstants.REDUCE;
+import static br.univali.lexide.gals.ParserConstants.SHIFT;
 import java.util.Stack;
 
 public class Sintatico implements Constants

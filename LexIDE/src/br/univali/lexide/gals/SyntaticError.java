@@ -1,4 +1,4 @@
-package br.univali.lexide.principal;
+package br.univali.lexide.gals;
 
 public class SyntaticError extends AnalysisError
 {
