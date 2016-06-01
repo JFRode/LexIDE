@@ -113,12 +113,26 @@ public class Semantico implements Constants {
                 break;
             case 16: // value
                 temp.setValor(token.getLexeme());
+                temp.setLdi(true);
                 System.out.println("Ação ; #" + action + ", Token: " + token.getLexeme());
+                break;
+            case 17: // variable value
+                temp.setLdi(false);
+                temp.setNome(token.getLexeme());
+                break;
+            case 18:
+                temp.setIo("read");
+                LexIDE.gerador.novaLinha(temp);
+                break;
+            case 19:
+                temp.setIo("write");
+                
                 break;
         }
     }
 
     public void insereTabela() throws BusinessException {
+
         boolean podeInserir = true;
         boolean podeAtualizar = false;
         temp.setEscopo(pilha.peek());
@@ -231,9 +245,9 @@ public class Semantico implements Constants {
     }
 
     private Tupla verificaDeclaracao() throws BusinessException {
-        for (int i = (tabela.size()-1); i >= 0; i--) {
+        for (int i = (tabela.size() - 1); i >= 0; i--) {
             if (temp.getNome().equals(tabela.get(i).getNome())) {
-                for (int j = (pilha.size()-1); j >= 0; j--) {
+                for (int j = (pilha.size() - 1); j >= 0; j--) {
                     if (tabela.get(i).getEscopo().equals(pilha.get(j))) {
                         return tabela.get(i);
                     }

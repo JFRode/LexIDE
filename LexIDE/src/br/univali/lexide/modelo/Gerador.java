@@ -1,20 +1,19 @@
 //  BIP só considera inteiro
-
 package br.univali.lexide.modelo;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Gerador {
-    
+
     private List<String> data;
     private List<String> text;
-    
+
     public Gerador() {
         data = new ArrayList();
         text = new ArrayList();
     }
-    
+
     public String montarCodigo() {
         String codigo = ".data\n";
         for (Object d : data) {
@@ -26,18 +25,31 @@ public class Gerador {
         }
         return codigo;
     }
-    
-    public void novaLinha(Tupla t){
-        if (t.isInicializado()) {   //  Declaracao variavel
-            data.add(t.getNome() + " : " + t.getValor());
-        }else{
-            data.add(t.getNome() + " : " + "0");
-        }
-        if (t.isVetor()){   //  Declaracao vetor não inicializado
-            String instancia = "0";
-            int comp = Integer.parseInt(t.getValor());
-            for (int i=1;i < comp; i++) instancia += ",0";
-            data.add(t.getNome() + " : " + instancia);
+
+    public void novaLinha(Tupla t) {
+        if (t.getIo() != null) {
+            if (t.getIo().equals("read")) {
+                if (t.isLdi()) {
+                    text.add("LDI " + t.getValor());
+                } else {
+                    text.add("LD " + t.getNome());
+                }
+            }
+        } else {
+
+            if (t.isInicializado()) {   //  Declaracao variavel
+                data.add(t.getNome() + " : " + t.getValor());
+            } else {
+                data.add(t.getNome() + " : " + "0");
+            }
+            if (t.isVetor()) {   //  Declaracao vetor não inicializado
+                String instancia = "0";
+                int comp = Integer.parseInt(t.getValor());
+                for (int i = 1; i < comp; i++) {
+                    instancia += ",0";
+                }
+                data.add(t.getNome() + " : " + instancia);
+            }
         }
     }
 

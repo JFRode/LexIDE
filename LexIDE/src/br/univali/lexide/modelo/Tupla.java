@@ -4,6 +4,8 @@ public class Tupla {
     private String nome;
     private String tipo;
     private String valor;
+    private String io = null;
+    private boolean ldi = false;
     private boolean inicializado = false;
     private boolean usado = false;
     private String escopo;
@@ -108,6 +110,22 @@ public class Tupla {
 
     public void setFuncao(boolean funcao) {
         this.funcao = funcao;
+    }
+
+    public String getIo() {
+        return io;
+    }
+
+    public void setIo(String io) {
+        this.io = io;
+    }
+
+    public boolean isLdi() {
+        return ldi;
+    }
+
+    public void setLdi(boolean ldi) {
+        this.ldi = ldi;
     }
     
 }
