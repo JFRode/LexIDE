@@ -113,11 +113,9 @@ public class Semantico implements Constants {
                 break;
             case 16: // value
                 temp.setValor(token.getLexeme());
-                temp.setLdi(true);
                 System.out.println("Ação ; #" + action + ", Token: " + token.getLexeme());
                 break;
             case 17: // variable value
-                temp.setLdi(false);
                 temp.setNome(token.getLexeme());
                 break;
             case 18:

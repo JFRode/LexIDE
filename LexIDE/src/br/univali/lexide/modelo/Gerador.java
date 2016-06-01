@@ -23,17 +23,15 @@ public class Gerador {
         for (Object t : text) {
             codigo += t + "\n";
         }
+        codigo += "HLT";
         return codigo;
     }
 
     public void novaLinha(Tupla t) {
         if (t.getIo() != null) {
             if (t.getIo().equals("read")) {
-                if (t.isLdi()) {
-                    text.add("LDI " + t.getValor());
-                } else {
-                    text.add("LD " + t.getNome());
-                }
+                text.add("LD $in_port");
+                text.add("STO " + t.getNome());
             }
         } else {
 
