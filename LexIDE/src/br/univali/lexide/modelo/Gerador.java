@@ -36,20 +36,26 @@ public class Gerador {
                 text.add("LD " + t.getNome());
                 text.add("STO $out_port");
             }
-        } else {
-            if (t.isVetor()) {   //  Declaracao vetor não inicializado
-                String instancia = "0";
-                int comp = Integer.parseInt(t.getValor());
+        } else if (t.isVetor()) {   //  Declaracao vetor não inicializado
+            String instancia = "";
+            if (t.getValores().size() == 1) {
+                instancia = "0";
+                int comp = Integer.parseInt(t.getValores().get(0));
                 for (int i = 1; i < comp; i++) {
                     instancia += ",0";
                 }
-                data.add(t.getNome() + " : " + instancia);
-            }else if (t.isInicializado()) {   //  Declaracao variavel
-                data.add(t.getNome() + " : " + t.getValor());
-            } else {
-                data.add(t.getNome() + " : " + "0");
+            }else{
+                instancia = t.getValores().get(0);
+                for (int i = 1; i < t.getValores().size(); i++) {
+                    instancia += "," + t.getValores().get(i);
+                }
             }
-            
+
+            data.add(t.getNome() + " : " + instancia);
+        } else if (t.isInicializado()) {   //  Declaracao variavel
+            data.add(t.getNome() + " : " + t.getValores().get(0));
+        } else {
+            data.add(t.getNome() + " : " + "0");
         }
     }
 

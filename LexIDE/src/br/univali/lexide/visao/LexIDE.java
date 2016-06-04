@@ -245,7 +245,7 @@ public class LexIDE extends javax.swing.JFrame {
             textPane_saida.setForeground(new Color(205, 92, 92));
         }
         
-        System.out.println(gerador.montarCodigo());
+        System.out.println("\n\n\n" + gerador.montarCodigo());
         this.gerador.getData().clear();
         this.gerador.getText().clear();
     }//GEN-LAST:event_button_compilarActionPerformed
