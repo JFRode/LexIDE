@@ -28,7 +28,7 @@ public class Gerador {
     }
 
     public void novaLinha(Tupla t) {
-        if (t.getIo() != null) {
+        if (t.getIo() != null) {    // IO
             if (t.getIo().equals("read")) {
                 text.add("LD $in_port");
                 text.add("STO " + t.getNome());
@@ -37,12 +37,6 @@ public class Gerador {
                 text.add("STO $out_port");
             }
         } else {
-
-            if (t.isInicializado()) {   //  Declaracao variavel
-                data.add(t.getNome() + " : " + t.getValor());
-            } else {
-                data.add(t.getNome() + " : " + "0");
-            }
             if (t.isVetor()) {   //  Declaracao vetor não inicializado
                 String instancia = "0";
                 int comp = Integer.parseInt(t.getValor());
@@ -50,7 +44,12 @@ public class Gerador {
                     instancia += ",0";
                 }
                 data.add(t.getNome() + " : " + instancia);
+            }else if (t.isInicializado()) {   //  Declaracao variavel
+                data.add(t.getNome() + " : " + t.getValor());
+            } else {
+                data.add(t.getNome() + " : " + "0");
             }
+            
         }
     }
 
