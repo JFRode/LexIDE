@@ -74,8 +74,9 @@ Tem como objetivo a criação de uma linguagem de programação simples, apenas 
 | assignment | #15 |
 | value | #16 |
 | variable value | #17 |
-| read | #18 |
-| write | #19 |
+| vector value| #18 |
+| read | #19 |
+| write | #20 |
 
 **final line:** detecta quando as informações para compor uma tupla da tabela já são o suficiente, por exemplo ";".
 
