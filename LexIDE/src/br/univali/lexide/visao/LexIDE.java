@@ -9,7 +9,6 @@ import br.univali.lexide.gals.SemanticError;
 import br.univali.lexide.gals.Semantico;
 import br.univali.lexide.gals.Sintatico;
 import br.univali.lexide.gals.SyntaticError;
-import br.univali.lexide.visao.TelaTabela;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
