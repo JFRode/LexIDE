@@ -112,7 +112,8 @@ public class Semantico implements Constants {
                 System.out.println("Atribuição.");
                 break;
             case 16: // value
-                temp.addValor(token.getLexeme());
+                //temp.addValorVer(token.getLexeme());
+                temp.setValor(token.getLexeme());
                 System.out.println("Ação ; #" + action + ", Token: " + token.getLexeme());
                 break;
             case 17: // variable value
@@ -184,7 +185,7 @@ public class Semantico implements Constants {
         for (Tupla t : tabela) {
             System.out.print(t.getNome() + "\t");
             System.out.print(t.getTipo() + "\t");
-            System.out.print(t.getValores().get(0)+ "\t");
+            System.out.print(t.getValor()+ "\t");
             System.out.print(t.isInicializado() + "\t");
             System.out.print(t.isUsado() + "\t");
             System.out.print(t.getEscopo() + "\t");

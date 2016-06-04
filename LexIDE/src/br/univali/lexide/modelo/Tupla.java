@@ -6,8 +6,8 @@ import java.util.List;
 public class Tupla {
     private String nome;
     private String tipo;
-    //private String valor;
-    private List<String> valores = new ArrayList<String>();
+    private String valor;
+    private List<String> valoresVet = new ArrayList<String>();
     private String io = null;
     private boolean inicializado = false;
     private boolean usado = false;
@@ -35,13 +35,13 @@ public class Tupla {
         this.tipo = tipo;
     }
 
-    /*public String getValor() {
+    public String getValor() {
         return valor;
     }
 
     public void setValor(String valor) {
         this.valor = valor;
-    }*/
+    }
     
     public boolean isInicializado() {
         return inicializado;
@@ -123,16 +123,16 @@ public class Tupla {
         this.io = io;
     }
 
-    public List<String> getValores() {
-        return valores;
+    public List<String> getValoresVet() {
+        return valoresVet;
     }
 
-    public void setValores(List<String> valores) {
-        this.valores = valores;
+    public void setValoresVet(List<String> valores) {
+        this.valoresVet = valores;
     }
     
-    public void addValor(String valor){
-        this.valores.add(valor);
+    public void addValorVer(String valor){
+        this.valoresVet.add(valor);
     }
     
 }

@@ -38,22 +38,22 @@ public class Gerador {
             }
         } else if (t.isVetor()) {   //  Declaracao vetor não inicializado
             String instancia = "";
-            if (t.getValores().size() == 1) {
+            if (t.getValoresVet().size() == 1) {
                 instancia = "0";
-                int comp = Integer.parseInt(t.getValores().get(0));
+                int comp = Integer.parseInt(t.getValor());
                 for (int i = 1; i < comp; i++) {
                     instancia += ",0";
                 }
             }else{
-                instancia = t.getValores().get(0);
-                for (int i = 1; i < t.getValores().size(); i++) {
-                    instancia += "," + t.getValores().get(i);
+                instancia = t.getValoresVet().get(0);
+                for (int i = 1; i < t.getValoresVet().size(); i++) {
+                    instancia += "," + t.getValoresVet().get(i);
                 }
             }
 
             data.add(t.getNome() + " : " + instancia);
         } else if (t.isInicializado()) {   //  Declaracao variavel
-            data.add(t.getNome() + " : " + t.getValores().get(0));
+            data.add(t.getNome() + " : " + t.getValor());
         } else {
             data.add(t.getNome() + " : " + "0");
         }
