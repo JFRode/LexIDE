@@ -115,13 +115,13 @@ public class Semantico implements Constants {
                 temp.setValor(token.getLexeme());
                 System.out.println("Ação ; #" + action + ", Token: " + token.getLexeme());
                 break;
-            case 17: // variable value
-                temp.setNome(token.getLexeme());
+            case 17: // iindex vector
+                temp.setIndexVet(token.getLexeme());
                 break;
             case 18: // vector value
                 temp.addValorVer(token.getLexeme());
                 break;
-            case 19: 
+            case 19:
                 temp.setIo("read");
                 LexIDE.gerador.novaLinha(temp);
                 break;
@@ -142,13 +142,10 @@ public class Semantico implements Constants {
         }
         if (temp.getTipo() == null) {
             Tupla aux = verificaDeclaracao();
-            if (aux != null) {
+            if (aux != null && temp.getIndexVet() == null) {
                 aux.setInicializado(true);
                 podeAtualizar = true;
             }
-//            }else{
-//                throw new BusinessException("Variavel '" + temp.getNome() + "' não foi declarada.");
-//            }
         } else if (tabela.size() != 0 && temp != null) {
             for (Tupla t : tabela) {
                 // 2. declaracao no mesmo escopo
@@ -250,11 +247,23 @@ public class Semantico implements Constants {
             if (temp.getNome().equals(tabela.get(i).getNome())) {
                 for (int j = (pilha.size() - 1); j >= 0; j--) {
                     if (tabela.get(i).getEscopo().equals(pilha.get(j))) {
-                        return tabela.get(i);
+                        if (temp.getIndexVet() != null && temp.getValor() != null) { // Verificar se é uma atribuição de vetor vet[0] = 2;
+                            if (tabela.get(i).isVetor()) {
+                                return tabela.get(i);
+                            } else {
+                                throw new BusinessException("Vetor '" + temp.getNome() + "' não foi declarado.");
+                            }
+                        } else {
+                            return tabela.get(i);
+                        }
                     }
                 }
             }
         }
-        throw new BusinessException("Variavel '" + temp.getNome() + "' não foi declarada.");
+        if (temp.getIndexVet() != null && temp.getValor() != null) {    // Verificar se é uma atribuição de vetor vet[0] = 2;
+            throw new BusinessException("Vetor '" + temp.getNome() + "' não foi declarado.");
+        } else {
+            throw new BusinessException("Variavel '" + temp.getNome() + "' não foi declarada.");
+        }
     }
 }

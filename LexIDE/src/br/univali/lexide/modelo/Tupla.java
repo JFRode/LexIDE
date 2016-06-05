@@ -8,6 +8,7 @@ public class Tupla {
     private String tipo;
     private String valor;
     private List<String> valoresVet = new ArrayList<String>();
+    private String indexVet = null;
     private String io = null;
     private boolean inicializado = false;
     private boolean usado = false;
@@ -134,5 +135,11 @@ public class Tupla {
     public void addValorVer(String valor){
         this.valoresVet.add(valor);
     }
-    
+    public String getIndexVet() {
+        return indexVet;
+    }
+
+    public void setIndexVet(String indexVet) {
+        this.indexVet = indexVet;
+    }
 }

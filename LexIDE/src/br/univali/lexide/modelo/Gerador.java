@@ -55,10 +55,14 @@ public class Gerador {
                 }
             }
             data.add(t.getNome() + " : " + instancia);
-        } else if (t.isInicializado()) {   //  Declaracao variavel
-            data.add(t.getNome() + " : " + t.getValor());
-        } else {
-            data.add(t.getNome() + " : " + "0");
+        }else if(t.getIndexVet() != null && t.getValor() != null){
+            text.add(t.getNome() + "[" + t.getIndexVet() + "] = " + t.getValor());
+        } else{
+            if (t.isInicializado()) {   //  Declaracao variavel
+                data.add(t.getNome() + " : " + t.getValor());
+            } else {
+                data.add(t.getNome() + " : " + "0");
+            }
         }
     }
 
