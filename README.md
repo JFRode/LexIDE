@@ -73,7 +73,7 @@ Tem como objetivo a criação de uma linguagem de programação simples, apenas 
 | final code | #14 |
 | assignment | #15 |
 | value | #16 |
-| assignment vector | #17 |
+| index vector | #17 |
 | vector value| #18 |
 | read | #19 |
 | write | #20 |
