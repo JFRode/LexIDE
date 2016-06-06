@@ -56,8 +56,11 @@ public class Gerador {
             }
             data.add(t.getNome() + " : " + instancia);
         }else if(t.getIndexVet() != null && t.getValor() != null){
+            for (String operacoe : t.getOperacoes()) {
+                System.out.println("operacoes " + operacoe);
+            }
             text.add(t.getNome() + "[" + t.getIndexVet() + "] = " + t.getValor());
-        } else{
+        } else if(t.getOperacoes().isEmpty()){ // se nao for uma atribuição vai estar vazio
             if (t.isInicializado()) {   //  Declaracao variavel
                 data.add(t.getNome() + " : " + t.getValor());
             } else {
