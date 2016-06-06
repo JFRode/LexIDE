@@ -23,7 +23,7 @@ public class Gerador {
         for (Object t : text) {
             codigo += t + "\n";
         }
-        codigo += "HLT";
+        codigo += "HLT 0";
         return codigo;
     }
 
@@ -55,12 +55,22 @@ public class Gerador {
                 }
             }
             data.add(t.getNome() + " : " + instancia);
-        }else if(t.getIndexVet() != null && t.getValor() != null){
+        } else if (t.getIndexVet() != null && t.getValor() != null) {
             for (String operacoe : t.getOperacoes()) {
                 System.out.println("operacoes " + operacoe);
             }
-            text.add(t.getNome() + "[" + t.getIndexVet() + "] = " + t.getValor());
-        } else if(t.getOperacoes().isEmpty()){ // se nao for uma atribuição vai estar vazio
+            text.add("LDI " + t.getIndexVet());
+            text.add("STO 1000");
+            text.add("LDI " + t.getValor());
+            text.add("STO 1001");
+            text.add("LD 1000");
+            text.add("STO $indr");
+            text.add("LD 1001");
+            text.add("STOV " + t.getNome());
+            
+            //text.add(t.getNome() + "[" + t.getIndexVet() + "] = " + t.getValor());
+        } else if (t.getOperacoes()
+                .isEmpty()) { // se nao for uma atribuição vai estar vazio
             if (t.isInicializado()) {   //  Declaracao variavel
                 data.add(t.getNome() + " : " + t.getValor());
             } else {
