@@ -30,7 +30,7 @@ public class TelaCodigoAsm extends javax.swing.JFrame {
         scrollPane = new javax.swing.JScrollPane();
         textAreaAsm = new javax.swing.JTextArea();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
