@@ -319,7 +319,7 @@ public class LexIDE extends javax.swing.JFrame {
         if (Semantico.tabela == null) {
             JOptionPane.showMessageDialog(this, "É necessário compilar um código para visualizar a tabela");
         } else {
-            new TelaCodigoAsm(codigo);
+            new TelaCodigoAsm(this, codigo);
         }
     }//GEN-LAST:event_button_asmActionPerformed
 

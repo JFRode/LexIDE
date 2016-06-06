@@ -9,11 +9,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class TelaCodigoAsm extends javax.swing.JFrame {
     
-    public TelaCodigoAsm(String codigo) {
+    public TelaCodigoAsm(LexIDE aThis, String codigo) {
         initComponents();
         this.setVisible(true);
         this.setTitle("Código Assembly gerado");
         textAreaAsm.setText(codigo);
+        this.setLocationRelativeTo(aThis);
     }
 
     /**
