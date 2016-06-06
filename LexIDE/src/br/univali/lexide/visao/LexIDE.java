@@ -171,7 +171,7 @@ public class LexIDE extends javax.swing.JFrame {
         });
         toolBar.add(button_tabela);
 
-        button_asm.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/lexide/imagens/tabela.png"))); // NOI18N
+        button_asm.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/lexide/imagens/asm.png"))); // NOI18N
         button_asm.setFocusable(false);
         button_asm.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         button_asm.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -317,7 +317,7 @@ public class LexIDE extends javax.swing.JFrame {
 
     private void button_asmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_asmActionPerformed
         if (Semantico.tabela == null) {
-            JOptionPane.showMessageDialog(this, "É necessário compilar um código para visualizar a tabela");
+            JOptionPane.showMessageDialog(this, "É necessário compilar um código Lex para visualizar o codigo ASM");
         } else {
             new TelaCodigoAsm(this, codigo);
         }
