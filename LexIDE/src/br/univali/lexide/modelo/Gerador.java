@@ -67,7 +67,6 @@ public class Gerador {
             text.add("STO $indr");
             text.add("LD 1001");
             text.add("STOV " + t.getNome());
-            
             //text.add(t.getNome() + "[" + t.getIndexVet() + "] = " + t.getValor());
         } else if (t.getOperacoes()
                 .isEmpty()) { // se nao for uma atribuição vai estar vazio
