@@ -43,11 +43,11 @@ public class Gerador {
         } else if (t.isVetor()) {   //  Declaracao vetor não inicializado
             String instancia = "";
             if (t.getValoresVet().isEmpty()) {
-                instancia = "0";
-                int comp = Integer.parseInt(t.getValor());
-                for (int i = 1; i < comp; i++) {
-                    instancia += ",0";
-                }
+                    instancia = "0";
+                    int comp = Integer.parseInt(t.getValor());
+                    for (int i = 1; i < comp; i++) {
+                        instancia += ",0";
+                    }
             } else {
                 instancia = t.getValoresVet().get(0);
                 for (int i = 1; i < t.getValoresVet().size(); i++) {
