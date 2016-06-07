@@ -30,10 +30,21 @@ public class Gerador {
     public void novaLinha(Tupla t) {
         if (t.getIo() != null) {    // IO
             if (t.getIo().equals("read")) {
-                text.add("LD $in_port");
-                text.add("STO " + t.getNome());
-            } else {
-                if (t.getValor() == null) {
+                if (t.isVetor()) {
+                    text.add("LDI " + t.getValor());
+                    text.add("STO $indr");
+                    text.add("LD $in_port");
+                    text.add("STOV " + t.getNome());
+                } else {
+                    text.add("LD $in_port");
+                    text.add("STO " + t.getNome());
+                }
+            } else if (t.getIo().equals("write")) {
+                if (t.isVetor()) {
+                    text.add("LDI " + t.getValor());
+                    text.add("STO $indr");
+                    text.add("LDV " + t.getNome());
+                } else if (t.getValor() == null) {
                     text.add("LD " + t.getNome());
                 } else {
                     text.add("LDI " + t.getValor());
@@ -77,10 +88,10 @@ public class Gerador {
                 } else if (t.getOperacoes().get(i).equals("<<")) {
                     text.add("SLL " + t.getOperacoes().get(i + 1));
                     i++;
-                }else if (t.getOperacoes().get(i).equals(">>")) {
+                } else if (t.getOperacoes().get(i).equals(">>")) {
                     text.add("SRL " + t.getOperacoes().get(i + 1));
                     i++;
-                }else if (isDigit(t.getOperacoes().get(i))) {
+                } else if (isDigit(t.getOperacoes().get(i))) {
                     text.add("LDI " + t.getOperacoes().get(i));
                 } else {
                     text.add("LD " + t.getOperacoes().get(i));
@@ -107,7 +118,6 @@ public class Gerador {
                     } else {
                         text.add("ADD " + t.getOperacoes().get(i + 1));
                     }
-                    //text.add("ADD " + t.getOperacoes().get(i + 1));
                     i++;
                 } else if (t.getOperacoes().get(i).equals("-")) {
                     if (isDigit(t.getOperacoes().get(i + 1))) {
@@ -115,15 +125,14 @@ public class Gerador {
                     } else {
                         text.add("SUB " + t.getOperacoes().get(i + 1));
                     }
-                    //text.add("SUD " + t.getOperacoes().get(i + 1));
                     i++;
-                }  else if (t.getOperacoes().get(i).equals("<<")) {
+                } else if (t.getOperacoes().get(i).equals("<<")) {
                     text.add("SLL " + t.getOperacoes().get(i + 1));
                     i++;
-                }else if (t.getOperacoes().get(i).equals(">>")) {
+                } else if (t.getOperacoes().get(i).equals(">>")) {
                     text.add("SRL " + t.getOperacoes().get(i + 1));
                     i++;
-                }else if (isDigit(t.getOperacoes().get(i))) {
+                } else if (isDigit(t.getOperacoes().get(i))) {
                     text.add("LDI " + t.getOperacoes().get(i));
                 } else {
                     text.add("LD " + t.getOperacoes().get(i));
@@ -141,7 +150,7 @@ public class Gerador {
         return text;
     }
 
-    public boolean isDigit(String s) { // checa se é numero ou operadores
+    public boolean isDigit(String s) {                                          // checa se é numero ou operadores
         return s.matches("[0-9]*");
     }
 }
