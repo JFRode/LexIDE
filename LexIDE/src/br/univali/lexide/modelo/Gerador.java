@@ -74,7 +74,13 @@ public class Gerador {
                         text.add("SUB " + t.getOperacoes().get(i + 1));
                     }
                     i++;
-                } else if (isDigit(t.getOperacoes().get(i))) {
+                } else if (t.getOperacoes().get(i).equals("<<")) {
+                    text.add("SLL " + t.getOperacoes().get(i + 1));
+                    i++;
+                }else if (t.getOperacoes().get(i).equals(">>")) {
+                    text.add("SRL " + t.getOperacoes().get(i + 1));
+                    i++;
+                }else if (isDigit(t.getOperacoes().get(i))) {
                     text.add("LDI " + t.getOperacoes().get(i));
                 } else {
                     text.add("LD " + t.getOperacoes().get(i));
@@ -111,7 +117,13 @@ public class Gerador {
                     }
                     //text.add("SUD " + t.getOperacoes().get(i + 1));
                     i++;
-                } else if (isDigit(t.getOperacoes().get(i))) {
+                }  else if (t.getOperacoes().get(i).equals("<<")) {
+                    text.add("SLL " + t.getOperacoes().get(i + 1));
+                    i++;
+                }else if (t.getOperacoes().get(i).equals(">>")) {
+                    text.add("SRL " + t.getOperacoes().get(i + 1));
+                    i++;
+                }else if (isDigit(t.getOperacoes().get(i))) {
                     text.add("LDI " + t.getOperacoes().get(i));
                 } else {
                     text.add("LD " + t.getOperacoes().get(i));

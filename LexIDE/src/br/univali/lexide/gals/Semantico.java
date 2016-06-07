@@ -203,7 +203,7 @@ public class Semantico implements Constants {
     public boolean isDigit(String s) { // checa se é numero ou operadores
         boolean retorno = false;
         retorno = s.matches("[0-9]*");
-        if(s.equals("+") || s.equals("-")){
+        if(s.equals("+") || s.equals("-") || s.equals("<<")|| s.equals(">>")){
             retorno = true;
         }
         return retorno;
