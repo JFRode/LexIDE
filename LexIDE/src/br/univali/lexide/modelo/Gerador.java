@@ -61,16 +61,16 @@ public class Gerador {
             text.add("STO 1000");
             for (int i = 0; i < t.getOperacoes().size(); i++) {
                 if (t.getOperacoes().get(i).equals("+")) {
-                    if(isDigit(t.getOperacoes().get(i+1))){
+                    if (isDigit(t.getOperacoes().get(i + 1))) {
                         text.add("ADDI " + t.getOperacoes().get(i + 1));
-                    }else{
+                    } else {
                         text.add("ADD " + t.getOperacoes().get(i + 1));
                     }
                     i++;
                 } else if (t.getOperacoes().get(i).equals("-")) {
-                    if(isDigit(t.getOperacoes().get(i+1))){
+                    if (isDigit(t.getOperacoes().get(i + 1))) {
                         text.add("SUBI " + t.getOperacoes().get(i + 1));
-                    }else{
+                    } else {
                         text.add("SUB " + t.getOperacoes().get(i + 1));
                     }
                     i++;
@@ -93,17 +93,26 @@ public class Gerador {
             } else {                                                            //  Declaracao variavel não inicializada;
                 data.add(t.getNome() + " : " + "0");
             }
-        } else if (t.getTipo()
-                == null) {                                                      // Atribuição de variavel
+        } else if (t.getTipo() == null) {                                                      // Atribuição de variavel
             if (t.getValor() != null && isDigit(t.getValor())) {
                 text.add("LDI " + t.getValor());
             } else {
                 for (int i = 0; i < t.getOperacoes().size(); i++) {
                     if (t.getOperacoes().get(i).equals("+")) {
-                        text.add("ADD " + t.getOperacoes().get(i + 1));
+                        if (isDigit(t.getOperacoes().get(i + 1))) {
+                            text.add("ADDI " + t.getOperacoes().get(i + 1));
+                        } else {
+                            text.add("ADD " + t.getOperacoes().get(i + 1));
+                        }
+                        //text.add("ADD " + t.getOperacoes().get(i + 1));
                         i++;
                     } else if (t.getOperacoes().get(i).equals("-")) {
-                        text.add("SUD " + t.getOperacoes().get(i + 1));
+                        if (isDigit(t.getOperacoes().get(i + 1))) {
+                            text.add("SUBI " + t.getOperacoes().get(i + 1));
+                        } else {
+                            text.add("SUB " + t.getOperacoes().get(i + 1));
+                        }
+                        //text.add("SUD " + t.getOperacoes().get(i + 1));
                         i++;
                     } else {
                         text.add("LD " + t.getOperacoes().get(i));
