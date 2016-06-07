@@ -40,22 +40,22 @@ public class Gerador {
                 }
                 text.add("STO $out_port");
             }
-        } else if (t.isVetor()) {   //  Declaracao vetor não inicializado
+        } else if (t.isVetor()) {   
             String instancia = "";
-            if (t.getValoresVet().isEmpty()) {
+            if (t.getValoresVet().isEmpty()) {                                  //  Declaracao vetor não inicializado
                     instancia = "0";
                     int comp = Integer.parseInt(t.getValor());
                     for (int i = 1; i < comp; i++) {
                         instancia += ",0";
                     }
-            } else {
+            } else {                                                            //Declaração de vetor incializado
                 instancia = t.getValoresVet().get(0);
                 for (int i = 1; i < t.getValoresVet().size(); i++) {
                     instancia += "," + t.getValoresVet().get(i);
                 }
             }
             data.add(t.getNome() + " : " + instancia);
-        } else if (t.getIndexVet() != null && t.getValor() != null) {
+        } else if (t.getIndexVet() != null && t.getValor() != null) { 
             for (String operacoe : t.getOperacoes()) {
                 System.out.println("operacoes " + operacoe);
             }
@@ -68,11 +68,10 @@ public class Gerador {
             text.add("LD 1001");
             text.add("STOV " + t.getNome());
             //text.add(t.getNome() + "[" + t.getIndexVet() + "] = " + t.getValor());
-        } else if (t.getOperacoes()
-                .isEmpty()) { // se nao for uma atribuição vai estar vazio
-            if (t.isInicializado()) {   //  Declaracao variavel
+        } else if (t.getOperacoes().size() <= 1) {                              // se nao for uma atribuição vai estar vazio
+            if (t.isInicializado()) {                                           //  Declaracao variavel inicializada
                 data.add(t.getNome() + " : " + t.getValor());
-            } else {
+            } else {                                                            //  Declaracao variavel não inicializada;
                 data.add(t.getNome() + " : " + "0");
             }
         }
