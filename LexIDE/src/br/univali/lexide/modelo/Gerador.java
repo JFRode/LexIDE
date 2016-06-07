@@ -23,32 +23,56 @@ public class Gerador {
         for (Object t : text) {
             codigo += t + "\n";
         }
+        codigo += "HLT 0";
         return codigo;
     }
 
     public void novaLinha(Tupla t) {
-        if (t.getIo() != null) {
+        if (t.getIo() != null) {    // IO
             if (t.getIo().equals("read")) {
-                if (t.isLdi()) {
-                    text.add("LDI " + t.getValor());
-                } else {
-                    text.add("LD " + t.getNome());
-                }
-            }
-        } else {
-
-            if (t.isInicializado()) {   //  Declaracao variavel
-                data.add(t.getNome() + " : " + t.getValor());
+                text.add("LD $in_port");
+                text.add("STO " + t.getNome());
             } else {
-                data.add(t.getNome() + " : " + "0");
-            }
-            if (t.isVetor()) {   //  Declaracao vetor não inicializado
-                String instancia = "0";
-                int comp = Integer.parseInt(t.getValor());
-                for (int i = 1; i < comp; i++) {
-                    instancia += ",0";
+                if (t.getValor() == null) {
+                    text.add("LD " + t.getNome());
+                } else {
+                    text.add("LDI " + t.getValor());
                 }
-                data.add(t.getNome() + " : " + instancia);
+                text.add("STO $out_port");
+            }
+        } else if (t.isVetor()) {   
+            String instancia = "";
+            if (t.getValoresVet().isEmpty()) {                                  //  Declaracao vetor não inicializado
+                    instancia = "0";
+                    int comp = Integer.parseInt(t.getValor());
+                    for (int i = 1; i < comp; i++) {
+                        instancia += ",0";
+                    }
+            } else {                                                            //Declaração de vetor incializado
+                instancia = t.getValoresVet().get(0);
+                for (int i = 1; i < t.getValoresVet().size(); i++) {
+                    instancia += "," + t.getValoresVet().get(i);
+                }
+            }
+            data.add(t.getNome() + " : " + instancia);
+        } else if (t.getIndexVet() != null && t.getValor() != null) { 
+            for (String operacoe : t.getOperacoes()) {
+                System.out.println("operacoes " + operacoe);
+            }
+            text.add("LDI " + t.getIndexVet());
+            text.add("STO 1000");
+            text.add("LDI " + t.getValor());
+            text.add("STO 1001");
+            text.add("LD 1000");
+            text.add("STO $indr");
+            text.add("LD 1001");
+            text.add("STOV " + t.getNome());
+            //text.add(t.getNome() + "[" + t.getIndexVet() + "] = " + t.getValor());
+        } else if (t.getOperacoes().size() <= 1) {                              // se nao for uma atribuição vai estar vazio
+            if (t.isInicializado()) {                                           //  Declaracao variavel inicializada
+                data.add(t.getNome() + " : " + t.getValor());
+            } else {                                                            //  Declaracao variavel não inicializada;
+                data.add(t.getNome() + " : " + "0");
             }
         }
     }

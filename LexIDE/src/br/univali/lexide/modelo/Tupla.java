@@ -1,11 +1,16 @@
 package br.univali.lexide.modelo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Tupla {
     private String nome;
     private String tipo;
     private String valor;
+    private List<String> valoresVet = new ArrayList<>();
+    private List<String> operacoes = new ArrayList<>();
+    private String indexVet = null;
     private String io = null;
-    private boolean ldi = false;
     private boolean inicializado = false;
     private boolean usado = false;
     private String escopo;
@@ -120,12 +125,34 @@ public class Tupla {
         this.io = io;
     }
 
-    public boolean isLdi() {
-        return ldi;
+    public List<String> getValoresVet() {
+        return valoresVet;
     }
 
-    public void setLdi(boolean ldi) {
-        this.ldi = ldi;
+    public void setValoresVet(List<String> valores) {
+        this.valoresVet = valores;
     }
     
+    public void addValorVer(String valor){
+        this.valoresVet.add(valor);
+    }
+    
+    public List<String> getOperacoes() {
+        return operacoes;
+    }
+
+    public void setOperacoes(List<String> operacoes) {
+        this.operacoes = operacoes;
+    }
+    
+    public void addOperacao(String operacao){
+        this.operacoes.add(operacao);
+    }
+    public String getIndexVet() {
+        return indexVet;
+    }
+
+    public void setIndexVet(String indexVet) {
+        this.indexVet = indexVet;
+    }
 }

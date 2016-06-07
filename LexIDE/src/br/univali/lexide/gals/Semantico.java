@@ -81,7 +81,6 @@ public class Semantico implements Constants {
                     temp.setTipo(retorno.getTipo());
                     temp.setUsado(true);
                     retorno.setUsado(true);
-                    //insereTabela();
                 } else {
                     throw new BusinessException("Função não declarada: " + temp.getNome());
                 }
@@ -94,7 +93,6 @@ public class Semantico implements Constants {
                 temp = new Tupla();
                 System.out.println("Ação ; #" + action + ", Token: " + token.getLexeme());
                 break;
-
             case 13: // final scope
                 System.out.println("Ação ; #" + action + ", Token: " + token.getLexeme());
                 System.out.println("Removido: " + pilha.pop());
@@ -104,29 +102,26 @@ public class Semantico implements Constants {
                 checarVariaveis();
                 break;
             case 15: // assignment
-                Tupla aux = verificaDeclaracao();
-                if (!aux.isInicializado() && !aux.isParametro()) {
-                    throw new BusinessException("Variavel '" + temp.getNome() + "' não foi inicializada.");
-                }
-                aux.setUsado(true);
+                temp.addOperacao(token.getLexeme()); // adiciona uma operação de atribuiçao para ser checada Ex; a = b + c;
                 System.out.println("Atribuição.");
                 break;
             case 16: // value
                 temp.setValor(token.getLexeme());
-                temp.setLdi(true);
                 System.out.println("Ação ; #" + action + ", Token: " + token.getLexeme());
                 break;
-            case 17: // variable value
-                temp.setLdi(false);
-                temp.setNome(token.getLexeme());
+            case 17: // index vector
+                temp.setIndexVet(token.getLexeme());
                 break;
-            case 18:
+            case 18: // vector value
+                temp.addValorVer(token.getLexeme());
+                break;
+            case 19:
                 temp.setIo("read");
                 LexIDE.gerador.novaLinha(temp);
                 break;
-            case 19:
+            case 20:
                 temp.setIo("write");
-                
+                LexIDE.gerador.novaLinha(temp);
                 break;
         }
     }
@@ -134,21 +129,24 @@ public class Semantico implements Constants {
     public void insereTabela() throws BusinessException {
 
         boolean podeInserir = true;
-        boolean podeAtualizar = false;
+
         temp.setEscopo(pilha.peek());
         if (temp.isFuncao()) {
             pilha.push(temp.getNome());
         }
-        if (temp.getTipo() == null) {
-            Tupla aux = verificaDeclaracao();
-            if (aux != null) {
-                aux.setInicializado(true);
-                podeAtualizar = true;
+        //if (temp.getTipo() == null) {
+        if (!temp.getOperacoes().isEmpty()) {
+            Tupla aux;
+            if (!temp.getOperacoes().isEmpty()) {
+                for (String operacao : temp.getOperacoes()) {
+                    if (!isDigit(operacao)) {
+                        aux = verificaDeclaracao(operacao);
+                        aux.setUsado(true);
+                    }
+                }
             }
-//            }else{
-//                throw new BusinessException("Variavel '" + temp.getNome() + "' não foi declarada.");
-//            }
-        } else if (tabela.size() != 0 && temp != null) {
+        }
+        if (tabela.size() != 0 && temp != null) {
             for (Tupla t : tabela) {
                 // 2. declaracao no mesmo escopo
                 if (t.getNome().equals(temp.getNome()) && t.getEscopo().equals(temp.getEscopo())) {
@@ -177,6 +175,7 @@ public class Semantico implements Constants {
             tabela.add(temp);
             System.out.println("INSERIU");
         }
+
         imprimeTabela();
     }
 
@@ -197,6 +196,15 @@ public class Semantico implements Constants {
             System.out.print(t.isRef() + "\t");
             System.out.print(t.isFuncao() + "\n");
         }
+    }
+
+    private boolean isDigit(String s) { // checa se é numero ou operadores
+        boolean retorno = false;
+        retorno = s.matches("[0-9]*");
+        if(s.equals("+") || s.equals("-")){
+            retorno = true;
+        }
+        return retorno;
     }
 
     private Tupla buscaTabela(String nome) {
@@ -244,16 +252,24 @@ public class Semantico implements Constants {
         }
     }
 
-    private Tupla verificaDeclaracao() throws BusinessException {
+    private Tupla verificaDeclaracao(String nome) throws BusinessException {
         for (int i = (tabela.size() - 1); i >= 0; i--) {
-            if (temp.getNome().equals(tabela.get(i).getNome())) {
+            if (nome.equals(tabela.get(i).getNome())) {
                 for (int j = (pilha.size() - 1); j >= 0; j--) {
                     if (tabela.get(i).getEscopo().equals(pilha.get(j))) {
-                        return tabela.get(i);
+                        if (temp.getIndexVet() != null && temp.getValor() != null) { // Verificar se é uma atribuição de vetor vet[0] = 2;
+                            if (tabela.get(i).isVetor()) {
+                                return tabela.get(i);
+                            } else {
+                                throw new BusinessException("identificador '" + nome + "' não foi declarado.");
+                            }
+                        } else {
+                            return tabela.get(i);
+                        }
                     }
                 }
             }
         }
-        throw new BusinessException("Variavel '" + temp.getNome() + "' não foi declarada.");
+        throw new BusinessException("identificador '" + nome + "' não foi declarado.");
     }
 }

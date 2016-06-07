@@ -9,7 +9,6 @@ import br.univali.lexide.gals.SemanticError;
 import br.univali.lexide.gals.Semantico;
 import br.univali.lexide.gals.Sintatico;
 import br.univali.lexide.gals.SyntaticError;
-import br.univali.lexide.visao.TelaTabela;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
@@ -37,6 +36,7 @@ import javax.swing.undo.UndoManager;
 public class LexIDE extends javax.swing.JFrame {
 
     public static Gerador gerador;
+    public String codigo;
     
     public LexIDE() {
         initComponents();
@@ -103,6 +103,7 @@ public class LexIDE extends javax.swing.JFrame {
         button_salvar = new javax.swing.JButton();
         button_compilar = new javax.swing.JButton();
         button_tabela = new javax.swing.JButton();
+        button_asm = new javax.swing.JButton();
         scrollPanel_codigo = new javax.swing.JScrollPane();
         textArea_codigo = new javax.swing.JTextArea();
         principal = new javax.swing.JPanel();
@@ -169,6 +170,17 @@ public class LexIDE extends javax.swing.JFrame {
             }
         });
         toolBar.add(button_tabela);
+
+        button_asm.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/univali/lexide/imagens/asm.png"))); // NOI18N
+        button_asm.setFocusable(false);
+        button_asm.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        button_asm.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        button_asm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_asmActionPerformed(evt);
+            }
+        });
+        toolBar.add(button_asm);
 
         textArea_codigo.setColumns(20);
         textArea_codigo.setRows(5);
@@ -244,8 +256,8 @@ public class LexIDE extends javax.swing.JFrame {
             textPane_saida.setText("É necessário escrever um codigo para compilar.");
             textPane_saida.setForeground(new Color(205, 92, 92));
         }
-        
-        System.out.println(gerador.montarCodigo());
+        codigo = gerador.montarCodigo();
+        System.out.println("\n\n\n" + codigo);
         this.gerador.getData().clear();
         this.gerador.getText().clear();
     }//GEN-LAST:event_button_compilarActionPerformed
@@ -303,6 +315,14 @@ public class LexIDE extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_button_tabelaActionPerformed
 
+    private void button_asmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_asmActionPerformed
+        if (Semantico.tabela == null) {
+            JOptionPane.showMessageDialog(this, "É necessário compilar um código Lex para visualizar o codigo ASM");
+        } else {
+            new TelaCodigoAsm(this, codigo);
+        }
+    }//GEN-LAST:event_button_asmActionPerformed
+
     public static void main(String args[]) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -328,6 +348,7 @@ public class LexIDE extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton button_abrir;
+    private javax.swing.JButton button_asm;
     private javax.swing.JButton button_compilar;
     private javax.swing.JButton button_novo;
     private javax.swing.JButton button_salvar;
