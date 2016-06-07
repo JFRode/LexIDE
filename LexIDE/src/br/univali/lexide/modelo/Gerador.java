@@ -55,26 +55,46 @@ public class Gerador {
                 }
             }
             data.add(t.getNome() + " : " + instancia);
-        } else if (t.getIndexVet() != null && t.getValor() != null) {
-            for (String operacoe : t.getOperacoes()) {
-                System.out.println("operacoes " + operacoe);
-            }
+        } //else if (t.getIndexVet() != null && t.getValor() != null) {
+        else if (t.getIndexVet() != null) {                                     // Atribuição em vetor
             text.add("LDI " + t.getIndexVet());
             text.add("STO 1000");
-            text.add("LDI " + t.getValor());
+            for (int i = 0; i < t.getOperacoes().size(); i++) {
+                if (t.getOperacoes().get(i).equals("+")) {
+                    if(isDigit(t.getOperacoes().get(i+1))){
+                        text.add("ADDI " + t.getOperacoes().get(i + 1));
+                    }else{
+                        text.add("ADD " + t.getOperacoes().get(i + 1));
+                    }
+                    i++;
+                } else if (t.getOperacoes().get(i).equals("-")) {
+                    if(isDigit(t.getOperacoes().get(i+1))){
+                        text.add("SUBI " + t.getOperacoes().get(i + 1));
+                    }else{
+                        text.add("SUB " + t.getOperacoes().get(i + 1));
+                    }
+                    i++;
+                } else if (isDigit(t.getOperacoes().get(i))) {
+                    text.add("LDI " + t.getOperacoes().get(i));
+                } else {
+                    text.add("LD " + t.getOperacoes().get(i));
+                }
+            }
             text.add("STO 1001");
             text.add("LD 1000");
             text.add("STO $indr");
             text.add("LD 1001");
             text.add("STOV " + t.getNome());
             //text.add(t.getNome() + "[" + t.getIndexVet() + "] = " + t.getValor());
-        } else if (t.getOperacoes().size() <= 1 && t.getTipo() != null) {       // se nao for uma atribuição vai estar vazio
+        } else if (t.getOperacoes()
+                .size() <= 1 && t.getTipo() != null) {                          // se nao for uma atribuição vai estar vazio
             if (t.isInicializado()) {                                           //  Declaracao variavel inicializada
                 data.add(t.getNome() + " : " + t.getValor());
             } else {                                                            //  Declaracao variavel não inicializada;
                 data.add(t.getNome() + " : " + "0");
             }
-        } else if (t.getTipo() == null) {                                       // Atribuição de variavel
+        } else if (t.getTipo()
+                == null) {                                                      // Atribuição de variavel
             if (t.getValor() != null && isDigit(t.getValor())) {
                 text.add("LDI " + t.getValor());
             } else {
