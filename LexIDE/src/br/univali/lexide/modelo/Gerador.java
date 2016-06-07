@@ -40,14 +40,14 @@ public class Gerador {
                 }
                 text.add("STO $out_port");
             }
-        } else if (t.isVetor()) {   
+        } else if (t.isVetor()) {
             String instancia = "";
             if (t.getValoresVet().isEmpty()) {                                  //  Declaracao vetor não inicializado
-                    instancia = "0";
-                    int comp = Integer.parseInt(t.getValor());
-                    for (int i = 1; i < comp; i++) {
-                        instancia += ",0";
-                    }
+                instancia = "0";
+                int comp = Integer.parseInt(t.getValor());
+                for (int i = 1; i < comp; i++) {
+                    instancia += ",0";
+                }
             } else {                                                            //Declaração de vetor incializado
                 instancia = t.getValoresVet().get(0);
                 for (int i = 1; i < t.getValoresVet().size(); i++) {
@@ -55,7 +55,7 @@ public class Gerador {
                 }
             }
             data.add(t.getNome() + " : " + instancia);
-        } else if (t.getIndexVet() != null && t.getValor() != null) { 
+        } else if (t.getIndexVet() != null && t.getValor() != null) {
             for (String operacoe : t.getOperacoes()) {
                 System.out.println("operacoes " + operacoe);
             }
@@ -68,12 +68,30 @@ public class Gerador {
             text.add("LD 1001");
             text.add("STOV " + t.getNome());
             //text.add(t.getNome() + "[" + t.getIndexVet() + "] = " + t.getValor());
-        } else if (t.getOperacoes().size() <= 1) {                              // se nao for uma atribuição vai estar vazio
+        } else if (t.getOperacoes().size() <= 1 && t.getTipo() != null) {       // se nao for uma atribuição vai estar vazio
             if (t.isInicializado()) {                                           //  Declaracao variavel inicializada
                 data.add(t.getNome() + " : " + t.getValor());
             } else {                                                            //  Declaracao variavel não inicializada;
                 data.add(t.getNome() + " : " + "0");
             }
+        } else if (t.getTipo() == null) {                                       // Atribuição de variavel
+            if (t.getValor() != null && isDigit(t.getValor())) {
+                text.add("LDI " + t.getValor());
+            } else {
+                for (int i = 0; i < t.getOperacoes().size(); i++) {
+                    if (t.getOperacoes().get(i).equals("+")) {
+                        text.add("ADD " + t.getOperacoes().get(i + 1));
+                        i++;
+                    } else if (t.getOperacoes().get(i).equals("-")) {
+                        text.add("SUD " + t.getOperacoes().get(i + 1));
+                        i++;
+                    } else {
+                        text.add("LD " + t.getOperacoes().get(i));
+                    }
+                }
+
+            }
+            text.add("STO " + t.getNome());
         }
     }
 
@@ -83,5 +101,9 @@ public class Gerador {
 
     public List<String> getText() {
         return text;
+    }
+
+    public boolean isDigit(String s) { // checa se é numero ou operadores
+        return s.matches("[0-9]*");
     }
 }
