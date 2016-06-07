@@ -33,7 +33,9 @@ public class Semantico implements Constants {
 
         switch (action) {
             case 1: // name
-                temp.setNome(token.getLexeme());
+                if (!temp.isInicializado()) {
+                    temp.setNome(token.getLexeme());
+                }
                 System.out.println("Ação nome #" + action + ", Token: " + token.getLexeme());
                 break;
             case 2: // type
@@ -206,7 +208,7 @@ public class Semantico implements Constants {
     public boolean isDigit(String s) { // checa se é numero ou operadores
         boolean retorno = false;
         retorno = s.matches("[0-9]*");
-        if(s.equals("+") || s.equals("-") || s.equals("<<")|| s.equals(">>")){
+        if (s.equals("+") || s.equals("-") || s.equals("<<") || s.equals(">>")) {
             retorno = true;
         }
         return retorno;
