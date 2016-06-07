@@ -41,6 +41,9 @@ public class Semantico implements Constants {
                 System.out.println("Ação tipo #" + action + ", Token: " + token.getLexeme());
                 break;
             case 3: // inicialized
+                if (temp.getTipo() == null) {
+                    verificaDeclaracao(temp.getNome());
+                }
                 temp.setInicializado(true);
                 System.out.println("Ação inicializado #" + action + ", Token: " + token.getLexeme());
                 break;
