@@ -3,6 +3,7 @@ package br.univali.lexide.gals;
 import br.univali.lexide.visao.LexIDE;
 import br.univali.lexide.exception.BusinessException;
 import br.univali.lexide.exception.InfoException;
+import br.univali.lexide.modelo.Operacao;
 import br.univali.lexide.modelo.Tupla;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +18,10 @@ public class Semantico implements Constants {
     private int contELSE;
     private int contWHILE;
     private int contDO;
+    private Operacao finalFila;                                                   // Arrumar essa merda depois
 
     public Semantico() {
+        
         tabela = new ArrayList();
         pilha = new Stack();
         temp = new Tupla();
@@ -107,15 +110,22 @@ public class Semantico implements Constants {
                 checarVariaveis();
                 break;
             case 15: // assignment
-                temp.addOperacao(token.getLexeme()); // adiciona uma operação de atribuiçao para ser checada Ex; a = b + c;
+                temp.addOperacao(token.getLexeme(),null); // adiciona uma operação de atribuiçao para ser checada Ex; a = b + c;
+                finalFila = temp.getOperacoes().get(temp.getOperacoes().size()-1);
                 System.out.println("Atribuição.");
                 break;
             case 16: // value
                 temp.setValor(token.getLexeme());
                 System.out.println("Ação ; #" + action + ", Token: " + token.getLexeme());
+                if(finalFila != null){
+                    finalFila.setIndexVet(temp.getIndexVet());
+                }
                 break;
             case 17: // index vector
                 temp.setIndexVet(token.getLexeme());
+                if(finalFila != null){
+                    finalFila.setIndexVet(temp.getIndexVet());
+                }
                 break;
             case 18: // vector value
                 temp.addValorVer(token.getLexeme());
@@ -145,9 +155,9 @@ public class Semantico implements Constants {
         if (!temp.getOperacoes().isEmpty()) {
             Tupla aux;
             if (!temp.getOperacoes().isEmpty()) {
-                for (String operacao : temp.getOperacoes()) {
-                    if (!isDigit(operacao)) {
-                        aux = verificaDeclaracao(operacao);
+                for (Operacao operacao : temp.getOperacoes()) {
+                    if (!isDigit(operacao.getOperacao())) {
+                        aux = verificaDeclaracao(operacao.getOperacao());
                         aux.setUsado(true);
                     }
                 }

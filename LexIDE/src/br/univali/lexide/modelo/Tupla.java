@@ -8,7 +8,7 @@ public class Tupla {
     private String tipo;
     private String valor;
     private List<String> valoresVet = new ArrayList<>();
-    private List<String> operacoes = new ArrayList<>();
+    private List<Operacao> operacoes = new ArrayList<>();
     private String indexVet = null;
     private String io = null;
     private boolean inicializado = false;
@@ -137,16 +137,16 @@ public class Tupla {
         this.valoresVet.add(valor);
     }
     
-    public List<String> getOperacoes() {
+    public List<Operacao> getOperacoes() {
         return operacoes;
     }
 
-    public void setOperacoes(List<String> operacoes) {
+    public void setOperacoes(List<Operacao> operacoes) {
         this.operacoes = operacoes;
     }
     
-    public void addOperacao(String operacao){
-        this.operacoes.add(operacao);
+    public void addOperacao(String operacao, String indexVet){
+        this.operacoes.add(new Operacao(operacao, indexVet));
     }
     public String getIndexVet() {
         return indexVet;
