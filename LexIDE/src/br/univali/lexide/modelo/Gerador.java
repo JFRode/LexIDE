@@ -78,25 +78,25 @@ public class Gerador {
             text.add("LDI " + t.getIndexVet());
             text.add("STO 1000");
             for (int i = 0; i < t.getOperacoes().size(); i++) {
-                if (t.getOperacoes().get(i).equals("+")) {
+                if (t.getOperacoes().get(i).getOperacao().equals("+")) {
                     if (isDigit(t.getOperacoes().get(i + 1).getOperacao())) {
-                        text.add("ADDI " + t.getOperacoes().get(i + 1));
+                        text.add("ADDI " + t.getOperacoes().get(i + 1).getOperacao());
                     } else {
-                        text.add("ADD " + t.getOperacoes().get(i + 1));
+                        text.add("ADD " + t.getOperacoes().get(i + 1).getOperacao());
                     }
                     i++;
-                } else if (t.getOperacoes().get(i).equals("-")) {
+                } else if (t.getOperacoes().get(i).getOperacao().equals("-")) {
                     if (isDigit(t.getOperacoes().get(i + 1).getOperacao())) {
-                        text.add("SUBI " + t.getOperacoes().get(i + 1));
+                        text.add("SUBI " + t.getOperacoes().get(i + 1).getOperacao());
                     } else {
-                        text.add("SUB " + t.getOperacoes().get(i + 1));
+                        text.add("SUB " + t.getOperacoes().get(i + 1).getOperacao());
                     }
                     i++;
-                } else if (t.getOperacoes().get(i).equals("<<")) {
-                    text.add("SLL " + t.getOperacoes().get(i + 1));
+                } else if (t.getOperacoes().get(i).getOperacao().equals("<<")) {
+                    text.add("SLL " + t.getOperacoes().get(i + 1).getOperacao());
                     i++;
-                } else if (t.getOperacoes().get(i).equals(">>")) {
-                    text.add("SRL " + t.getOperacoes().get(i + 1));
+                } else if (t.getOperacoes().get(i).getOperacao().equals(">>")) {
+                    text.add("SRL " + t.getOperacoes().get(i + 1).getOperacao());
                     i++;
                 } else if (isDigit(t.getOperacoes().get(i).getOperacao())) {
                     text.add("LDI " + t.getOperacoes().get(i).getOperacao());
@@ -120,23 +120,23 @@ public class Gerador {
             for (int i = 0; i < t.getOperacoes().size(); i++) {
                 if (t.getOperacoes().get(i).getOperacao().equals("+")) {
                     if (isDigit(t.getOperacoes().get(i + 1).getOperacao())) {
-                        text.add("ADDI " + t.getOperacoes().get(i + 1));
+                        text.add("ADDI " + t.getOperacoes().get(i + 1).getOperacao());
                     } else {
-                        text.add("ADD " + t.getOperacoes().get(i + 1));
+                        text.add("ADD " + t.getOperacoes().get(i + 1).getOperacao());
                     }
                     i++;
                 } else if (t.getOperacoes().get(i).getOperacao().equals("-")) {
                     if (isDigit(t.getOperacoes().get(i + 1).getOperacao())) {
-                        text.add("SUBI " + t.getOperacoes().get(i + 1));
+                        text.add("SUBI " + t.getOperacoes().get(i + 1).getOperacao());
                     } else {
-                        text.add("SUB " + t.getOperacoes().get(i + 1));
+                        text.add("SUB " + t.getOperacoes().get(i + 1).getOperacao());
                     }
                     i++;
                 } else if (t.getOperacoes().get(i).getOperacao().equals("<<")) {
-                    text.add("SLL " + t.getOperacoes().get(i + 1));
+                    text.add("SLL " + t.getOperacoes().get(i + 1).getOperacao());
                     i++;
                 } else if (t.getOperacoes().get(i).getOperacao().equals(">>")) {
-                    text.add("SRL " + t.getOperacoes().get(i + 1));
+                    text.add("SRL " + t.getOperacoes().get(i + 1).getOperacao());
                     i++;
                 } else if (isDigit(t.getOperacoes().get(i).getOperacao())) {
                     text.add("LDI " + t.getOperacoes().get(i).getOperacao());

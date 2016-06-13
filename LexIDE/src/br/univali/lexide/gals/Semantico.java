@@ -274,7 +274,7 @@ public class Semantico implements Constants {
             if (nome.equals(tabela.get(i).getNome())) {
                 for (int j = (pilha.size() - 1); j >= 0; j--) {
                     if (tabela.get(i).getEscopo().equals(pilha.get(j))) {
-                        if (temp.getIndexVet() != null && temp.getValor() != null) { // Verificar se é uma atribuição de vetor vet[0] = 2;
+                        if (temp.getIndexVet() != null && temp.getValor() != null && temp.getOperacoes() == null) { // Verificar se é uma atribuição de vetor vet[0] = 2;
                             if (tabela.get(i).isVetor()) {
                                 return tabela.get(i);
                             } else {
