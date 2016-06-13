@@ -117,13 +117,13 @@ public class Semantico implements Constants {
             case 16: // value
                 temp.setValor(token.getLexeme());
                 System.out.println("Ação ; #" + action + ", Token: " + token.getLexeme());
-                if(finalFila != null){
+                if(finalFila != null && !finalFila.getOperacao().equals("+") && !finalFila.getOperacao().equals("-")){
                     finalFila.setIndexVet(temp.getIndexVet());
                 }
                 break;
             case 17: // index vector
                 temp.setIndexVet(token.getLexeme());
-                if(finalFila != null){
+                if(finalFila != null && !finalFila.getOperacao().equals("+") && !finalFila.getOperacao().equals("-")){
                     finalFila.setIndexVet(temp.getIndexVet());
                 }
                 break;

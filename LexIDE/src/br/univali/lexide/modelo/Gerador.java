@@ -28,8 +28,8 @@ public class Gerador {
     }
 
     public void novaLinha(Tupla t) {
-        if (t.getIo() != null) {    // IO
-            if (t.getIo().equals("read")) {
+        if (t.getIo() != null) {                                                // IO
+            if (t.getIo().equals("read")) {                                     // Read
                 if (t.isVetor()) {
                     text.add("LDI " + t.getValor());
                     text.add("STO $indr");
@@ -39,7 +39,7 @@ public class Gerador {
                     text.add("LD $in_port");
                     text.add("STO " + t.getNome());
                 }
-            } else if (t.getIo().equals("write")) {
+            } else if (t.getIo().equals("write")) {                             // Write
                 if (t.isVetor()) {
                     text.add("LDI " + t.getValor());
                     text.add("STO $indr");
@@ -67,49 +67,20 @@ public class Gerador {
                     }
                 }
                 data.add(t.getNome() + " : " + instancia);
-            } else {                                                              // Atribuindo um vetor em uma variavel ex: a = vet[5];
-                text.add("LDI " + t.getOperacoes().get(0).getIndexVet());
-                text.add("STO $indr");
-                text.add("LDV " + t.getOperacoes().get(0).getOperacao());
-                text.add("STO " + t.getNome() );
+            } else {                                                            // Atribuindo um vetor em uma variavel ex: a = vet[5];
+                montaOperacao(t);
+                text.add("STO " + t.getNome());
             }
         } //else if (t.getIndexVet() != null && t.getValor() != null) {
         else if (t.getIndexVet() != null) {                                     // Atribuição em vetor
             text.add("LDI " + t.getIndexVet());
             text.add("STO 1000");
-            for (int i = 0; i < t.getOperacoes().size(); i++) {
-                if (t.getOperacoes().get(i).getOperacao().equals("+")) {
-                    if (isDigit(t.getOperacoes().get(i + 1).getOperacao())) {
-                        text.add("ADDI " + t.getOperacoes().get(i + 1).getOperacao());
-                    } else {
-                        text.add("ADD " + t.getOperacoes().get(i + 1).getOperacao());
-                    }
-                    i++;
-                } else if (t.getOperacoes().get(i).getOperacao().equals("-")) {
-                    if (isDigit(t.getOperacoes().get(i + 1).getOperacao())) {
-                        text.add("SUBI " + t.getOperacoes().get(i + 1).getOperacao());
-                    } else {
-                        text.add("SUB " + t.getOperacoes().get(i + 1).getOperacao());
-                    }
-                    i++;
-                } else if (t.getOperacoes().get(i).getOperacao().equals("<<")) {
-                    text.add("SLL " + t.getOperacoes().get(i + 1).getOperacao());
-                    i++;
-                } else if (t.getOperacoes().get(i).getOperacao().equals(">>")) {
-                    text.add("SRL " + t.getOperacoes().get(i + 1).getOperacao());
-                    i++;
-                } else if (isDigit(t.getOperacoes().get(i).getOperacao())) {
-                    text.add("LDI " + t.getOperacoes().get(i).getOperacao());
-                } else {
-                    text.add("LD " + t.getOperacoes().get(i).getOperacao());
-                }
-            }
+            montaOperacao(t);
             text.add("STO 1001");
             text.add("LD 1000");
             text.add("STO $indr");
             text.add("LD 1001");
             text.add("STOV " + t.getNome());
-            //text.add(t.getNome() + "[" + t.getIndexVet() + "] = " + t.getValor());
         } else if (t.getOperacoes().size() <= 1 && t.getTipo() != null) {       // se nao for uma atribuição vai estar vazio
             if (t.isInicializado()) {                                           //  Declaracao variavel inicializada
                 data.add(t.getNome() + " : " + t.getValor());
@@ -117,34 +88,50 @@ public class Gerador {
                 data.add(t.getNome() + " : " + "0");
             }
         } else if (t.getTipo() == null) {                                       // Atribuição de variavel
-            for (int i = 0; i < t.getOperacoes().size(); i++) {
-                if (t.getOperacoes().get(i).getOperacao().equals("+")) {
-                    if (isDigit(t.getOperacoes().get(i + 1).getOperacao())) {
-                        text.add("ADDI " + t.getOperacoes().get(i + 1).getOperacao());
-                    } else {
-                        text.add("ADD " + t.getOperacoes().get(i + 1).getOperacao());
-                    }
-                    i++;
-                } else if (t.getOperacoes().get(i).getOperacao().equals("-")) {
-                    if (isDigit(t.getOperacoes().get(i + 1).getOperacao())) {
-                        text.add("SUBI " + t.getOperacoes().get(i + 1).getOperacao());
-                    } else {
-                        text.add("SUB " + t.getOperacoes().get(i + 1).getOperacao());
-                    }
-                    i++;
-                } else if (t.getOperacoes().get(i).getOperacao().equals("<<")) {
-                    text.add("SLL " + t.getOperacoes().get(i + 1).getOperacao());
-                    i++;
-                } else if (t.getOperacoes().get(i).getOperacao().equals(">>")) {
-                    text.add("SRL " + t.getOperacoes().get(i + 1).getOperacao());
-                    i++;
-                } else if (isDigit(t.getOperacoes().get(i).getOperacao())) {
-                    text.add("LDI " + t.getOperacoes().get(i).getOperacao());
-                } else {
-                    text.add("LD " + t.getOperacoes().get(i).getOperacao());
-                }
-            }
+            montaOperacao(t);
             text.add("STO " + t.getNome());
+        }
+    }
+
+    private void montaOperacao(Tupla t) {
+        for (int i = 0; i < t.getOperacoes().size(); i++) {
+            if (t.getOperacoes().get(i).getIndexVet() != null) {
+                text.add("LDI " + t.getOperacoes().get(i).getIndexVet());
+                text.add("STO $indr");
+                text.add("LDV " + t.getOperacoes().get(i).getOperacao());
+            } else if (t.getOperacoes().get(i).getOperacao().equals("+")) {
+                if (isDigit(t.getOperacoes().get(i + 1).getOperacao())) {
+                    text.add("ADDI " + t.getOperacoes().get(i + 1).getOperacao());
+                } else if (t.getOperacoes().get(i + 1).getIndexVet() != null) {
+                    text.add("STO 1000");
+                    text.add("LDI " + t.getOperacoes().get(i + 1).getIndexVet());
+                    text.add("STO $indr");
+                    text.add("LDV " + t.getOperacoes().get(i + 1).getOperacao());
+                    text.add("STO 1001");
+                    text.add("LD 1000");
+                    text.add("ADD 1001");
+                } else {
+                    text.add("ADD " + t.getOperacoes().get(i + 1).getOperacao());
+                }
+                i++;
+            } else if (t.getOperacoes().get(i).getOperacao().equals("-")) {
+                if (isDigit(t.getOperacoes().get(i + 1).getOperacao())) {
+                    text.add("SUBI " + t.getOperacoes().get(i + 1).getOperacao());
+                } else {
+                    text.add("SUB " + t.getOperacoes().get(i + 1).getOperacao());
+                }
+                i++;
+            } else if (t.getOperacoes().get(i).getOperacao().equals("<<")) {
+                text.add("SLL " + t.getOperacoes().get(i + 1).getOperacao());
+                i++;
+            } else if (t.getOperacoes().get(i).getOperacao().equals(">>")) {
+                text.add("SRL " + t.getOperacoes().get(i + 1).getOperacao());
+                i++;
+            } else if (isDigit(t.getOperacoes().get(i).getOperacao())) {
+                text.add("LDI " + t.getOperacoes().get(i).getOperacao());
+            } else {
+                text.add("LD " + t.getOperacoes().get(i).getOperacao());
+            }
         }
     }
 
