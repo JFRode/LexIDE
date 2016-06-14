@@ -6,6 +6,9 @@ Tem como objetivo a criação de uma linguagem de programação simples, apenas 
 --
 
 ###Data types
+
+<center>
+
 | Data | Example |
 | ---- | ------- |
 | int | 16 |
@@ -13,6 +16,8 @@ Tem como objetivo a criação de uma linguagem de programação simples, apenas 
 | char | 'c' |
 | float | 10.23 |
 | vectors | int vet[] |
+
+</center>
 
 ###Control structures
 | Conditional clauses | Example |
