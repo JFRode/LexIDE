@@ -7,8 +7,6 @@ Tem como objetivo a criação de uma linguagem de programação simples, apenas 
 
 ###Data types
 
-<div style="text-align:center">
-
 | Data | Example |
 | ---- | ------- |
 | int | 16 |
@@ -17,7 +15,6 @@ Tem como objetivo a criação de uma linguagem de programação simples, apenas 
 | float | 10.23 |
 | vectors | int vet[] |
 
-</div>
 
 ###Control structures
 | Conditional clauses | Example |
