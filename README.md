@@ -1,7 +1,6 @@
 # LexIDE
-Projeto da disciplina de compiladores.
 
-Tem como objetivo a criação de uma linguagem de programação simples, apenas para aprendizagem. Inclui uma IDE.
+Se você chegou até aqui é porque tem interesse em entender como a LexIDE funciona ou como a linguagem Lex funciona. Neste texto, você pode visualizar a documentação completa do projeto.
 
 --
 
