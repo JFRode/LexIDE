@@ -1,11 +1,11 @@
 # LexIDE
-Projeto da disciplina de compiladores.
 
-Tem como objetivo a criação de uma linguagem de programação simples, apenas para aprendizagem. Inclui uma IDE.
+Se você chegou até aqui é porque tem interesse em entender como a LexIDE funciona ou como a linguagem Lex funciona. Neste texto, você pode visualizar a documentação completa do projeto.
 
 --
 
 ###Data types
+
 | Data | Example |
 | ---- | ------- |
 | int | 16 |
@@ -13,6 +13,7 @@ Tem como objetivo a criação de uma linguagem de programação simples, apenas 
 | char | 'c' |
 | float | 10.23 |
 | vectors | int vet[] |
+
 
 ###Control structures
 | Conditional clauses | Example |
@@ -77,7 +78,9 @@ Tem como objetivo a criação de uma linguagem de programação simples, apenas 
 | vector value| #18 |
 | read | #19 |
 | write | #20 |
-
+| relational first | #21 |
+| relational operator | #22 |
+| relational second | #23 |
 **final line:** detecta quando as informações para compor uma tupla da tabela já são o suficiente, por exemplo ";".
 
 **final scope:** detecta o final de um escopo.
