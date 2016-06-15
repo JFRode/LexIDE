@@ -1,3 +1,8 @@
+# Idéia do branch
+
+Gerar o código do if normalmente com uma tag para onde ele vai redirecionar "redirecionamento_if". quando terminar o if, será possivel identificar se possui um else ou não. desta maneira é só pegar o texto e trocar a tag pelo metodo para redirecionamento.
+BNE redirecionamento_if
+
 # LexIDE
 
 Se você chegou até aqui é porque tem interesse em entender como a LexIDE funciona ou como a linguagem Lex funciona. Neste texto, você pode visualizar a documentação completa do projeto.
