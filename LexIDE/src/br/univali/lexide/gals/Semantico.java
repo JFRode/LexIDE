@@ -4,6 +4,7 @@ import br.univali.lexide.visao.LexIDE;
 import br.univali.lexide.exception.BusinessException;
 import br.univali.lexide.exception.InfoException;
 import br.univali.lexide.modelo.Operacao;
+import br.univali.lexide.modelo.OperacaoRelacional;
 import br.univali.lexide.modelo.Tupla;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +19,11 @@ public class Semantico implements Constants {
     private int contELSE;
     private int contWHILE;
     private int contDO;
-    private Operacao finalFila;                                                   // Arrumar essa merda depois
+    private Operacao finalFila;
+    private OperacaoRelacional opRel;
 
     public Semantico() {
-        
+
         tabela = new ArrayList();
         pilha = new Stack();
         temp = new Tupla();
@@ -30,6 +32,7 @@ public class Semantico implements Constants {
         contWHILE = 0;
         contDO = 0;
         pilha.push("Global");
+        opRel = new OperacaoRelacional();
     }
 
     public void executeAction(int action, Token token) throws SemanticError, BusinessException, InfoException {
@@ -103,6 +106,15 @@ public class Semantico implements Constants {
                 break;
             case 13: // final scope
                 System.out.println("Ação ; #" + action + ", Token: " + token.getLexeme());
+                if (token.getLexeme().equals("else")) {
+
+                } else {
+                    opRel.setFinalEscopo(token.getLexeme());
+                    temp.setOpRel(opRel);
+                    LexIDE.gerador.novaLinha(temp);
+                    temp = new Tupla();
+                    opRel = new OperacaoRelacional();
+                }
                 System.out.println("Removido: " + pilha.pop());
                 break;
             case 14: // final code
@@ -110,20 +122,20 @@ public class Semantico implements Constants {
                 checarVariaveis();
                 break;
             case 15: // assignment
-                temp.addOperacao(token.getLexeme(),null); // adiciona uma operação de atribuiçao para ser checada Ex; a = b + c;
-                finalFila = temp.getOperacoes().get(temp.getOperacoes().size()-1);
+                temp.addOperacao(token.getLexeme(), null); // adiciona uma operação de atribuiçao para ser checada Ex; a = b + c;
+                finalFila = temp.getOperacoes().get(temp.getOperacoes().size() - 1);
                 System.out.println("Atribuição.");
                 break;
             case 16: // value
                 temp.setValor(token.getLexeme());
                 System.out.println("Ação ; #" + action + ", Token: " + token.getLexeme());
-                if(finalFila != null && !finalFila.getOperacao().equals("+") && !finalFila.getOperacao().equals("-")){
+                if (finalFila != null && !finalFila.getOperacao().equals("+") && !finalFila.getOperacao().equals("-")) {
                     finalFila.setIndexVet(temp.getIndexVet());
                 }
                 break;
             case 17: // index vector
                 temp.setIndexVet(token.getLexeme());
-                if(finalFila != null && !finalFila.getOperacao().equals("+") && !finalFila.getOperacao().equals("-")){
+                if (finalFila != null && !finalFila.getOperacao().equals("+") && !finalFila.getOperacao().equals("-")) {
                     finalFila.setIndexVet(temp.getIndexVet());
                 }
                 break;
@@ -140,6 +152,20 @@ public class Semantico implements Constants {
                 verificaDeclaracao(temp.getNome());
                 LexIDE.gerador.novaLinha(temp);
                 break;
+            case 21:
+                opRel.setOperando1(token.getLexeme());
+                break;
+            case 22:
+                opRel.setOperacao(token.getLexeme());
+                break;
+            case 23:
+                opRel.setOperando2(token.getLexeme());
+                opRel.setEscopo(pilha.peek());
+                temp.setOpRel(opRel);
+                LexIDE.gerador.novaLinha(temp);
+                temp = new Tupla();
+                break;
+
         }
     }
 

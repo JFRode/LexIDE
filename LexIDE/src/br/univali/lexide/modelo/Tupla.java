@@ -20,6 +20,15 @@ public class Tupla {
     private boolean matriz = false;
     private boolean ref = false;
     private boolean funcao = false;
+    private OperacaoRelacional opRel = new OperacaoRelacional();
+
+    public OperacaoRelacional getOpRel() {
+        return opRel;
+    }
+
+    public void setOpRel(OperacaoRelacional opRel) {
+        this.opRel = opRel;
+    }
 
     public String getNome() {
         return nome;
