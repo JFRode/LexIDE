@@ -5,13 +5,14 @@ public class OperacaoRelacional {
     private String operando2;
     private String operacao;
     private String escopo;
-    private String Else;
+    private boolean Else;
     private String finalEscopo;
-    public String getElse() {
+    
+    public boolean isElse() {
         return Else;
     }
 
-    public void setElse(String Else) {
+    public void setElse(boolean Else) {
         this.Else = Else;
     }
     

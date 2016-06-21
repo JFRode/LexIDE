@@ -35,31 +35,27 @@ public class Gerador {
     private void zerarListas() {
         text.clear();
         temp.clear();
-        index = 0;
     }
 
     public void novaLinha(Tupla t) {
-        if (t.getOpRel().getFinalEscopo() != null && t.getOpRel().getFinalEscopo().equals("else")) {
+        if (t.getOpRel().isElse()) {
             // aqui vai o codigo de quando for else
+            System.err.println("Else");
         } else if (t.getOpRel().getFinalEscopo() != null && t.getOpRel().getFinalEscopo().equals("}")) {
             if (t.getOpRel().getOperacao().equals("==")) {
                 temp.add("BNE END" + t.getOpRel().getEscopo().toUpperCase());
             }
-            //teste
-
             for (int i = temp.size() - 1; i >= 0; i--) {
-                text.add(index, temp.get(i));
+                text.add(0, temp.get(i));
             }
             temp.clear();
             text.add("END" + t.getOpRel().getEscopo().toUpperCase() + ":");
-            //index = text.size();
             System.out.println("");
 
         } else if (t.getOpRel().getOperando1() != null) {
             text.stream().forEach((text1) -> {
                 temp.add(text1);
             });
-
             text = new ArrayList<>();
             if (isDigit(t.getOpRel().getOperando1())) {
                 temp.add("LDI " + t.getOpRel().getOperando1());
@@ -75,8 +71,6 @@ public class Gerador {
             temp.add("STO 1001");
             temp.add("LD 1000");
             temp.add("SUB 1001");
-            System.err.println("oaksoaks");
-
         } else {
             if (t.getIo() != null) {                                                // IO
                 if (t.getIo().equals("read")) {                                     // Read
