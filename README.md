@@ -81,6 +81,7 @@ Se você chegou até aqui é porque tem interesse em entender como a LexIDE func
 | relational first | #21 |
 | relational operator | #22 |
 | relational second | #23 |
+| increment type | #24 |
 **final line:** detecta quando as informações para compor uma tupla da tabela já são o suficiente, por exemplo ";".
 
 **final scope:** detecta o final de um escopo.
