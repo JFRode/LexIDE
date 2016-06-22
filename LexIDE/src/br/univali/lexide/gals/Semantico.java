@@ -107,18 +107,16 @@ public class Semantico implements Constants {
             case 13: // final scope
                 System.out.println("Ação ; #" + action + ", Token: " + token.getLexeme());
                 if (token.getLexeme().equals("else")) {
-                    //opRel.setFinalEscopo(token.getLexeme());
-                    //opRel.setEscopo("else-" + contELSE);
                     opRel.setElse(true);
+                    opRel.setEscopo(pilha.peek());
                     temp.setOpRel(opRel);
-                    //opRel = new OperacaoRelacional();
+                    LexIDE.gerador.novaLinha(temp);
                     temp = new Tupla();
                 } else {
                     opRel.setFinalEscopo(token.getLexeme());
                     temp.setOpRel(opRel);
                     LexIDE.gerador.novaLinha(temp);
                     temp = new Tupla();
-                    
                 }
                 System.out.println("Removido: " + pilha.pop());
                 break;

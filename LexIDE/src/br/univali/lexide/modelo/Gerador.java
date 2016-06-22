@@ -10,6 +10,7 @@ public class Gerador {
     private List<String> text;
     private List<String> temp;
     private int index;
+    private String ifElse;
 
     public Gerador() {
         data = new ArrayList();
@@ -40,7 +41,23 @@ public class Gerador {
     public void novaLinha(Tupla t) {
         if (t.getOpRel().isElse()) {
             // aqui vai o codigo de quando for else
-            System.err.println("Else");
+            if (t.getOpRel().getFinalEscopo() == null) {
+                if (t.getOpRel().getOperacao().equals("==")) {
+                    temp.add("BNE " + t.getOpRel().getEscopo().toUpperCase());
+                }
+                for (String text1 : text) {
+                    temp.add(text1);
+                }
+                temp.add("JMP END" + ifElse.toUpperCase());
+                temp.add(t.getOpRel().getEscopo().toUpperCase() + ":");
+                text.clear();
+            } else {
+                for (int i = temp.size() - 1; i >= 0; i--) {
+                    text.add(0, temp.get(i));
+                }
+                text.add("END" + ifElse.toUpperCase() + ":");
+                temp.clear();
+            }
         } else if (t.getOpRel().getFinalEscopo() != null && t.getOpRel().getFinalEscopo().equals("}")) {
             if (t.getOpRel().getOperacao().equals("==")) {
                 temp.add("BNE END" + t.getOpRel().getEscopo().toUpperCase());
@@ -53,6 +70,7 @@ public class Gerador {
             System.out.println("");
 
         } else if (t.getOpRel().getOperando1() != null) {
+            ifElse = t.getOpRel().getEscopo();
             text.stream().forEach((text1) -> {
                 temp.add(text1);
             });
