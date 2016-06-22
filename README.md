@@ -2,6 +2,8 @@
 
 Se você chegou até aqui é porque tem interesse em entender como a LexIDE funciona ou como a linguagem Lex funciona. Neste texto, você pode visualizar a documentação completa do projeto.
 
+//TODO
+
 --
 
 ###Data types
