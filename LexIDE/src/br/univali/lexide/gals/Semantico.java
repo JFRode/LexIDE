@@ -265,19 +265,19 @@ public class Semantico implements Constants {
     private void inserePilha(Token token) {
         switch (token.getLexeme()) {
             case "if":
-                pilha.push("if-" + contIF);
+                pilha.push("if" + contIF);
                 contIF++;
                 break;
             case "else":
-                pilha.push("else-" + contELSE);
+                pilha.push("else" + contELSE);
                 contELSE++;
                 break;
             case "while":
-                pilha.push("while-" + contWHILE);
+                pilha.push("while" + contWHILE);
                 contWHILE++;
                 break;
             case "do":
-                pilha.push("do-" + contDO);
+                pilha.push("do" + contDO);
                 contDO++;
                 break;
             default:
