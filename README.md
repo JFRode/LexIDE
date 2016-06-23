@@ -58,7 +58,7 @@ Se você chegou até aqui é porque tem interesse em entender como a LexIDE func
 | << | |
 
 ###Semantic actions
-| what | id |
+| Catch | id |
 | ---- | ------- |
 | name | #1 |
 | type | #2 |
