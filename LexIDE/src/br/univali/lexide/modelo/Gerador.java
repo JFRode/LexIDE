@@ -38,16 +38,59 @@ public class Gerador {
         temp.clear();
     }
 
-    private void verificaOperacaoIfElse(OperacaoRelacional opRel) {
-        if (opRel.getOperacao().equals("==")) {
-            temp.add("BNE " + opRel.getEscopo().toUpperCase());
+    private void verificaOperacaoDesvio(OperacaoRelacional opRel, boolean isElse) {
+        if (opRel.getOperacao() != null) {
+            switch (opRel.getOperacao()) {
+                case "==":
+                    if (isElse) {
+                        temp.add("BNE " + opRel.getEscopo().toUpperCase());
+                    } else {
+                        temp.add("BNE END" + opRel.getEscopo().toUpperCase());
+                    }
+                    break;
+                case "!=":
+                    if (isElse) {
+                        temp.add("BEQ " + opRel.getEscopo().toUpperCase());
+                    } else {
+                        temp.add("BEQ END" + opRel.getEscopo().toUpperCase());
+                    }
+                    break;
+                case "<=":
+                    if (isElse) {
+                        temp.add("BGT " + opRel.getEscopo().toUpperCase());
+                    } else {
+                        temp.add("BGT END" + opRel.getEscopo().toUpperCase());
+                    }
+                    break;
+                case "<":
+                    if (isElse) {
+                        temp.add("BGE " + opRel.getEscopo().toUpperCase());
+                    } else {
+                        temp.add("BGE END" + opRel.getEscopo().toUpperCase());
+                    }
+                    break;
+                case ">=":
+                    if (isElse) {
+                        temp.add("BLT " + opRel.getEscopo().toUpperCase());
+                    } else {
+                        temp.add("BLT END" + opRel.getEscopo().toUpperCase());
+                    }
+                    break;
+                case ">":
+                    if (isElse) {
+                        temp.add("BLE " + opRel.getEscopo().toUpperCase());
+                    } else {
+                        temp.add("BLE END" + opRel.getEscopo().toUpperCase());
+                    }
+                    break;
+            }
         }
     }
 
     public void novaLinha(Tupla t) {
         if (t.getOpRel().isElse()) {                                            // Else
             if (t.getOpRel().getFinalEscopo() == null) {
-                verificaOperacaoIfElse(t.getOpRel());
+                verificaOperacaoDesvio(t.getOpRel(), true);
                 for (String text1 : text) {
                     temp.add(text1);
                 }
@@ -62,7 +105,7 @@ public class Gerador {
                 temp.clear();
             }
         } else if (t.getOpRel().getFinalEscopo() != null && t.getOpRel().getFinalEscopo().equals("}")) {        // termina de montar o codigo if
-            verificaOperacaoIfElse(t.getOpRel());
+            verificaOperacaoDesvio(t.getOpRel(), false);
             for (int i = temp.size() - 1; i >= 0; i--) {
                 text.add(0, temp.get(i));
             }
@@ -90,70 +133,68 @@ public class Gerador {
             temp.add("STO 1001");
             temp.add("LD 1000");
             temp.add("SUB 1001");
-        } else {
-            if (t.getIo() != null) {                                                // IO
-                if (t.getIo().equals("read")) {                                     // Read
-                    if (t.isVetor()) {
-                        text.add("LDI " + t.getValor());
-                        text.add("STO $indr");
-                        text.add("LD $in_port");
-                        text.add("STOV " + t.getNome());
-                    } else {
-                        text.add("LD $in_port");
-                        text.add("STO " + t.getNome());
-                    }
-                } else if (t.getIo().equals("write")) {                             // Write
-                    if (t.isVetor()) {
-                        text.add("LDI " + t.getValor());
-                        text.add("STO $indr");
-                        text.add("LDV " + t.getNome());
-                    } else if (t.getValor() == null) {
-                        text.add("LD " + t.getNome());
-                    } else {
-                        text.add("LDI " + t.getValor());
-                    }
-                    text.add("STO $out_port");
-                }
-            } else if (t.isVetor()) {
-                if (t.getTipo() != null) {
-                    String instancia = "";
-                    if (t.getValoresVet().isEmpty()) {                              //  Declaracao vetor não inicializado
-                        instancia = "0";
-                        int comp = Integer.parseInt(t.getValor());
-                        for (int i = 1; i < comp; i++) {
-                            instancia += ",0";
-                        }
-                    } else {                                                        //Declaração de vetor incializado
-                        instancia = t.getValoresVet().get(0);
-                        for (int i = 1; i < t.getValoresVet().size(); i++) {
-                            instancia += "," + t.getValoresVet().get(i);
-                        }
-                    }
-                    data.add(t.getNome() + " : " + instancia);
-                } else {                                                            // Atribuindo um vetor em uma variavel ex: a = vet[5];
-                    montaOperacao(t);
+        } else if (t.getIo() != null) {                                                // IO
+            if (t.getIo().equals("read")) {                                     // Read
+                if (t.isVetor()) {
+                    text.add("LDI " + t.getValor());
+                    text.add("STO $indr");
+                    text.add("LD $in_port");
+                    text.add("STOV " + t.getNome());
+                } else {
+                    text.add("LD $in_port");
                     text.add("STO " + t.getNome());
                 }
-            } //else if (t.getIndexVet() != null && t.getValor() != null) {
-            else if (t.getIndexVet() != null) {                                     // Atribuição em vetor
-                text.add("LDI " + t.getIndexVet());
-                text.add("STO 1000");
-                montaOperacao(t);
-                text.add("STO 1001");
-                text.add("LD 1000");
-                text.add("STO $indr");
-                text.add("LD 1001");
-                text.add("STOV " + t.getNome());
-            } else if (t.getOperacoes().size() <= 1 && t.getTipo() != null) {       // se nao for uma atribuição vai estar vazio
-                if (t.isInicializado()) {                                           //  Declaracao variavel inicializada
-                    data.add(t.getNome() + " : " + t.getValor());
-                } else {                                                            //  Declaracao variavel não inicializada;
-                    data.add(t.getNome() + " : " + "0");
+            } else if (t.getIo().equals("write")) {                             // Write
+                if (t.isVetor()) {
+                    text.add("LDI " + t.getValor());
+                    text.add("STO $indr");
+                    text.add("LDV " + t.getNome());
+                } else if (t.getValor() == null) {
+                    text.add("LD " + t.getNome());
+                } else {
+                    text.add("LDI " + t.getValor());
                 }
-            } else if (t.getTipo() == null) {                                       // Atribuição de variavel
+                text.add("STO $out_port");
+            }
+        } else if (t.isVetor()) {
+            if (t.getTipo() != null) {
+                String instancia = "";
+                if (t.getValoresVet().isEmpty()) {                              //  Declaracao vetor não inicializado
+                    instancia = "0";
+                    int comp = Integer.parseInt(t.getValor());
+                    for (int i = 1; i < comp; i++) {
+                        instancia += ",0";
+                    }
+                } else {                                                        //Declaração de vetor incializado
+                    instancia = t.getValoresVet().get(0);
+                    for (int i = 1; i < t.getValoresVet().size(); i++) {
+                        instancia += "," + t.getValoresVet().get(i);
+                    }
+                }
+                data.add(t.getNome() + " : " + instancia);
+            } else {                                                            // Atribuindo um vetor em uma variavel ex: a = vet[5];
                 montaOperacao(t);
                 text.add("STO " + t.getNome());
             }
+        } //else if (t.getIndexVet() != null && t.getValor() != null) {
+        else if (t.getIndexVet() != null) {                                     // Atribuição em vetor
+            text.add("LDI " + t.getIndexVet());
+            text.add("STO 1000");
+            montaOperacao(t);
+            text.add("STO 1001");
+            text.add("LD 1000");
+            text.add("STO $indr");
+            text.add("LD 1001");
+            text.add("STOV " + t.getNome());
+        } else if (t.getOperacoes().size() <= 1 && t.getTipo() != null) {       // se nao for uma atribuição vai estar vazio
+            if (t.isInicializado()) {                                           //  Declaracao variavel inicializada
+                data.add(t.getNome() + " : " + t.getValor());
+            } else {                                                            //  Declaracao variavel não inicializada;
+                data.add(t.getNome() + " : " + "0");
+            }
+        } else if (t.getTipo() == null) {                                       // Atribuição de variavel
+            montaOperacao(t);
+            text.add("STO " + t.getNome());
         }
     }
 

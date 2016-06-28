@@ -111,13 +111,15 @@ public class Semantico implements Constants {
                     opRel.setEscopo(pilha.peek());
                     temp.setOpRel(opRel);
                     LexIDE.gerador.novaLinha(temp);
-                    temp = new Tupla();
                 } else {
                     opRel.setFinalEscopo(token.getLexeme());
                     temp.setOpRel(opRel);
                     LexIDE.gerador.novaLinha(temp);
-                    temp = new Tupla();
+                    opRel = new OperacaoRelacional();
                 }
+                temp = new Tupla();
+                
+
                 System.out.println("Removido: " + pilha.pop());
                 break;
             case 14: // final code

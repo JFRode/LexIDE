@@ -1,11 +1,8 @@
-# Idéia do branch
-
-Gerar o código do if normalmente com uma tag para onde ele vai redirecionar "redirecionamento_if". quando terminar o if, será possivel identificar se possui um else ou não. desta maneira é só pegar o texto e trocar a tag pelo metodo para redirecionamento.
-BNE redirecionamento_if
-
 # LexIDE
 
 Se você chegou até aqui é porque tem interesse em entender como a LexIDE funciona ou como a linguagem Lex funciona. Neste texto, você pode visualizar a documentação completa do projeto.
+
+//TODO
 
 --
 
@@ -61,7 +58,7 @@ Se você chegou até aqui é porque tem interesse em entender como a LexIDE func
 | << | |
 
 ###Semantic actions
-| what | id |
+| Catch | id |
 | ---- | ------- |
 | name | #1 |
 | type | #2 |
@@ -86,6 +83,7 @@ Se você chegou até aqui é porque tem interesse em entender como a LexIDE func
 | relational first | #21 |
 | relational operator | #22 |
 | relational second | #23 |
+| increment type | #24 |
 **final line:** detecta quando as informações para compor uma tupla da tabela já são o suficiente, por exemplo ";".
 
 **final scope:** detecta o final de um escopo.
