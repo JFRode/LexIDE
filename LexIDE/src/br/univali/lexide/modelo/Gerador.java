@@ -8,10 +8,15 @@ public class Gerador {
 
     private List<String> data;
     private List<String> text;
+    private List<String> temp;
+    private int index;
+    private String ifElse;
 
     public Gerador() {
         data = new ArrayList();
         text = new ArrayList();
+        temp = new ArrayList<>();
+        this.index = 0;
     }
 
     public String montarCodigo() {
@@ -24,11 +29,111 @@ public class Gerador {
             codigo += t + "\n";
         }
         codigo += "HLT 0";
+        zerarListas();
         return codigo;
     }
 
+    private void zerarListas() {
+        text.clear();
+        temp.clear();
+    }
+
+    private void verificaOperacaoDesvio(OperacaoRelacional opRel, boolean isElse) {
+        if (opRel.getOperacao() != null) {
+            switch (opRel.getOperacao()) {
+                case "==":
+                    if (isElse) {
+                        temp.add("BNE " + opRel.getEscopo().toUpperCase());
+                    } else {
+                        temp.add("BNE END" + opRel.getEscopo().toUpperCase());
+                    }
+                    break;
+                case "!=":
+                    if (isElse) {
+                        temp.add("BEQ " + opRel.getEscopo().toUpperCase());
+                    } else {
+                        temp.add("BEQ END" + opRel.getEscopo().toUpperCase());
+                    }
+                    break;
+                case "<=":
+                    if (isElse) {
+                        temp.add("BGT " + opRel.getEscopo().toUpperCase());
+                    } else {
+                        temp.add("BGT END" + opRel.getEscopo().toUpperCase());
+                    }
+                    break;
+                case "<":
+                    if (isElse) {
+                        temp.add("BGE " + opRel.getEscopo().toUpperCase());
+                    } else {
+                        temp.add("BGE END" + opRel.getEscopo().toUpperCase());
+                    }
+                    break;
+                case ">=":
+                    if (isElse) {
+                        temp.add("BLT " + opRel.getEscopo().toUpperCase());
+                    } else {
+                        temp.add("BLT END" + opRel.getEscopo().toUpperCase());
+                    }
+                    break;
+                case ">":
+                    if (isElse) {
+                        temp.add("BLE " + opRel.getEscopo().toUpperCase());
+                    } else {
+                        temp.add("BLE END" + opRel.getEscopo().toUpperCase());
+                    }
+                    break;
+            }
+        }
+    }
+
     public void novaLinha(Tupla t) {
-        if (t.getIo() != null) {                                                // IO
+        if (t.getOpRel().isElse()) {                                            // Else
+            if (t.getOpRel().getFinalEscopo() == null) {
+                verificaOperacaoDesvio(t.getOpRel(), true);
+                for (String text1 : text) {
+                    temp.add(text1);
+                }
+                temp.add("JMP END" + ifElse.toUpperCase());
+                temp.add(t.getOpRel().getEscopo().toUpperCase() + ":");
+                text.clear();
+            } else {
+                for (int i = temp.size() - 1; i >= 0; i--) {
+                    text.add(0, temp.get(i));
+                }
+                text.add("END" + ifElse.toUpperCase() + ":");
+                temp.clear();
+            }
+        } else if (t.getOpRel().getFinalEscopo() != null && t.getOpRel().getFinalEscopo().equals("}")) {        // termina de montar o codigo if
+            verificaOperacaoDesvio(t.getOpRel(), false);
+            for (int i = temp.size() - 1; i >= 0; i--) {
+                text.add(0, temp.get(i));
+            }
+            temp.clear();
+            text.add("END" + t.getOpRel().getEscopo().toUpperCase() + ":");
+            System.out.println("");
+
+        } else if (t.getOpRel().getOperando1() != null) {                       // Monta o inicio do codigo if
+            ifElse = t.getOpRel().getEscopo();
+            text.stream().forEach((text1) -> {
+                temp.add(text1);
+            });
+            text = new ArrayList<>();
+            if (isDigit(t.getOpRel().getOperando1())) {
+                temp.add("LDI " + t.getOpRel().getOperando1());
+            } else {
+                temp.add("LD " + t.getOpRel().getOperando1());
+            }
+            temp.add("STO 1000");
+            if (isDigit(t.getOpRel().getOperando2())) {
+                temp.add("LDI " + t.getOpRel().getOperando2());
+            } else {
+                temp.add("LD " + t.getOpRel().getOperando2());
+            }
+            temp.add("STO 1001");
+            temp.add("LD 1000");
+            temp.add("SUB 1001");
+        } else if (t.getIo() != null) {                                                // IO
             if (t.getIo().equals("read")) {                                     // Read
                 if (t.isVetor()) {
                     text.add("LDI " + t.getValor());
@@ -146,4 +251,5 @@ public class Gerador {
     public boolean isDigit(String s) {                                          // checa se é numero ou operadores
         return s.matches("[0-9]*");
     }
+
 }
