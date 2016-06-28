@@ -38,13 +38,33 @@ public class Gerador {
         temp.clear();
     }
 
+    private void verificaOperacaoDesvio(OperacaoRelacional opRel) {
+        switch (opRel.getOperacao()) {
+            case "==":
+                temp.add("BNE " + opRel.getEscopo().toUpperCase());
+                break;
+            case "!=":
+                temp.add("BEQ " + opRel.getEscopo().toUpperCase());
+                break;
+            case "<=":
+                temp.add("BGT " + opRel.getEscopo().toUpperCase());
+                break;
+            case "<":
+                temp.add("BGE " + opRel.getEscopo().toUpperCase());
+                break;
+            case ">=":
+                temp.add("BLT " + opRel.getEscopo().toUpperCase());
+                break;
+            case ">":
+                temp.add("BLE " + opRel.getEscopo().toUpperCase());
+                break;
+        }
+    }
+
     public void novaLinha(Tupla t) {
-        if (t.getOpRel().isElse()) {
-            // aqui vai o codigo de quando for else
+        if (t.getOpRel().isElse()) {                                            // Else
             if (t.getOpRel().getFinalEscopo() == null) {
-                if (t.getOpRel().getOperacao().equals("==")) {
-                    temp.add("BNE " + t.getOpRel().getEscopo().toUpperCase());
-                }
+                verificaOperacaoDesvio(t.getOpRel());
                 for (String text1 : text) {
                     temp.add(text1);
                 }
@@ -58,10 +78,8 @@ public class Gerador {
                 text.add("END" + ifElse.toUpperCase() + ":");
                 temp.clear();
             }
-        } else if (t.getOpRel().getFinalEscopo() != null && t.getOpRel().getFinalEscopo().equals("}")) {
-            if (t.getOpRel().getOperacao().equals("==")) {
-                temp.add("BNE END" + t.getOpRel().getEscopo().toUpperCase());
-            }
+        } else if (t.getOpRel().getFinalEscopo() != null && t.getOpRel().getFinalEscopo().equals("}")) {        // termina de montar o codigo if
+            verificaOperacaoDesvio(t.getOpRel());
             for (int i = temp.size() - 1; i >= 0; i--) {
                 text.add(0, temp.get(i));
             }
@@ -69,7 +87,7 @@ public class Gerador {
             text.add("END" + t.getOpRel().getEscopo().toUpperCase() + ":");
             System.out.println("");
 
-        } else if (t.getOpRel().getOperando1() != null) {
+        } else if (t.getOpRel().getOperando1() != null) {                       // Monta o inicio do codigo if
             ifElse = t.getOpRel().getEscopo();
             text.stream().forEach((text1) -> {
                 temp.add(text1);
