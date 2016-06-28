@@ -10,7 +10,7 @@ public class Gerador {
     private List<String> text;
     private List<String> temp;
     private int index;
-    private String ifElse;
+    private String escopoRel;
 
     public Gerador() {
         data = new ArrayList();
@@ -38,70 +38,107 @@ public class Gerador {
         temp.clear();
     }
 
-    private void verificaOperacaoDesvio(OperacaoRelacional opRel, boolean isElse) {
+    private void verificaOperacaoDesvio(OperacaoRelacional opRel, boolean isEnd) {
         if (opRel.getOperacao() != null) {
             switch (opRel.getOperacao()) {
                 case "==":
-                    if (isElse) {
+                    if (isEnd) {
                         temp.add("BNE " + opRel.getEscopo().toUpperCase());
                     } else {
-                        temp.add("BNE END" + opRel.getEscopo().toUpperCase());
+                        temp.add("BNE END_" + opRel.getEscopo().toUpperCase());
                     }
                     break;
                 case "!=":
-                    if (isElse) {
+                    if (isEnd) {
                         temp.add("BEQ " + opRel.getEscopo().toUpperCase());
                     } else {
-                        temp.add("BEQ END" + opRel.getEscopo().toUpperCase());
+                        temp.add("BEQ END_" + opRel.getEscopo().toUpperCase());
                     }
                     break;
                 case "<=":
-                    if (isElse) {
+                    if (isEnd) {
                         temp.add("BGT " + opRel.getEscopo().toUpperCase());
                     } else {
-                        temp.add("BGT END" + opRel.getEscopo().toUpperCase());
+                        temp.add("BGT END_" + opRel.getEscopo().toUpperCase());
                     }
                     break;
                 case "<":
-                    if (isElse) {
+                    if (isEnd) {
                         temp.add("BGE " + opRel.getEscopo().toUpperCase());
                     } else {
-                        temp.add("BGE END" + opRel.getEscopo().toUpperCase());
+                        temp.add("BGE END_" + opRel.getEscopo().toUpperCase());
                     }
                     break;
                 case ">=":
-                    if (isElse) {
+                    if (isEnd) {
                         temp.add("BLT " + opRel.getEscopo().toUpperCase());
                     } else {
-                        temp.add("BLT END" + opRel.getEscopo().toUpperCase());
+                        temp.add("BLT END_" + opRel.getEscopo().toUpperCase());
                     }
                     break;
                 case ">":
-                    if (isElse) {
+                    if (isEnd) {
                         temp.add("BLE " + opRel.getEscopo().toUpperCase());
                     } else {
-                        temp.add("BLE END" + opRel.getEscopo().toUpperCase());
+                        temp.add("BLE END_" + opRel.getEscopo().toUpperCase());
                     }
                     break;
             }
         }
     }
 
+    private void montaInicioDesvio(Tupla t) {
+        if (isDigit(t.getOpRel().getOperando1())) {
+            temp.add("LDI " + t.getOpRel().getOperando1());
+        } else {
+            temp.add("LD " + t.getOpRel().getOperando1());
+        }
+        temp.add("STO 1000");
+        if (isDigit(t.getOpRel().getOperando2())) {
+            temp.add("LDI " + t.getOpRel().getOperando2());
+        } else {
+            temp.add("LD " + t.getOpRel().getOperando2());
+        }
+        temp.add("STO 1001");
+        temp.add("LD 1000");
+        temp.add("SUB 1001");
+    }
+
     public void novaLinha(Tupla t) {
-        if (t.getOpRel().isElse()) {                                            // Else
+        if (t.getOpRel().isIsWhile()) {
+            if (t.getOpRel().getFinalEscopo() == null) {                        // Inicio do While
+                for (String text1 : text) {                                     // Copia o que reconheceu antes do while para o temp
+                    temp.add(text1);
+                }
+                escopoRel = t.getOpRel().getEscopo();
+                text = new ArrayList<>();
+                temp.add("INI_" + t.getOpRel().getEscopo() + ":");
+                montaInicioDesvio(t);
+                verificaOperacaoDesvio(t.getOpRel(), false);
+                text.clear();
+            } else {                                                            // Fim do while
+                for (int i = temp.size() - 1; i >= 0; i--) {
+                    text.add(0, temp.get(i));
+                }
+                temp.add("JMP INI_" + t.getOpRel().getEscopo());
+                text.add("END_" + escopoRel.toUpperCase() + ":");
+                temp.clear();
+            }
+
+        } else if (t.getOpRel().isElse()) {                                     // Else
             if (t.getOpRel().getFinalEscopo() == null) {
                 verificaOperacaoDesvio(t.getOpRel(), true);
                 for (String text1 : text) {
                     temp.add(text1);
                 }
-                temp.add("JMP END" + ifElse.toUpperCase());
+                temp.add("JMP END" + escopoRel.toUpperCase());
                 temp.add(t.getOpRel().getEscopo().toUpperCase() + ":");
                 text.clear();
             } else {
                 for (int i = temp.size() - 1; i >= 0; i--) {
                     text.add(0, temp.get(i));
                 }
-                text.add("END" + ifElse.toUpperCase() + ":");
+                text.add("END_" + escopoRel.toUpperCase() + ":");
                 temp.clear();
             }
         } else if (t.getOpRel().getFinalEscopo() != null && t.getOpRel().getFinalEscopo().equals("}")) {        // termina de montar o codigo if
@@ -110,29 +147,16 @@ public class Gerador {
                 text.add(0, temp.get(i));
             }
             temp.clear();
-            text.add("END" + t.getOpRel().getEscopo().toUpperCase() + ":");
+            text.add("END_" + t.getOpRel().getEscopo().toUpperCase() + ":");
             System.out.println("");
 
         } else if (t.getOpRel().getOperando1() != null) {                       // Monta o inicio do codigo if
-            ifElse = t.getOpRel().getEscopo();
+            escopoRel = t.getOpRel().getEscopo();
             text.stream().forEach((text1) -> {
                 temp.add(text1);
             });
             text = new ArrayList<>();
-            if (isDigit(t.getOpRel().getOperando1())) {
-                temp.add("LDI " + t.getOpRel().getOperando1());
-            } else {
-                temp.add("LD " + t.getOpRel().getOperando1());
-            }
-            temp.add("STO 1000");
-            if (isDigit(t.getOpRel().getOperando2())) {
-                temp.add("LDI " + t.getOpRel().getOperando2());
-            } else {
-                temp.add("LD " + t.getOpRel().getOperando2());
-            }
-            temp.add("STO 1001");
-            temp.add("LD 1000");
-            temp.add("SUB 1001");
+            montaInicioDesvio(t);
         } else if (t.getIo() != null) {                                                // IO
             if (t.getIo().equals("read")) {                                     // Read
                 if (t.isVetor()) {

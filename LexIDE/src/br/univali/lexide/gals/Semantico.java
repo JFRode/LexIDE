@@ -61,6 +61,9 @@ public class Semantico implements Constants {
                 break;
             case 5: // scope
                 inserePilha(token);
+                if(token.getLexeme().equals("while")){
+                    opRel.setWhile(true);
+                }
                 System.out.println("Ação escopo #" + action + ", Token: " + token.getLexeme());
                 break;
             case 6: // param
@@ -111,7 +114,7 @@ public class Semantico implements Constants {
                     opRel.setEscopo(pilha.peek());
                     temp.setOpRel(opRel);
                     LexIDE.gerador.novaLinha(temp);
-                } else {
+                } else /*if(!opRel.isIsWhile())*/{
                     opRel.setFinalEscopo(token.getLexeme());
                     temp.setOpRel(opRel);
                     LexIDE.gerador.novaLinha(temp);

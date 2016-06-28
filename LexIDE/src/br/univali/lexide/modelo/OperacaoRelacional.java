@@ -6,7 +6,16 @@ public class OperacaoRelacional {
     private String operacao;
     private String escopo;
     private boolean Else;
+    private boolean While;
     private String finalEscopo;
+
+    public boolean isIsWhile() {
+        return While;
+    }
+
+    public void setWhile(boolean isWhile) {
+        this.While = isWhile;
+    }
     
     public boolean isElse() {
         return Else;
