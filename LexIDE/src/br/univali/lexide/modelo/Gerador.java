@@ -105,6 +105,10 @@ public class Gerador {
     }
 
     public void novaLinha(Tupla t) {
+        if (t.getOpRel().isFor()) {
+            System.err.println("qualquer coisa" + t.getEscopo());
+        }
+        
         if (t.getOpRel().isIsWhile()) {
             if (t.getOpRel().getFinalEscopo() == null) {                        // Inicio do While
                 for (String text1 : text) {                                     // Copia o que reconheceu antes do while para o temp
