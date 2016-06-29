@@ -142,7 +142,7 @@ public class Gerador {
                 }
                 escopoRel = t.getOpRel().getEscopo();
                 text = new ArrayList<>();
-                temp.add("INI_" + t.getOpRel().getEscopo() + ":");
+                temp.add("INI_" + t.getOpRel().getEscopo().toUpperCase() + ":");
                 montaInicioDesvio(t);
                 verificaOperacaoDesvio(t.getOpRel(), false);
                 text.clear();
@@ -150,7 +150,7 @@ public class Gerador {
                 for (int i = temp.size() - 1; i >= 0; i--) {
                     text.add(0, temp.get(i));
                 }
-                temp.add("JMP INI_" + t.getOpRel().getEscopo());
+                text.add("JMP INI_" + t.getOpRel().getEscopo().toUpperCase());
                 text.add("END_" + escopoRel.toUpperCase() + ":");
                 temp.clear();
             }
