@@ -19,6 +19,7 @@ public class Semantico implements Constants {
     private int contELSE;
     private int contWHILE;
     private int contDO;
+    private int contFor;
     private Operacao finalFila;
     private OperacaoRelacional opRel;
 
@@ -31,6 +32,7 @@ public class Semantico implements Constants {
         contELSE = 0;
         contWHILE = 0;
         contDO = 0;
+        contFor = 0;
         pilha.push("Global");
         opRel = new OperacaoRelacional();
     }
@@ -65,6 +67,7 @@ public class Semantico implements Constants {
                     opRel.setWhile(true);
                 } else if (token.getLexeme().equals("for")) {
                     opRel.setFor(true);
+                    temp.setOpRel(opRel);
                 }
                 System.out.println("Ação escopo #" + action + ", Token: " + token.getLexeme());
                 break;
@@ -293,6 +296,10 @@ public class Semantico implements Constants {
             case "do":
                 pilha.push("do" + contDO);
                 contDO++;
+                break;
+            case "for":
+                pilha.push("for" + contFor);
+                contFor++;
                 break;
             default:
                 pilha.push(token.getLexeme());

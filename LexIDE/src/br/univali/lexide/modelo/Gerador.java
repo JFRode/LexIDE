@@ -105,11 +105,37 @@ public class Gerador {
     }
 
     public void novaLinha(Tupla t) {
-        if (t.getOpRel().isFor()) {
-            System.err.println("qualquer coisa" + t.getEscopo());
-        }
-        
-        if (t.getOpRel().isIsWhile()) {
+        if (t.getOpRel().isFor() && t.getOpRel().getOperando1() != null) {
+            System.err.println("qualquer coisa" + t.getOpRel().getEscopo());
+            if (t.getOpRel().getFinalEscopo() == null) {
+                for (String text1 : text) {                                     // Copia o que reconheceu antes do while para o temp
+                    temp.add(text1);
+                }
+                escopoRel = t.getOpRel().getEscopo();
+                text = new ArrayList<>();
+                temp.add("LDI " + t.getOperacoes().get(0).getOperacao());
+                temp.add("STO " + t.getNome());
+                temp.add("LDI " + t.getValor());
+                temp.add("STO 1000");
+                temp.add("LDI 1");
+                temp.add("STO 1001");
+                temp.add("LD " + t.getNome());
+                temp.add(escopoRel.toUpperCase() + ":");
+                temp.add("SUB 1000");
+                verificaOperacaoDesvio(t.getOpRel(), false);
+                System.out.println("");
+            }else{
+                for (int i = temp.size() - 1; i >= 0; i--) {
+                    text.add(0, temp.get(i));
+                }
+                text.add("LD " + t.getNome());
+                text.add("ADD 1001");
+                text.add("STO " + t.getNome());
+                text.add("JMP " + escopoRel.toUpperCase());
+                text.add("END_" + escopoRel.toUpperCase()+":");
+                temp.clear();
+            }
+        }else if (t.getOpRel().isIsWhile()) {
             if (t.getOpRel().getFinalEscopo() == null) {                        // Inicio do While
                 for (String text1 : text) {                                     // Copia o que reconheceu antes do while para o temp
                     temp.add(text1);
