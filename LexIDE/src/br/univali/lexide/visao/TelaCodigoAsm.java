@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class TelaCodigoAsm extends javax.swing.JFrame {
-    
+
     public TelaCodigoAsm(LexIDE aThis, String codigo) {
         initComponents();
         this.setVisible(true);
@@ -43,8 +43,8 @@ public class TelaCodigoAsm extends javax.swing.JFrame {
         });
 
         textAreaAsm.setColumns(20);
-        textAreaAsm.setFont(new java.awt.Font("Courier New", 0, 13)); // NOI18N
         textAreaAsm.setRows(5);
+        textAreaAsm.setTabSize(4);
         scrollPane.setViewportView(textAreaAsm);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
