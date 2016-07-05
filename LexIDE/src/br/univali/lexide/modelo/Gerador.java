@@ -11,11 +11,13 @@ public class Gerador {
     private List<String> temp;
     private int index;
     private String escopoRel;
+    private List<Metodo> metodos;
 
     public Gerador() {
         data = new ArrayList();
         text = new ArrayList();
         temp = new ArrayList<>();
+        metodos = new ArrayList();
         this.index = 0;
     }
 
@@ -104,7 +106,23 @@ public class Gerador {
         temp.add("SUB 1001");
     }
 
+    private boolean verificaEscopoMetodo(String nome) {
+        for (Metodo m : metodos) {
+            if (m.getIdentificador().equals(nome)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public void novaLinha(Tupla t) {
+        if (t.isFuncao()) { //  quando tiver retorno, alterar aqui
+            metodos.add(new Metodo(t.getNome()));
+        }
+        if (verificaEscopoMetodo(t.getEscopo())) {
+            //  mandar o temp pra ca
+        }
+        
         if (t.getOpRel().isFor() && t.getOpRel().getOperando1() != null) {
             System.err.println("qualquer coisa" + t.getOpRel().getEscopo());
             if (t.getOpRel().getFinalEscopo() == null) {
