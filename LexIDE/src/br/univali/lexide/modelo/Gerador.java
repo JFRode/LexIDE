@@ -106,31 +106,38 @@ public class Gerador {
         temp.add("SUB 1001");
     }
 
-    private boolean verificaEscopoMetodo(String nome) {
-        for (Metodo m : metodos) {
-            if (m.getIdentificador().equals(nome)) {
-                return true;
+    private int verificaEscopoMetodo(String nome) {
+        for (int i=0; i < metodos.size(); i++) {
+            if (metodos.get(i).getIdentificador().equals(nome)) {
+                return i;
             }
         }
-        return false;
+        return -1;
     }
     
     public void novaLinha(Tupla t) {
+        List<String> ponteiro;
+        int index = verificaEscopoMetodo(t.getEscopo());
+        
         if (t.isFuncao()) { //  quando tiver retorno, alterar aqui
             metodos.add(new Metodo(t.getNome()));
         }
-        if (verificaEscopoMetodo(t.getEscopo())) {
-            //  mandar o temp pra ca
+        
+        if (index != (-1)) {    //  Ponteiro de alteração
+            ponteiro = metodos.get(index).getConteudo();
+        } else {
+            ponteiro = text;
         }
+        
         
         if (t.getOpRel().isFor() && t.getOpRel().getOperando1() != null) {
             System.err.println("qualquer coisa" + t.getOpRel().getEscopo());
             if (t.getOpRel().getFinalEscopo() == null) {
-                for (String text1 : text) {                                     // Copia o que reconheceu antes do while para o temp
-                    temp.add(text1);
+                for (String ponteiro1 : ponteiro) {                                     // Copia o que reconheceu antes do while para o temp
+                    temp.add(ponteiro1);
                 }
                 escopoRel = t.getOpRel().getEscopo();
-                text = new ArrayList<>();
+                ponteiro = new ArrayList<>();
                 temp.add("LDI " + t.getOperacoes().get(0).getOperacao());
                 temp.add("STO " + t.getNome());
                 temp.add("LDI " + t.getValor());
@@ -144,89 +151,89 @@ public class Gerador {
                 System.out.println("");
             }else{
                 for (int i = temp.size() - 1; i >= 0; i--) {
-                    text.add(0, temp.get(i));
+                    ponteiro.add(0, temp.get(i));
                 }
-                text.add("LD " + t.getNome());
-                text.add("ADD 1001");
-                text.add("STO " + t.getNome());
-                text.add("JMP " + escopoRel.toUpperCase());
-                text.add("END_" + escopoRel.toUpperCase()+":");
+                ponteiro.add("LD " + t.getNome());
+                ponteiro.add("ADD 1001");
+                ponteiro.add("STO " + t.getNome());
+                ponteiro.add("JMP " + escopoRel.toUpperCase());
+                ponteiro.add("END_" + escopoRel.toUpperCase()+":");
                 temp.clear();
             }
         }else if (t.getOpRel().isIsWhile()) {
             if (t.getOpRel().getFinalEscopo() == null) {                        // Inicio do While
-                for (String text1 : text) {                                     // Copia o que reconheceu antes do while para o temp
-                    temp.add(text1);
+                for (String ponteiro1 : ponteiro) {                                     // Copia o que reconheceu antes do while para o temp
+                    temp.add(ponteiro1);
                 }
                 escopoRel = t.getOpRel().getEscopo();
-                text = new ArrayList<>();
+                ponteiro = new ArrayList<>();
                 temp.add("INI_" + t.getOpRel().getEscopo().toUpperCase() + ":");
                 montaInicioDesvio(t);
                 verificaOperacaoDesvio(t.getOpRel(), false);
-                text.clear();
+                ponteiro.clear();
             } else {                                                            // Fim do while
                 for (int i = temp.size() - 1; i >= 0; i--) {
-                    text.add(0, temp.get(i));
+                    ponteiro.add(0, temp.get(i));
                 }
-                text.add("JMP INI_" + t.getOpRel().getEscopo().toUpperCase());
-                text.add("END_" + escopoRel.toUpperCase() + ":");
+                ponteiro.add("JMP INI_" + t.getOpRel().getEscopo().toUpperCase());
+                ponteiro.add("END_" + escopoRel.toUpperCase() + ":");
                 temp.clear();
             }
 
         } else if (t.getOpRel().isElse()) {                                     // Else
             if (t.getOpRel().getFinalEscopo() == null) {
                 verificaOperacaoDesvio(t.getOpRel(), true);
-                for (String text1 : text) {
-                    temp.add(text1);
+                for (String ponteiro1 : ponteiro) {
+                    temp.add(ponteiro1);
                 }
                 temp.add("JMP END" + escopoRel.toUpperCase());
                 temp.add(t.getOpRel().getEscopo().toUpperCase() + ":");
-                text.clear();
+                ponteiro.clear();
             } else {
                 for (int i = temp.size() - 1; i >= 0; i--) {
-                    text.add(0, temp.get(i));
+                    ponteiro.add(0, temp.get(i));
                 }
-                text.add("END_" + escopoRel.toUpperCase() + ":");
+                ponteiro.add("END_" + escopoRel.toUpperCase() + ":");
                 temp.clear();
             }
         } else if (t.getOpRel().getFinalEscopo() != null && t.getOpRel().getFinalEscopo().equals("}")) {        // termina de montar o codigo if
             verificaOperacaoDesvio(t.getOpRel(), false);
             for (int i = temp.size() - 1; i >= 0; i--) {
-                text.add(0, temp.get(i));
+                ponteiro.add(0, temp.get(i));
             }
             temp.clear();
-            text.add("END_" + t.getOpRel().getEscopo().toUpperCase() + ":");
+            ponteiro.add("END_" + t.getOpRel().getEscopo().toUpperCase() + ":");
             System.out.println("");
 
         } else if (t.getOpRel().getOperando1() != null) {                       // Monta o inicio do codigo if
             escopoRel = t.getOpRel().getEscopo();
-            text.stream().forEach((text1) -> {
-                temp.add(text1);
+            ponteiro.stream().forEach((ponteiro1) -> {
+                temp.add(ponteiro1);
             });
-            text = new ArrayList<>();
+            ponteiro = new ArrayList<>();
             montaInicioDesvio(t);
         } else if (t.getIo() != null) {                                                // IO
             if (t.getIo().equals("read")) {                                     // Read
                 if (t.isVetor()) {
-                    text.add("LDI " + t.getValor());
-                    text.add("STO $indr");
-                    text.add("LD $in_port");
-                    text.add("STOV " + t.getNome());
+                    ponteiro.add("LDI " + t.getValor());
+                    ponteiro.add("STO $indr");
+                    ponteiro.add("LD $in_port");
+                    ponteiro.add("STOV " + t.getNome());
                 } else {
-                    text.add("LD $in_port");
-                    text.add("STO " + t.getNome());
+                    ponteiro.add("LD $in_port");
+                    ponteiro.add("STO " + t.getNome());
                 }
             } else if (t.getIo().equals("write")) {                             // Write
                 if (t.isVetor()) {
-                    text.add("LDI " + t.getValor());
-                    text.add("STO $indr");
-                    text.add("LDV " + t.getNome());
+                    ponteiro.add("LDI " + t.getValor());
+                    ponteiro.add("STO $indr");
+                    ponteiro.add("LDV " + t.getNome());
                 } else if (t.getValor() == null) {
-                    text.add("LD " + t.getNome());
+                    ponteiro.add("LD " + t.getNome());
                 } else {
-                    text.add("LDI " + t.getValor());
+                    ponteiro.add("LDI " + t.getValor());
                 }
-                text.add("STO $out_port");
+                ponteiro.add("STO $out_port");
             }
         } else if (t.isVetor()) {
             if (t.getTipo() != null) {
@@ -246,18 +253,18 @@ public class Gerador {
                 data.add(t.getNome() + " : " + instancia);
             } else {                                                            // Atribuindo um vetor em uma variavel ex: a = vet[5];
                 montaOperacao(t);
-                text.add("STO " + t.getNome());
+                ponteiro.add("STO " + t.getNome());
             }
         } //else if (t.getIndexVet() != null && t.getValor() != null) {
         else if (t.getIndexVet() != null) {                                     // Atribuição em vetor
-            text.add("LDI " + t.getIndexVet());
-            text.add("STO 1000");
+            ponteiro.add("LDI " + t.getIndexVet());
+            ponteiro.add("STO 1000");
             montaOperacao(t);
-            text.add("STO 1001");
-            text.add("LD 1000");
-            text.add("STO $indr");
-            text.add("LD 1001");
-            text.add("STOV " + t.getNome());
+            ponteiro.add("STO 1001");
+            ponteiro.add("LD 1000");
+            ponteiro.add("STO $indr");
+            ponteiro.add("LD 1001");
+            ponteiro.add("STOV " + t.getNome());
         } else if (t.getOperacoes().size() <= 1 && t.getTipo() != null) {       // se nao for uma atribuição vai estar vazio
             if (t.isInicializado()) {                                           //  Declaracao variavel inicializada
                 data.add(t.getNome() + " : " + t.getValor());
@@ -266,7 +273,7 @@ public class Gerador {
             }
         } else if (t.getTipo() == null) {                                       // Atribuição de variavel
             montaOperacao(t);
-            text.add("STO " + t.getNome());
+            ponteiro.add("STO " + t.getNome());
         }
     }
 
