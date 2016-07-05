@@ -21,6 +21,7 @@ public class Tupla {
     private boolean ref = false;
     private boolean funcao = false;
     private OperacaoRelacional opRel = new OperacaoRelacional();
+    private String incrementType;
 
     public OperacaoRelacional getOpRel() {
         return opRel;
@@ -163,5 +164,13 @@ public class Tupla {
 
     public void setIndexVet(String indexVet) {
         this.indexVet = indexVet;
+    }
+
+    public String getIncrementType() {
+        return incrementType;
+    }
+
+    public void setIncrementType(String incrementType) {
+        this.incrementType = incrementType;
     }
 }

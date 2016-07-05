@@ -5,10 +5,19 @@ public class OperacaoRelacional {
     private String operando2;
     private String operacao;
     private String escopo;
-    private boolean Else;
-    private boolean While;
+    private boolean Else = false;
+    private boolean While = false;
+    private boolean For = false;
     private String finalEscopo;
 
+    public boolean isFor() {
+        return For;
+    }
+
+    public void setFor(boolean For) {
+        this.For = For;
+    }
+    
     public boolean isIsWhile() {
         return While;
     }

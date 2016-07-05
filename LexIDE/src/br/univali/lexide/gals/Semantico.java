@@ -19,6 +19,7 @@ public class Semantico implements Constants {
     private int contELSE;
     private int contWHILE;
     private int contDO;
+    private int contFor;
     private Operacao finalFila;
     private OperacaoRelacional opRel;
 
@@ -31,6 +32,7 @@ public class Semantico implements Constants {
         contELSE = 0;
         contWHILE = 0;
         contDO = 0;
+        contFor = 0;
         pilha.push("Global");
         opRel = new OperacaoRelacional();
     }
@@ -61,8 +63,11 @@ public class Semantico implements Constants {
                 break;
             case 5: // scope
                 inserePilha(token);
-                if(token.getLexeme().equals("while")){
+                if (token.getLexeme().equals("while")) {
                     opRel.setWhile(true);
+                } else if (token.getLexeme().equals("for")) {
+                    opRel.setFor(true);
+                    temp.setOpRel(opRel);
                 }
                 System.out.println("Ação escopo #" + action + ", Token: " + token.getLexeme());
                 break;
@@ -104,7 +109,9 @@ public class Semantico implements Constants {
             case 12: // final line
                 insereTabela();
                 LexIDE.gerador.novaLinha(temp);
-                temp = new Tupla();
+                if (!temp.getOpRel().isFor()) {
+                    temp = new Tupla();
+                }
                 System.out.println("Ação ; #" + action + ", Token: " + token.getLexeme());
                 break;
             case 13: // final scope
@@ -114,14 +121,13 @@ public class Semantico implements Constants {
                     opRel.setEscopo(pilha.peek());
                     temp.setOpRel(opRel);
                     LexIDE.gerador.novaLinha(temp);
-                } else /*if(!opRel.isIsWhile())*/{
+                } else /*if(!opRel.isIsWhile())*/ {
                     opRel.setFinalEscopo(token.getLexeme());
                     temp.setOpRel(opRel);
                     LexIDE.gerador.novaLinha(temp);
                     opRel = new OperacaoRelacional();
                 }
                 temp = new Tupla();
-                
 
                 System.out.println("Removido: " + pilha.pop());
                 break;
@@ -170,10 +176,16 @@ public class Semantico implements Constants {
                 opRel.setOperando2(token.getLexeme());
                 opRel.setEscopo(pilha.peek());
                 temp.setOpRel(opRel);
+                if (!pilha.get(pilha.size() - 1).contains("for")) {
+                    LexIDE.gerador.novaLinha(temp);
+                    temp = new Tupla();
+                }
+                break;
+            case 24:
+                temp.setIncrementType(token.getLexeme());
                 LexIDE.gerador.novaLinha(temp);
                 temp = new Tupla();
                 break;
-
         }
     }
 
@@ -284,6 +296,10 @@ public class Semantico implements Constants {
             case "do":
                 pilha.push("do" + contDO);
                 contDO++;
+                break;
+            case "for":
+                pilha.push("for" + contFor);
+                contFor++;
                 break;
             default:
                 pilha.push(token.getLexeme());
