@@ -1,13 +1,15 @@
 package br.univali.lexide.modelo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Metodo {
     private String identificador;
-    private String conteudo;
+    private List<String> conteudo;
 
     public Metodo(String identificador) {
         this.identificador = identificador;
+        this.conteudo = new ArrayList();
     }
     
     public String getIdentificador() {
@@ -18,11 +20,11 @@ public class Metodo {
         this.identificador = identificador;
     }
 
-    public String getConteudo() {
+    public List<String> getConteudo() {
         return conteudo;
     }
 
-    public void setConteudo(String conteudo) {
+    public void setConteudo(List<String> conteudo) {
         this.conteudo = conteudo;
     }
 }
