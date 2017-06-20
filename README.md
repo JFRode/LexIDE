@@ -6,7 +6,7 @@ Se você chegou até aqui é porque tem interesse em entender como a LexIDE func
 
 --
 
-###Data types
+### Data types
 
 | Data | Example |
 | ---- | ------- |
@@ -17,7 +17,7 @@ Se você chegou até aqui é porque tem interesse em entender como a LexIDE func
 | vectors | int vet[] |
 
 
-###Control structures
+### Control structures
 | Conditional clauses | Example |
 | ------------------- | ------- |
 | if | if (...) {...} |
@@ -29,7 +29,7 @@ Se você chegou até aqui é porque tem interesse em entender como a LexIDE func
 | do while | do {...} while (...); |
 | for | fore (...) {...} |
 
-###Operators
+### Operators
 
 | Arithmetic | Example |
 | ---------- | ------- |
@@ -57,7 +57,7 @@ Se você chegou até aqui é porque tem interesse em entender como a LexIDE func
 | >> | |
 | << | |
 
-###Semantic actions
+### Semantic actions
 
 | Catch | id |
 | ---- | ------- |
